@@ -1,6 +1,5 @@
 USE quizdb;
 
-
 drop table if exists friendRequests;
 drop table if exists friends;
 drop table if exists quizHistory;
