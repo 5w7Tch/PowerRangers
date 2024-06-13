@@ -23,3 +23,27 @@ create table if not exists friends(
     foreign key (user1Id) references users(userId),
     foreign key (user2Id) references users(userId)
 );
+
+
+CREATE TABLE IF NOT EXISTS quizzes (
+                                       quizId BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                       author BIGINT NOT NULL,
+                                       name VARCHAR(255),
+    creationDate DATE NOT NULL ,
+    description TEXT,
+    isPracticable BOOLEAN DEFAULT TRUE,
+    quizTime BIGINT,
+    FOREIGN KEY (author) REFERENCES users(userId)
+    );
+
+
+CREATE TABLE IF NOT EXISTS quizHistory (
+                                           historyId BIGINT PRIMARY KEY AUTO_INCREMENT,
+                                           quizId BIGINT NOT NULL ,
+                                           userId BIGINT NOT NULL ,
+                                           startTime DATETIME NOT NULL ,
+                                           endTime DATETIME NOT NULL ,
+                                           score BIGINT NOT NULL ,
+                                           FOREIGN KEY (quizId) REFERENCES quizzes(quizId),
+    FOREIGN KEY (userId) REFERENCES users(userId)
+    );
