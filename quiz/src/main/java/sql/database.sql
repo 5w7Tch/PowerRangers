@@ -1,13 +1,13 @@
 USE quizdb;
 
 
-
-
-
-
-
-
-
+drop table if exists friendRequests;
+drop table if exists friends;
+drop table if exists quizHistory;
+drop table if exists notes;
+drop table if exists challenges;
+drop table if exists quizzes;
+drop table if exists users;
 
 create table if not exists users(
     userId bigint primary key auto_increment,
