@@ -4,4 +4,9 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+
+  <listener>
+    <listener-class>listeners.contextListener</listener-class>
+  </listener>
+
 </web-app>

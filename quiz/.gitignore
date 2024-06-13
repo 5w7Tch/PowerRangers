@@ -37,3 +37,16 @@ build/
 ### Mac OS ###
 .DS_Store
 /.idea/
+
+/.idea/dataSources/
+/.idea/inspectionProfiles/
+/.idea/.gitignore
+/.idea/compiler.xml
+/.idea/dataSources.local.xml
+/.idea/dataSources.xml
+/.idea/encodings.xml
+/.idea/jarRepositories.xml
+/.idea/misc.xml
+/.idea/sqldialects.xml
+/.idea/vcs.xml
+/.idea/workspace.xml
