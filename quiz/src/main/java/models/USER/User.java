@@ -3,13 +3,13 @@ package models.USER;
 import java.math.BigInteger;
 
 public class User {
-    private final BigInteger id;
+    private final int id;
     private final String username;
     private final String passwordHash;
     private final String email;
     private final boolean isAdmin;
 
-    public User(BigInteger id,String username,String passwordHash,String email,boolean isAdmin){
+    public User(int id,String username,String passwordHash,String email,boolean isAdmin){
         this.id = id;
         this.username = username;
         this.passwordHash = passwordHash;
@@ -17,7 +17,7 @@ public class User {
         this.isAdmin = isAdmin;
     }
 
-    public BigInteger getId() {
+    public int getId() {
         return id;
     }
 
