@@ -10,4 +10,8 @@ public class mySqlDb implements Dao{
     }
 
 
+    @Override
+    public void closeDbConnection() {
+
+    }
 }
