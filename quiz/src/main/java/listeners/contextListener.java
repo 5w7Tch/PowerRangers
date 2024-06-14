@@ -1,8 +1,8 @@
 package listeners;
 
-import models.dbCredentials;
-import models.mySqlDb;
-import models.Dao;
+import models.DAO.dbCredentials;
+import models.DAO.mySqlDb;
+import models.DAO.Dao;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.servlet.ServletContextEvent;
