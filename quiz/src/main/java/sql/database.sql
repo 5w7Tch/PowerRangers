@@ -7,6 +7,10 @@ drop table if exists notes;
 drop table if exists challenges;
 drop table if exists quizzes;
 drop table if exists users;
+drop table if exists questions;
+drop table if exists announcements;
+drop table if exists userAchievements;
+drop table if exists achievements;
 
 create table if not exists users(
     userId int primary key auto_increment,
@@ -73,4 +77,39 @@ CREATE TABLE if not exists challenges (
     FOREIGN KEY (fromId) REFERENCES users(userId),
     FOREIGN KEY (toId) REFERENCES users(userId),
     FOREIGN KEY (quizId) REFERENCES quizzes(quizId)
+);
+
+CREATE TABLE if not exists questions(
+    questionId INT AUTO_INCREMENT PRIMARY KEY ,
+    quizId INT NOT NULL,
+    type INT NOT NULL,
+    text TEXT NOT NULL,
+    orderNum INT NOT NULL,
+    score INT NOT NULL,
+    FOREIGN KEY (quizId) REFERENCES  quizzes(quizId)
+);
+
+CREATE TABLE if not exists announcements(
+    announcementId INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT NOT NULL,
+    text TEXT NOT NULL,
+    timeStamp DATE NOT NULL,
+    FOREIGN KEY (userId) REFERENCES users(userId)
+);
+
+CREATE TABLE if not exists achievements(
+    achievementId INT AUTO_INCREMENT PRIMARY KEY,
+    name nvarchar(120) NOT NULL,
+    icon TEXT NOT NULL,
+    type INT NOT NUll,
+    description TEXT NOT NULL
+);
+
+CREATE TABLE if not exists userAchievements(
+    userAchievementId INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT NOT NULL,
+    achievementId INT NOT NULL,
+    timeStamp DATE NOT NULL,
+    FOREIGN KEY (userId) REFERENCES users(userId),
+    FOREIGN KEY (achievementId) REFERENCES achievements(achievementId)
 );
