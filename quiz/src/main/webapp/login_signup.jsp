@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="loginStyles.css">
+    <link rel="stylesheet" href="./loginStyles.css">
     <title>Qwiztime</title>
     <link rel="icon" href="icons/logo.png" type="image/png">
 </head>
