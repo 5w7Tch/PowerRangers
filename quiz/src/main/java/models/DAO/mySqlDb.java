@@ -35,6 +35,7 @@ public class mySqlDb implements Dao{
             statement.setString(3,user.getPasswordHash());
             statement.setBoolean(4,user.isAdmin());
             statement.execute();
+            connection.close();
             return true;
         } catch (SQLException e) {
             return false;
