@@ -18,7 +18,7 @@
             <input type="email" placeholder="Email" id="signUpEmail">
             <h6 id="signUpEmailError">Not valid input!</h6>
             <input type="password" placeholder="Password" id="signUpPassword">
-            <h6 id="PasswordError">unsupported password!</h6>
+            <h6 id="passwordError">unsupported password!</h6>
             <button type="button" id="SignUp">Sign Up</button>
         </form>
     </div>
