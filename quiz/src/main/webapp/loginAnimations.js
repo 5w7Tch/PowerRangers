@@ -50,7 +50,7 @@ registerBtn.addEventListener('click', function (){
     // Get error elements, red sentences
     let usernameError = document.getElementById('signUpUsernameError');
     let emailError = document.getElementById('signUpEmailError');
-    let passwordError = document.getElementById('PasswordError');
+    let passwordError = document.getElementById('passwordError');
 
     // Reset error messages
     usernameError.style.visibility = 'hidden';
@@ -59,24 +59,26 @@ registerBtn.addEventListener('click', function (){
 
     //determines weather to let user register with this info and call post method
     let hasError = false;
-
     if (usernameExists(username)) {
         usernameError.style.visibility = 'visible';
         document.getElementById('signUpUsername').value = '';
         hasError = true;
     }
-    if (!email.contains('@')) {
-        //fix doesnt  work
-        document.getElementById('signUpEmailError').style.display = 'visible';
+    console.log("nooo");
+
+    if (!email.includes('@')) {
+        document.getElementById('signUpEmailError').style.visibility = 'visible';
         document.getElementById('signUpEmail').value = '';
         hasError = true;
     }
+    console.log("nooo");
+
     if(!passwordIsValid(password)){
-        //fix doesnt  work
-        document.getElementById('PasswordError').style.visibility = 'visible';
+        document.getElementById('passwordError').style.visibility = 'visible';
         document.getElementById('signUpPassword').value = '';
         hasError = true;
     }
+    console.log("nooo");
 
     if(!hasError){
         register();
