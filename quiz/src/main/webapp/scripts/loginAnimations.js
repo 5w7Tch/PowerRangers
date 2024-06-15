@@ -20,9 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
         var username = document.getElementById('signInUsername').value;
         var password = document.getElementById('signInPassword').value;
 
-        var url = '/fetchStrings?username=' + encodeURIComponent(username) +
-            '&password=' + encodeURIComponent(password) +
-            '&identifier=signIn';
+        var url = '/login?username=' + encodeURIComponent(username) +
+            '&password=' + encodeURIComponent(password);
         fetch(url, {
             method: 'GET',
             headers: {
@@ -39,8 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(function(data) {
-                let resCode = data.string1;
-                console.log(resCode);
+                let resCode = data.res;
                 signIn(resCode);
             })
             .catch(function(error) {
@@ -55,8 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchStringsBtn.addEventListener('click', function() {
         var username = document.getElementById('signUpUsername').value;
 
-        var url = '/fetchStrings?username=' + encodeURIComponent(username) +
-                                        '&identifier=signUp';
+        var url = '/signup?username=' + encodeURIComponent(username);
 
         fetch(url, {
             method: 'GET',
@@ -74,8 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(function(data) {
-                let resCode = data.string1;
-                console.log(resCode);
+                let resCode = data.res;
                 signUp(resCode);
             })
             .catch(function(error) {
