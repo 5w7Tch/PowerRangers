@@ -58,7 +58,7 @@ public class signup extends HttpServlet {
                 usernamevalidity = 0;
             }
             if(usernamevalidity == 1 && emailValidity == 1 && passwordValidity == 1){
-                User user = new User(-1,name, Hasher.getPasswordHash(password),email,false);
+                User user = new User(-1,name, password,email,false);
                 dao.addUser(user);
                 request.getSession().setAttribute("user",user);
                 System.out.println("aaa");

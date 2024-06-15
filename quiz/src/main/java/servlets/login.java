@@ -31,9 +31,8 @@ public class login extends HttpServlet {
         String password = request.getParameter("password");
 
         Dao dao = (Dao)request.getServletContext().getAttribute(Dao.DBID);
-
         try {
-            if (dao.accountExists(username , password)){
+            if (dao.accountExists(username , Hasher.getPasswordHash(password))){
                 User curUser = dao.getUser(username , password);
                 request.getSession().setAttribute("user" , curUser);
                 response.sendRedirect("/");
