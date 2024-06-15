@@ -5,10 +5,12 @@ import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class mySqlDb implements Dao{
     private final BasicDataSource dbSource;
+    public static final String DBID = "db";
 
     public mySqlDb(BasicDataSource source){
         dbSource = source;
@@ -41,4 +43,32 @@ public class mySqlDb implements Dao{
             return false;
         }
     }
+
+    private int resultSetSize(ResultSet rs) throws SQLException {
+        int size = 0;
+        while (rs.next()){
+            size++;
+        }
+        return size;
+    }
+
+    public boolean userNameExists(String username) throws SQLException {
+        Connection connection = dbSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement("select * from users where users.userName = ?");
+        statement.setString(1,username);
+        ResultSet resultSet = statement.executeQuery();
+        return resultSetSize(resultSet) == 0;
+    }
+    public boolean acountExists(String username, String passwordHash) throws SQLException {
+        Connection connection = dbSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement("select * from users where users.userName = ?");
+        statement.setString(1,username);
+        ResultSet resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            String columnValue = resultSet.getString("passwordHash");
+            return columnValue.equals(passwordHash);
+        }
+        return false;
+    }
+
 }
