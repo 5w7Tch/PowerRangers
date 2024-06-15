@@ -37,8 +37,7 @@ public class signup extends HttpServlet {
                 response.setCharacterEncoding("UTF-8");
 
                 // Construct JSON response
-                String jsonResponse = "{\"string1\": \"found\"}";
-
+                String jsonResponse = "{\"res\": \"found\"}";
                 // Send response back to client
                 response.getWriter().write(jsonResponse);
             }else{
