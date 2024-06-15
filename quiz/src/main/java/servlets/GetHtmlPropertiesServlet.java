@@ -3,6 +3,7 @@ package servlets;
 import com.google.gson.Gson;
 import models.DAO.Dao;
 import models.DAO.mySqlDb;
+import models.USER.Hasher;
 import models.USER.User;
 
 import javax.servlet.ServletException;
@@ -23,7 +24,7 @@ public class GetHtmlPropertiesServlet extends HttpServlet {
         return db.userNameExists(username);
     }
     private boolean checkAccountExists(String username, String password, Dao db) throws SQLException {
-        return db.acountExists(username, User.getPasswordHash(password));
+        return db.acountExists(username, Hasher.getPasswordHash(password));
     }
 
     @Override
