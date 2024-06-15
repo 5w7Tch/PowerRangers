@@ -140,5 +140,8 @@ function signIn(resCode) {
         document.getElementById('signInUsername').value = '';
         document.getElementById('signInPassword').value = '';
         error.style.visibility = 'visible';
+    }else{
+        window.location.href = "/";
     }
 }
+
