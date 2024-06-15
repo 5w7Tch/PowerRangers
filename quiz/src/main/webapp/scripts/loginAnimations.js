@@ -87,16 +87,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
-
-
-function passwordIsValid(password){
-    for (let i = 0; i < password.length; i++) {
-        if(!charset.includes(password[i]))return false;
-    }
-    return password.length !== 0;
-}
-
 function signUp(resCodeUN, resCodeE, resCodeP){
     // Get error elements, red sentences
     let emailError = document.getElementById('signUpEmailError');

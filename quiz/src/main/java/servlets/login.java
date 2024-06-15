@@ -18,7 +18,11 @@ public class login extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("entered_get");
         if (request.getSession().getAttribute("user")==null){
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Expires", "0");
             request.getRequestDispatcher("login_signup.jsp").forward(request,response);
         }else{
             response.sendRedirect("/");
@@ -27,6 +31,7 @@ public class login extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("entered");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
@@ -45,7 +50,9 @@ public class login extends HttpServlet {
                 res = "notFound";
             }
             String jsonResponse = "{\"res\": \"" + res + "\"}";
-
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Expires", "0");
             response.getWriter().write(jsonResponse);
         } catch (SQLException e) {
             throw new RuntimeException(e);

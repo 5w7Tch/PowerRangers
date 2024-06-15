@@ -7,7 +7,7 @@ public final class Hasher {
     private Hasher(){};
 
     private static byte[] getHex(String pass){
-        MessageDigest dontKnow ;
+        MessageDigest dontKnow;
         try{
             dontKnow = MessageDigest.getInstance("SHA");
             dontKnow.update(pass.getBytes());

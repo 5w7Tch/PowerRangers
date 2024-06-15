@@ -1,4 +1,4 @@
-<%--
+<%@ page import="models.USER.User" %><%--
   Created by IntelliJ IDEA.
   User: Achi
   Date: 6/15/2024
@@ -11,6 +11,6 @@
     <title>Title</title>
 </head>
 <body>
-
+    <h1><%=   ((User) request.getSession().getAttribute("user")).getUsername() %></h1>
 </body>
 </html>
