@@ -32,19 +32,21 @@ public class login extends HttpServlet {
 
         Dao dao = (Dao)request.getServletContext().getAttribute(Dao.DBID);
         try {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            String res;
+
             if (dao.accountExists(username , Hasher.getPasswordHash(password))){
+                System.out.println("found");
                 User curUser = dao.getUser(username , password);
                 request.getSession().setAttribute("user" , curUser);
-                response.sendRedirect("/");
+                res = "found";
             }else{
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-
-                String res = "notFound";
-                String jsonResponse = "{\"res\": \"" + res + "\"}";
-
-                response.getWriter().write(jsonResponse);
+                res = "notFound";
             }
+            String jsonResponse = "{\"res\": \"" + res + "\"}";
+
+            response.getWriter().write(jsonResponse);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

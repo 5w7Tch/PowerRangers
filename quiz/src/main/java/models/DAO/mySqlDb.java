@@ -68,6 +68,7 @@ public class mySqlDb implements Dao{
         PreparedStatement statement = connection.prepareStatement("select * from users where users.firstName = ?");
         statement.setString(1 , userName);
         ResultSet resultSet = statement.executeQuery();
+        resultSet.next();
         int id = resultSet.getInt("userId");
         String email = resultSet.getString("email");
         boolean isAdmin = resultSet.getBoolean("isAdmin");
