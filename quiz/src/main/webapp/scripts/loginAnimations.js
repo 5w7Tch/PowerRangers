@@ -109,22 +109,28 @@ function signUp(resCodeUN, resCodeE, resCodeP){
     passwordError.style.visibility = 'hidden';
 
     //determines weather to let user register with this info and call post method
+    let change = true;
 
     if(resCodeUN == '0'){
         usernameError.style.visibility = 'visible';
         document.getElementById('signUpUsername').value = '';
+        chenge = false;
     }
 
     if (resCodeE == '0') {
         document.getElementById('signUpEmailError').style.visibility = 'visible';
         document.getElementById('signUpEmail').value = '';
+        chenge = false;
     }
 
-    if(resCodeP == '0'){
+    if (resCodeP == '0') {
         document.getElementById('passwordError').style.visibility = 'visible';
         document.getElementById('signUpPassword').value = '';
+        chenge = false;
     }
-
+    if(change){
+        window.location.href = "/";
+    }
 }
 
 function signIn(resCode) {

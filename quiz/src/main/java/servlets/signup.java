@@ -61,20 +61,16 @@ public class signup extends HttpServlet {
                 User user = new User(-1,name, password,email,false);
                 dao.addUser(user);
                 request.getSession().setAttribute("user",user);
-                System.out.println("aaa");
-                response.sendRedirect("/");
-            }else{
-                // Set response content type
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("usernameRP", usernamevalidity);
-                jsonObject.addProperty("emailRP", emailValidity);
-                jsonObject.addProperty("passwordRP", passwordValidity);
-                // Construct JSON response
-                // Send response back to client
-                response.getWriter().write(jsonObject.toString());
             }
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("usernameRP", usernamevalidity);
+            jsonObject.addProperty("emailRP", emailValidity);
+            jsonObject.addProperty("passwordRP", passwordValidity);
+            // Construct JSON response
+            // Send response back to client
+            response.getWriter().write(jsonObject.toString());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
