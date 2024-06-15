@@ -40,7 +40,6 @@ public class mySqlDb implements Dao{
             if(set.next()){
                 user.setId(set.getInt("userId"));
             }
-            connection.close();
             return true;
         } catch (SQLException e) {
             return false;
@@ -52,7 +51,6 @@ public class mySqlDb implements Dao{
         PreparedStatement statement = connection.prepareStatement("select * from users where users.firstName = ?");
         statement.setString(1,username);
         ResultSet resultSet = statement.executeQuery();
-        connection.close();
         return resultSet.next();
     }
     public boolean accountExists(String username, String passwordHash) throws SQLException {
@@ -61,7 +59,6 @@ public class mySqlDb implements Dao{
         statement.setString(1,username);
         statement.setString(2,passwordHash);
         ResultSet resultSet = statement.executeQuery();
-        connection.close();
         return resultSet.next();
     }
 

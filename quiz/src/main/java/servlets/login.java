@@ -2,6 +2,7 @@ package servlets;
 
 import models.DAO.Dao;
 import models.DAO.mySqlDb;
+import models.USER.Hasher;
 import models.USER.User;
 
 import javax.servlet.ServletException;
@@ -28,11 +29,11 @@ public class login extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
+        String res = "notFound";
         Dao dao = (Dao)request.getServletContext().getAttribute(Dao.DBID);
 
         try {
-            if (dao.accountExists(username , password)){
+            if (dao.accountExists(username , Hasher.getPasswordHash(password))){
                 User curUser = dao.getUser(username , password);
                 request.getSession().setAttribute("user" , curUser);
                 response.sendRedirect("/");
@@ -40,9 +41,7 @@ public class login extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
 
-                String res = "notFound";
                 String jsonResponse = "{\"res\": \"" + res + "\"}";
-
                 response.getWriter().write(jsonResponse);
             }
         } catch (SQLException e) {

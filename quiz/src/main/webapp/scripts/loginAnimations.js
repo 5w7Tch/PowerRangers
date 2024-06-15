@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var url = '/login?username=' + encodeURIComponent(username) +
             '&password=' + encodeURIComponent(password);
         fetch(url, {
-            method: 'GET',
+            method: 'post',
             headers: {
                 'Content-Type': 'application/json',
                 'Cache-Control': 'no-cache',
@@ -53,11 +53,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     fetchStringsBtn.addEventListener('click', function() {
         var username = document.getElementById('signUpUsername').value;
+        let email = document.getElementById('signUpEmail').value;
+        let password = document.getElementById('signUpPassword').value;
 
-        var url = '/signup?username=' + encodeURIComponent(username);
-
+        var url = '/signup?username=' + encodeURIComponent(username)+
+                            '&email='+encodeURIComponent(email)+
+                            '&password='+encodeURIComponent(password);
         fetch(url, {
-            method: 'GET',
+            method: 'post',
             headers: {
                 'Content-Type': 'application/json',
                 'Cache-Control': 'no-cache',
@@ -72,8 +75,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(function(data) {
-                let resCode = data.res;
-                signUp(resCode);
+                console.log(data);
+                let resCodeUN = data.usernameRP;
+                let resCodeE = data.emailRP;
+                let resCodeP = data.passwordRP;
+                signUp(resCodeUN, resCodeE, resCodeP);
             })
             .catch(function(error) {
                 console.error('There was a problem with fetch operation:', error.message);
@@ -91,14 +97,11 @@ function passwordIsValid(password){
     return password.length !== 0;
 }
 
-function signUp(resCode){
-    let email = document.getElementById('signUpEmail').value;
-    let password = document.getElementById('signUpPassword').value;
-
+function signUp(resCodeUN, resCodeE, resCodeP){
     // Get error elements, red sentences
-    let usernameError = document.getElementById('signUpUsernameError');
     let emailError = document.getElementById('signUpEmailError');
     let passwordError = document.getElementById('passwordError');
+    let usernameError = document.getElementById('signUpUsernameError');
 
     // Reset error messages
     usernameError.style.visibility = 'hidden';
@@ -106,28 +109,22 @@ function signUp(resCode){
     passwordError.style.visibility = 'hidden';
 
     //determines weather to let user register with this info and call post method
-    let hasError = false;
-    if (resCode === 'found') {
+
+    if(resCodeUN == '0'){
         usernameError.style.visibility = 'visible';
         document.getElementById('signUpUsername').value = '';
-        hasError = true;
     }
 
-    if (!email.includes('@')) {
+    if (resCodeE == '0') {
         document.getElementById('signUpEmailError').style.visibility = 'visible';
         document.getElementById('signUpEmail').value = '';
-        hasError = true;
     }
 
-    if(!passwordIsValid(password)){
+    if(resCodeP == '0'){
         document.getElementById('passwordError').style.visibility = 'visible';
         document.getElementById('signUpPassword').value = '';
-        hasError = true;
     }
 
-    if(!hasError){
-        sighUpHome();
-    }
 }
 
 function signIn(resCode) {
@@ -143,81 +140,5 @@ function signIn(resCode) {
         document.getElementById('signInUsername').value = '';
         document.getElementById('signInPassword').value = '';
         error.style.visibility = 'visible';
-    }else {
-        logInHome();
     }
 }
-
-
-var xhr = null;
-/*
-redirects to servlet that sign ups the account
-*/
-function sighUpHome() {
-    // instantiate  XMLHttpRequest object
-    try {
-        xhr = new XMLHttpRequest();
-    } catch (e) {
-        xhr = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-
-    // handle old browsers
-    if (xhr == null) {
-        alert("Ajax not supported by your browser!");
-        return;
-    }
-
-    // construct URL
-    //write servlet end instead of login
-    var url = "signup?username=" + document.getElementById("signUpUsername").value+
-                        "&password="+document.getElementById("signUpPassword").value+
-                            "&email="+document.getElementById("signUpEmail").value;
-
-    // get quote
-    xhr.onreadystatechange = handler; // sets 'listener'
-    xhr.open("post", url, true); // true == async
-    xhr.send(null); // there is no request body request
-}
-
-/*
-redirects to servlet that logs into account
-*/
-function logInHome() {
-    // instantiate  XMLHttpRequest object
-    try {
-        xhr = new XMLHttpRequest();
-    } catch (e) {
-        xhr = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-
-    // handle old browsers
-    if (xhr == null) {
-        alert("Ajax not supported by your browser!");
-        return;
-    }
-
-    // construct URL
-    //write servlet end instead of login
-    var url = "login?username=" + document.getElementById("signInUsername").value+
-                            "&password="+document.getElementById("signInPassword").value;
-
-    // get quote
-    xhr.onreadystatechange = handler; // sets 'listener'
-    xhr.open("post", url, true); // true == async
-    xhr.send(null); // there is no request body request
-}
-
-/**
- * Handles the Ajax response
- */
-function handler() {
-    // only handle loaded requests
-    if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-            alert(xhr.responseText);
-        } else {
-            alert("Error with Ajax call");
-        }
-    }
-}
-
