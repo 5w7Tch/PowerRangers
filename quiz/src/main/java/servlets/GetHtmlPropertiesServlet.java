@@ -33,16 +33,6 @@ public class GetHtmlPropertiesServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String string1 = "notFound";
-//        String sessionId = request.getSession().getId();
-//        Cookie cookie = new Cookie("JSESSIONID", sessionId);
-//
-//        // Set other cookie attributes
-//        cookie.setSecure(true); // Ensure the cookie is only sent over HTTPS
-//        cookie.setHttpOnly(true); // Prevent JavaScript access to the cookie
-//
-//        // Set SameSite=None attribute manually for modern browsers
-//        cookie.setPath("/");
-//        response.setHeader("Set-Cookie", "JSESSIONID=" + sessionId + "; Secure; HttpOnly; SameSite=None");
 
         Dao db = (mySqlDb)request.getServletContext().getAttribute(mySqlDb.DBID);
 

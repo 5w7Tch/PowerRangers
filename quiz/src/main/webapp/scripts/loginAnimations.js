@@ -3,6 +3,7 @@ const registerPage = document.getElementById('register');
 const loginPage = document.getElementById('login');
 const registerBtn = document.getElementById('SignUp');
 const loginBtn = document.getElementById('SignIn');
+let charset = "abcdefghijklmnopqrstuvwxyz0123456789.,-!";
 
 registerPage.addEventListener('click', (event) => {
     container.classList.add("active");
@@ -39,8 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(function(data) {
-                let resCode = data.string1;
-                console.log(resCode);
+                let resCode = data.res;
                 signIn(resCode);
             })
             .catch(function(error) {
@@ -74,8 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(function(data) {
-                let resCode = data.string1;
-                console.log(resCode);
+                let resCode = data.res;
                 signUp(resCode);
             })
             .catch(function(error) {
@@ -85,20 +84,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-function login(){
-    //to do
-    //call post method for login
-}
 
-function register(){
-    //to do
-    //call post method for registration
-}
 
 function passwordIsValid(password){
-    //to do
-    //check if password contains correct characters
-    return false;
+    for (let i = 0; i < password.length; i++) {
+        if(!charset.includes(password[i]))return false;
+    }
+    return password.length !== 0;
 }
 
 function signUp(resCode){
@@ -136,7 +128,7 @@ function signUp(resCode){
     }
 
     if(!hasError){
-        register();
+        sighUpHome();
     }
 }
 
@@ -154,74 +146,80 @@ function signIn(resCode) {
         document.getElementById('signInPassword').value = '';
         error.style.visibility = 'visible';
     }else {
-        login();
+        logInHome();
     }
 }
-//
-//
-// var xhr = null;
-// function sighUpHome() {
-//     // instantiate  XMLHttpRequest object
-//     try {
-//         xhr = new XMLHttpRequest();
-//     } catch (e) {
-//         xhr = new ActiveXObject("Microsoft.XMLHTTP");
-//     }
-//
-//     // handle old browsers
-//     if (xhr == null) {
-//         alert("Ajax not supported by your browser!");
-//         return;
-//     }
-//
-//     // construct URL
-//     //write servlet end instead of login
-//     var url = "login?username=" + document.getElementById("signUpUsername").value+
-//                         "&password="+document.getElementById("signUpPassword").value+
-//                             "&email="+document.getElementById("signUpEmail").value;
-//
-//     // get quote
-//     xhr.onreadystatechange = handler; // sets 'listener'
-//     xhr.open("post", url, true); // true == async
-//     xhr.send(null); // there is no request body request
-// }
-//
-// function logInHome() {
-//     // instantiate  XMLHttpRequest object
-//     try {
-//         xhr = new XMLHttpRequest();
-//     } catch (e) {
-//         xhr = new ActiveXObject("Microsoft.XMLHTTP");
-//     }
-//
-//     // handle old browsers
-//     if (xhr == null) {
-//         alert("Ajax not supported by your browser!");
-//         return;
-//     }
-//
-//     // construct URL
-//     //write servlet end instead of login
-//     var url = "login?username=" + document.getElementById("signInUsername").value+
-//                             "&password="+document.getElementById("signInPassword").value;
-//
-//     // get quote
-//     xhr.onreadystatechange = handler; // sets 'listener'
-//     xhr.open("post", url, true); // true == async
-//     xhr.send(null); // there is no request body request
-// }
-//
-// /**
-//  * Handles the Ajax response
-//  */
-// function handler() {
-//     // only handle loaded requests
-//     if (xhr.readyState === 4) {
-//         if (xhr.status === 200) {
-//             alert(xhr.responseText);
-//         } else {
-//             alert("Error with Ajax call");
-//         }
-//     }
-// }
+
+
+var xhr = null;
+/*
+redirects to servlet that sign ups the account
+*/
+function sighUpHome() {
+    // instantiate  XMLHttpRequest object
+    try {
+        xhr = new XMLHttpRequest();
+    } catch (e) {
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    // handle old browsers
+    if (xhr == null) {
+        alert("Ajax not supported by your browser!");
+        return;
+    }
+
+    // construct URL
+    //write servlet end instead of login
+    var url = "signup?username=" + document.getElementById("signUpUsername").value+
+                        "&password="+document.getElementById("signUpPassword").value+
+                            "&email="+document.getElementById("signUpEmail").value;
+
+    // get quote
+    xhr.onreadystatechange = handler; // sets 'listener'
+    xhr.open("post", url, true); // true == async
+    xhr.send(null); // there is no request body request
+}
+
+/*
+redirects to servlet that logs into account
+*/
+function logInHome() {
+    // instantiate  XMLHttpRequest object
+    try {
+        xhr = new XMLHttpRequest();
+    } catch (e) {
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    // handle old browsers
+    if (xhr == null) {
+        alert("Ajax not supported by your browser!");
+        return;
+    }
+
+    // construct URL
+    //write servlet end instead of login
+    var url = "login?username=" + document.getElementById("signInUsername").value+
+                            "&password="+document.getElementById("signInPassword").value;
+
+    // get quote
+    xhr.onreadystatechange = handler; // sets 'listener'
+    xhr.open("post", url, true); // true == async
+    xhr.send(null); // there is no request body request
+}
+
+/**
+ * Handles the Ajax response
+ */
+function handler() {
+    // only handle loaded requests
+    if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+            alert(xhr.responseText);
+        } else {
+            alert("Error with Ajax call");
+        }
+    }
+}
 
