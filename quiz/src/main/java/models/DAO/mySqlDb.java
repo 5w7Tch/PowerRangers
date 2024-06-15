@@ -54,14 +54,14 @@ public class mySqlDb implements Dao{
 
     public boolean userNameExists(String username) throws SQLException {
         Connection connection = dbSource.getConnection();
-        PreparedStatement statement = connection.prepareStatement("select * from users where users.userName = ?");
+        PreparedStatement statement = connection.prepareStatement("select * from users where users.firstName = ?");
         statement.setString(1,username);
         ResultSet resultSet = statement.executeQuery();
         return resultSetSize(resultSet) == 0;
     }
     public boolean acountExists(String username, String passwordHash) throws SQLException {
         Connection connection = dbSource.getConnection();
-        PreparedStatement statement = connection.prepareStatement("select * from users where users.userName = ?");
+        PreparedStatement statement = connection.prepareStatement("select * from users where users.firstName = ?");
         statement.setString(1,username);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
