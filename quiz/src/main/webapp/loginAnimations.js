@@ -6,25 +6,84 @@ const loginBtn = document.getElementById('SignIn');
 
 registerPage.addEventListener('click', (event) => {
     container.classList.add("active");
-
-    
 });
 
 loginPage.addEventListener('click', () => {
     container.classList.remove("active");
 });
 
-function accExists(username, password){
-    //to do
-    //check credentials
-    return false;
-}
 
-function usernameExists(username){
-    //to do
-    //check if username is already used
-    return true;
-}
+document.addEventListener('DOMContentLoaded', function() {
+    var fetchStringsBtn = document.getElementById('SignIn');
+
+    fetchStringsBtn.addEventListener('click', function() {
+        var username = document.getElementById('signInUsername').value;
+        var password = document.getElementById('signInPassword').value;
+
+        var url = '/fetchStrings?username=' + encodeURIComponent(username) +
+            '&password=' + encodeURIComponent(password) +
+            '&identifier=signIn';
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        })
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                let resCode = data.string1;
+                console.log(resCode);
+                signIn(resCode);
+            })
+            .catch(function(error) {
+                console.error('There was a problem with fetch operation:', error.message);
+            });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var fetchStringsBtn = document.getElementById('SignUp');
+
+    fetchStringsBtn.addEventListener('click', function() {
+        var username = document.getElementById('signUpUsername').value;
+
+        var url = '/fetchStrings?username=' + encodeURIComponent(username) +
+                                        '&identifier=signUp';
+
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache',
+                'Expires': '0'
+            }
+        })
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                let resCode = data.string1;
+                console.log(resCode);
+                signUp(resCode);
+            })
+            .catch(function(error) {
+                console.error('There was a problem with fetch operation:', error.message);
+            });
+    });
+});
+
 
 function login(){
     //to do
@@ -42,8 +101,7 @@ function passwordIsValid(password){
     return false;
 }
 
-registerBtn.addEventListener('click', function (){
-    let username = document.getElementById('signUpUsername').value;
+function signUp(resCode){
     let email = document.getElementById('signUpEmail').value;
     let password = document.getElementById('signUpPassword').value;
 
@@ -59,35 +117,30 @@ registerBtn.addEventListener('click', function (){
 
     //determines weather to let user register with this info and call post method
     let hasError = false;
-    if (usernameExists(username)) {
+    if (resCode === 'found') {
         usernameError.style.visibility = 'visible';
         document.getElementById('signUpUsername').value = '';
         hasError = true;
     }
-    console.log("nooo");
 
     if (!email.includes('@')) {
         document.getElementById('signUpEmailError').style.visibility = 'visible';
         document.getElementById('signUpEmail').value = '';
         hasError = true;
     }
-    console.log("nooo");
 
     if(!passwordIsValid(password)){
         document.getElementById('passwordError').style.visibility = 'visible';
         document.getElementById('signUpPassword').value = '';
         hasError = true;
     }
-    console.log("nooo");
 
     if(!hasError){
         register();
     }
-});
+}
 
-loginBtn.addEventListener('click', function () {
-    let username = document.getElementById('signInUsername').value;
-    let password = document.getElementById('signInPassword').value;
+function signIn(resCode) {
 
     // Get error elements red words
     let error = document.getElementById('signInError');
@@ -96,12 +149,79 @@ loginBtn.addEventListener('click', function () {
     error.style.visibility = 'hidden';
 
     // checks entered infos validity
-    if (!accExists(username, password)) {
+    if (resCode === "notFound") {
         document.getElementById('signInUsername').value = '';
         document.getElementById('signInPassword').value = '';
         error.style.visibility = 'visible';
     }else {
         login();
     }
-})
+}
+//
+//
+// var xhr = null;
+// function sighUpHome() {
+//     // instantiate  XMLHttpRequest object
+//     try {
+//         xhr = new XMLHttpRequest();
+//     } catch (e) {
+//         xhr = new ActiveXObject("Microsoft.XMLHTTP");
+//     }
+//
+//     // handle old browsers
+//     if (xhr == null) {
+//         alert("Ajax not supported by your browser!");
+//         return;
+//     }
+//
+//     // construct URL
+//     //write servlet end instead of login
+//     var url = "login?username=" + document.getElementById("signUpUsername").value+
+//                         "&password="+document.getElementById("signUpPassword").value+
+//                             "&email="+document.getElementById("signUpEmail").value;
+//
+//     // get quote
+//     xhr.onreadystatechange = handler; // sets 'listener'
+//     xhr.open("post", url, true); // true == async
+//     xhr.send(null); // there is no request body request
+// }
+//
+// function logInHome() {
+//     // instantiate  XMLHttpRequest object
+//     try {
+//         xhr = new XMLHttpRequest();
+//     } catch (e) {
+//         xhr = new ActiveXObject("Microsoft.XMLHTTP");
+//     }
+//
+//     // handle old browsers
+//     if (xhr == null) {
+//         alert("Ajax not supported by your browser!");
+//         return;
+//     }
+//
+//     // construct URL
+//     //write servlet end instead of login
+//     var url = "login?username=" + document.getElementById("signInUsername").value+
+//                             "&password="+document.getElementById("signInPassword").value;
+//
+//     // get quote
+//     xhr.onreadystatechange = handler; // sets 'listener'
+//     xhr.open("post", url, true); // true == async
+//     xhr.send(null); // there is no request body request
+// }
+//
+// /**
+//  * Handles the Ajax response
+//  */
+// function handler() {
+//     // only handle loaded requests
+//     if (xhr.readyState === 4) {
+//         if (xhr.status === 200) {
+//             alert(xhr.responseText);
+//         } else {
+//             alert("Error with Ajax call");
+//         }
+//     }
+// }
 

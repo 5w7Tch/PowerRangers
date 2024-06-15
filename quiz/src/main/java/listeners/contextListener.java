@@ -18,11 +18,11 @@ public class contextListener implements ServletContextListener  {
         source.setUsername(dbCredentials.userName);
         source.setPassword(dbCredentials.password);
         Dao db = new mySqlDb(source);
-        servletContextEvent.getServletContext().setAttribute("db",db);
+        servletContextEvent.getServletContext().setAttribute(mySqlDb.DBID,db);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        ((Dao) servletContextEvent.getServletContext().getAttribute("db")).closeDbConnection();
+        ((Dao) servletContextEvent.getServletContext().getAttribute(mySqlDb.DBID)).closeDbConnection();
     }
 }
