@@ -12,8 +12,8 @@ public class home extends HttpServlet {
         // if logged in show user home page
         // else redirect to /login
 
-        if(false){
-
+        if(request.getSession().getAttribute("user")!=null){
+            request.getRequestDispatcher("home.jsp").forward(request,response);
         }else{
             response.sendRedirect("/login");
         }
