@@ -10,7 +10,6 @@ import java.sql.SQLException;
 
 public class mySqlDb implements Dao{
     private final BasicDataSource dbSource;
-    public static final String DBID = "db";
 
     public mySqlDb(BasicDataSource source){
         dbSource = source;
@@ -37,6 +36,10 @@ public class mySqlDb implements Dao{
             statement.setString(3,user.getPasswordHash());
             statement.setBoolean(4,user.isAdmin());
             statement.execute();
+            ResultSet set = statement.getGeneratedKeys();
+            if(set.next()){
+                user.setId(set.getInt("userId"));
+            }
             connection.close();
             return true;
         } catch (SQLException e) {
@@ -44,31 +47,35 @@ public class mySqlDb implements Dao{
         }
     }
 
-    private int resultSetSize(ResultSet rs) throws SQLException {
-        int size = 0;
-        while (rs.next()){
-            size++;
-        }
-        return size;
-    }
-
     public boolean userNameExists(String username) throws SQLException {
         Connection connection = dbSource.getConnection();
         PreparedStatement statement = connection.prepareStatement("select * from users where users.firstName = ?");
         statement.setString(1,username);
         ResultSet resultSet = statement.executeQuery();
-        return resultSetSize(resultSet) == 0;
+        connection.close();
+        return resultSet.next();
     }
-    public boolean acountExists(String username, String passwordHash) throws SQLException {
+    public boolean accountExists(String username, String passwordHash) throws SQLException {
+        Connection connection = dbSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement("select * from users where firstName = ? and passwordHash = ?");
+        statement.setString(1,username);
+        statement.setString(2,passwordHash);
+        ResultSet resultSet = statement.executeQuery();
+        connection.close();
+        return resultSet.next();
+    }
+
+    /// is this good practice or not ?????
+    public User getUser(String userName, String password) throws SQLException {
         Connection connection = dbSource.getConnection();
         PreparedStatement statement = connection.prepareStatement("select * from users where users.firstName = ?");
-        statement.setString(1,username);
+        statement.setString(1 , userName);
         ResultSet resultSet = statement.executeQuery();
-        if (resultSet.next()) {
-            String columnValue = resultSet.getString("passwordHash");
-            return columnValue.equals(passwordHash);
-        }
-        return false;
+        int id = resultSet.getInt("userId");
+        String email = resultSet.getString("email");
+        boolean isAdmin = resultSet.getBoolean("isAdmin");
+
+        return new User(id , userName , password , email , isAdmin);
     }
 
 }

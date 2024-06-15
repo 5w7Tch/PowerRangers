@@ -11,7 +11,7 @@ drop table if exists users;
 create table if not exists users(
     userId int primary key auto_increment,
     firstName nvarchar(50) unique not null,
-    email nvarchar(50) unique not null,
+    email nvarchar(50) not null,
     passwordHash nvarchar(100) not null,
     isAdmin bool not null default false
 );
