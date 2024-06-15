@@ -8,6 +8,9 @@
   <listener>
     <listener-class>listeners.contextListener</listener-class>
   </listener>
+  <listener>
+    <listener-class>listeners.sessionListener</listener-class>
+  </listener>
 
   <servlet>
     <servlet-name>home</servlet-name>

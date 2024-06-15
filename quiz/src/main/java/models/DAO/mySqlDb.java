@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class mySqlDb implements Dao{
     private final BasicDataSource dbSource;
-    public static final String DBID = "db";
+
 
     public mySqlDb(BasicDataSource source){
         dbSource = source;
@@ -59,7 +59,7 @@ public class mySqlDb implements Dao{
         ResultSet resultSet = statement.executeQuery();
         return resultSetSize(resultSet) == 0;
     }
-    public boolean acountExists(String username, String passwordHash) throws SQLException {
+    public boolean accountExists(String username, String passwordHash) throws SQLException {
         Connection connection = dbSource.getConnection();
         PreparedStatement statement = connection.prepareStatement("select * from users where users.firstName = ?");
         statement.setString(1,username);
@@ -69,6 +69,19 @@ public class mySqlDb implements Dao{
             return columnValue.equals(passwordHash);
         }
         return false;
+    }
+
+    /// is this good practice or not ?????
+    public User getUser(String userName, String password) throws SQLException {
+        Connection connection = dbSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement("select * from users where users.firstName = ?");
+        statement.setString(1 , userName);
+        ResultSet resultSet = statement.executeQuery();
+        int id = resultSet.getInt("userId");
+        String email = resultSet.getString("email");
+        boolean isAdmin = resultSet.getBoolean("isAdmin");
+
+        return new User(id , userName , password , email , isAdmin);
     }
 
 }

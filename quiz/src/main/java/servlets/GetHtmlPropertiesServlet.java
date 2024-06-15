@@ -24,7 +24,7 @@ public class GetHtmlPropertiesServlet extends HttpServlet {
         return db.userNameExists(username);
     }
     private boolean checkAccountExists(String username, String password, Dao db) throws SQLException {
-        return db.acountExists(username, Hasher.getPasswordHash(password));
+        return db.accountExists(username, Hasher.getPasswordHash(password));
     }
 
     @Override
