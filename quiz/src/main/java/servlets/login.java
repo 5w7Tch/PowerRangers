@@ -17,7 +17,11 @@ public class login extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("login_signup.jsp").forward(request,response);
+        if (request.getSession().getAttribute("user")==null){
+            request.getRequestDispatcher("login_signup.jsp").forward(request,response);
+        }else{
+            response.sendRedirect("/");
+        }
     }
 
     @Override

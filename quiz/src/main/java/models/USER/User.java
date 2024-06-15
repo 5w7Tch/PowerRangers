@@ -1,10 +1,7 @@
 package models.USER;
 
-import java.security.*;
-
-
 public class User {
-    private final int id;
+    private int id;
     private final String username;
     private final String passwordHash;
     private final String email;
@@ -16,6 +13,10 @@ public class User {
         this.passwordHash = Hasher.getPasswordHash(password);
         this.email = email;
         this.isAdmin = isAdmin;
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
 
     public int getId() {
