@@ -50,3 +50,4 @@ build/
 /.idea/sqldialects.xml
 /.idea/vcs.xml
 /.idea/workspace.xml
+/src/main/java/models/DAO/dbCredentials.java
