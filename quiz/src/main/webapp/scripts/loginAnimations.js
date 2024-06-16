@@ -110,23 +110,22 @@ function signUp(resCodeUN, resCodeE, resCodeP){
 
     //determines weather to let user register with this info and call post method
     let change = true;
-
     if(resCodeUN == '0'){
         usernameError.style.visibility = 'visible';
         document.getElementById('signUpUsername').value = '';
-        chenge = false;
+        change = false;
     }
 
     if (resCodeE == '0') {
         document.getElementById('signUpEmailError').style.visibility = 'visible';
         document.getElementById('signUpEmail').value = '';
-        chenge = false;
+        change = false;
     }
 
     if (resCodeP == '0') {
         document.getElementById('passwordError').style.visibility = 'visible';
         document.getElementById('signUpPassword').value = '';
-        chenge = false;
+        change = false;
     }
     if(change){
         window.location.href = "/";
