@@ -27,6 +27,11 @@
     <servlet-class>servlets.signup</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>createQuiz</servlet-name>
+    <servlet-class>servlets.createQuiz</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>home</servlet-name>
     <url-pattern>/</url-pattern>
@@ -40,6 +45,11 @@
   <servlet-mapping>
     <servlet-name>signup</servlet-name>
     <url-pattern>/signup</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>createQuiz</servlet-name>
+    <url-pattern>/createQuiz</url-pattern>
   </servlet-mapping>
 
 
