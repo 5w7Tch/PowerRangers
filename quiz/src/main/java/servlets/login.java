@@ -18,7 +18,6 @@ public class login extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("entered_get");
         if (request.getSession().getAttribute("user")==null){
             response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
             response.setHeader("Pragma", "no-cache");
@@ -31,7 +30,6 @@ public class login extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("entered");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 

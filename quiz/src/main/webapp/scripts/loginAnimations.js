@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(function(data) {
-                console.log(data);
                 let resCodeUN = data.usernameRP;
                 let resCodeE = data.emailRP;
                 let resCodeP = data.passwordRP;
