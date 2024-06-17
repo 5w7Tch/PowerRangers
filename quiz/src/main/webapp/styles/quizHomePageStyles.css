@@ -1,0 +1,58 @@
+.container-top {
+    width: 65%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #ee0000;
+    padding: 0;
+    background-color: transparent;
+    border-bottom: none;
+    padding-top: 20px;
+}
+.name {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.link a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 1.2em;
+}
+.rectangle {
+    margin-top: 2px;
+    width: 65%;
+    height: 300px;
+    background-color: #e7e7e7;
+    position: relative;
+    border-radius: 15px;
+    border: 2px solid black;
+}
+. {
+    display: flex;
+    justify-content: space-between; /* This aligns items along the main axis with space between */
+}
+.content {
+    width: 90%;
+    height: 90%;
+    background-color: #cacaca;
+    margin: 5% auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.container-second {
+    display: flex;
+    justify-content: space-between; /* This aligns items along the main axis with space between */
+}
+
+.container button{
+    background-color: #ff4200;
+    color: #fff;
+    font-size: 12px;
+    padding: 10px 45px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+}

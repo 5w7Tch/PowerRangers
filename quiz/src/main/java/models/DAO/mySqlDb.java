@@ -1,12 +1,10 @@
 package models.DAO;
 
+import models.USER.Quiz;
 import models.USER.User;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class mySqlDb implements Dao{
     private final BasicDataSource dbSource;
@@ -73,6 +71,38 @@ public class mySqlDb implements Dao{
         String email = resultSet.getString("email");
         boolean isAdmin = resultSet.getBoolean("isAdmin");
 
+        return new User(id , userName , password , email , isAdmin);
+    }
+
+    @Override
+    public Quiz getQuiz(String quizId) throws SQLException {
+        Connection connection = dbSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement("select * from quizzes where quizId = ?");
+        statement.setString(1 , quizId);
+        ResultSet resultSet = statement.executeQuery();
+        resultSet.next();
+        int id = resultSet.getInt("quizId");
+        int author = resultSet.getInt("author");
+        String name = resultSet.getString("name");
+        Date creationDate = resultSet.getDate("creationDate");
+        String deck = resultSet.getString("description");
+        boolean isPracticable = resultSet.getBoolean("isPracticable");
+        Double duration = resultSet.getDouble("quizTime");
+        return new Quiz(id, author , name , creationDate , deck , isPracticable , duration);
+    }
+
+    @Override
+    public User getUserById(Integer userId) throws SQLException {
+        Connection connection = dbSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement("select * from users where users.userId = ?");
+        statement.setString(1 , userId.toString());
+        ResultSet resultSet = statement.executeQuery();
+        resultSet.next();
+        String userName = resultSet.getString("firstName");
+        String password = resultSet.getString("passwordHash");
+        int id = resultSet.getInt("userId");
+        String email = resultSet.getString("email");
+        boolean isAdmin = resultSet.getBoolean("isAdmin");
         return new User(id , userName , password , email , isAdmin);
     }
 

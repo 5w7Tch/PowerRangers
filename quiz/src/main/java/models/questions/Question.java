@@ -12,5 +12,6 @@ public interface Question {
     }
     String getQuestion();
     String getAnswer();
-    
+    int getType();
+
 }
