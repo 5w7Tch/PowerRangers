@@ -48,9 +48,10 @@ public class login extends HttpServlet {
                 res = "notFound";
             }
             String jsonResponse = "{\"res\": \"" + res + "\"}";
-            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-            response.setHeader("Pragma", "no-cache");
-            response.setHeader("Expires", "0");
+//            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+//            response.setHeader("Pragma", "no-cache");
+//            response.setHeader("Expires", "0");
+
             response.getWriter().write(jsonResponse);
         } catch (SQLException e) {
             throw new RuntimeException(e);

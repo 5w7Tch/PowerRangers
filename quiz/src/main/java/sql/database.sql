@@ -44,10 +44,12 @@ CREATE TABLE IF NOT EXISTS quizzes (
       creationDate DATE NOT NULL ,
       description TEXT,
       isPracticable BOOLEAN DEFAULT TRUE,
-      quizTime INT,
+      quizTime DOUBLE,
       FOREIGN KEY (author) REFERENCES users(userId)
 );
 
+INSERT INTO quizzes VALUES
+                         (1,1,'first quiz',sysdate(), 'iyo arabets rostevan', true, 40.5);
 
 CREATE TABLE IF NOT EXISTS quizHistory (
       historyId INT PRIMARY KEY AUTO_INCREMENT,
