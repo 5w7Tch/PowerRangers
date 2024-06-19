@@ -1,6 +1,12 @@
 <%@ page import="models.DAO.Dao" %>
 <%@ page import="models.USER.Quiz" %>
-<%@ page import="java.sql.SQLException" %><%--
+<%@ page import="java.sql.SQLException" %>
+<%@ page import="models.USER.User" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="models.USER.WritenQuiz" %>
+<%@ page import="models.comparators.compareByDate" %>
+<%@ page import="java.sql.Date" %>
+<%@ page import="java.util.Calendar" %><%--
   Created by IntelliJ IDEA.
   User: sw1tch
   Date: 17.06.24
@@ -15,11 +21,20 @@
     <% Quiz quiz = null;
         try {
             quiz = ((Dao)application.getAttribute(Dao.DBID)).getQuiz(request.getParameter("quizid"));
+            session.setAttribute("quiz", quiz);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }%>
     <title><%=quiz.getName()%></title>
-
+    <%
+        ArrayList<WritenQuiz> history = ((Dao)application.getAttribute(Dao.DBID)).getQuizHistory(quiz.getId());
+        ArrayList<WritenQuiz> userHistory = new ArrayList();
+        for(int i = 0; i< history.size(); i++){
+            if(history.get(i).getUserId() == ((User)session.getAttribute("user")).getId()){
+                userHistory.add(history.get(i));
+            }
+        }
+    %>
 </head>
 <body>
     <div class="container-one">
@@ -42,12 +57,14 @@
                             </tr>
                             </thead>
                             <tbody>
+                            <%
+                                for (int i = 0; i < history.size(); i++) {%>
                             <tr>
-                                <td><a href="/account?id=id">replace</a></td> <td>30</td> <td>5</td>
+                                <td><a href="/account?id=<%=history.get(i).getUserId()%>>"><%=((Dao)application.getAttribute(Dao.DBID)).getUserById(history.get(i).getUserId()).getUsername()%>></a></td>
+                                <td><%= history.get(i).getScore() %></td>
+                                <td><%= history.get(i).getTime() %></td>
                             </tr>
-                            <tr>
-                                <td><a href="/account?id=id">replace</a></td> <td>30</td> <td>50</td>
-                            </tr>
+                            <%}%>
                             </tbody>
                         </table>
                     </div>
@@ -64,12 +81,22 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td><a href="/account?id=id">replace</a></td> <td>30</td> <td>5</td>
-                            </tr>
-                            <tr>
-                                <td><a href="/account?id=id">replace</a></td> <td>30</td> <td>50</td>
-                            </tr>
+                            <%
+                                // Create a Calendar instance
+                                Calendar calendar = Calendar.getInstance();
+                                // Subtract 24 hours
+                                calendar.add(Calendar.HOUR_OF_DAY, -24);
+                                // Get the updated Date object
+                                for (int i = 0; i < history.size(); i++) {%>
+                                    <%
+                                        if(history.get(i).getDate().compareTo(calendar.getTime()) >0){%>
+                                        <tr>
+                                            <td><a href="/account?id=<%=history.get(i).getUserId()%>>"><%=((Dao)application.getAttribute(Dao.DBID)).getUserById(history.get(i).getUserId()).getUsername()%>></a></td>
+                                            <td><%= history.get(i).getScore() %></td>
+                                            <td><%= history.get(i).getTime() %></td>
+                                        </tr>
+                                    <%}%>
+                            <%}%>
                             </tbody>
                         </table>
                     </div>
@@ -86,12 +113,15 @@
                             </tr>
                             </thead>
                             <tbody>
+                            <%
+                                history.sort(new compareByDate());
+                                for (int i = 0; i < history.size(); i++) {%>
                             <tr>
-                                <td><a href="/account?id=id">replace</a></td> <td>30</td> <td>5</td>
+                                <td><a href="/account?id=<%=history.get(i).getUserId()%>>"><%=((Dao)application.getAttribute(Dao.DBID)).getUserById(history.get(i).getUserId()).getUsername()%>></a></td>
+                                <td><%= history.get(i).getScore() %></td>
+                                <td><%= history.get(i).getTime() %></td>
                             </tr>
-                            <tr>
-                                <td><a href="/account?id=id">replace</a></td> <td>30</td> <td>50</td>
-                            </tr>
+                            <%}%>
                             </tbody>
                         </table>
                     </div>
@@ -102,18 +132,21 @@
 
         <div class="buttons">
             <button type="button" id="start">Start</button>
-            <button type="button" id="practise">practise</button>
+            <% if(quiz.isPracticable()) {%>
+                <button type="button" id="practise">Practise</button>
+            <%}%>
+            <% if(quiz.getAuthor() == ((User)session.getAttribute("user")).getId()) {%>
+                <button type="button" id="edit">Edit</button>
+            <%}%>
         </div>
-
-
         <div class="container-for-table-parts">
             <div class="label-container">
                 <h4>Your History</h4>
                 <h6>Order By</h6>
                 <div class="radio-buttons">
-                    <label><input type="radio" name="options" value="Score">Score</label>
-                    <label><input type="radio" name="options" value="Time">Time</label>
-                    <label><input type="radio" name="options" value="Date">Date</label>
+                    <label><input type="radio" onselect="updateTable()" name="options" value="Score">Score</label>
+                    <label><input type="radio" onselect="updateTable()" name="options" value="Time">Time</label>
+                    <label><input type="radio" onselect="updateTable()" name="options" value="Date">Date</label>
                 </div>
             </div>
             <div class="table-container">
@@ -124,12 +157,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>65%</td> <td>30</td> <td>30/06/2024</td>
-                    </tr>
-                    <tr>
-                        <td>78%</td> <td>25</td> <td>3/05/2024</td>
-                    </tr>
+                    <%
+                        for (int i = 0; i < userHistory.size(); i++) {%>
+                            <tr>
+                                <td><%= userHistory.get(i).getScore() %></td>
+                                <td><%= userHistory.get(i).getTime() %></td>
+                                <td><%= userHistory.get(i).getDate() %></td>
+                            </tr>
+                    <%}%>
                     </tbody>
                 </table>
             </div>
@@ -137,13 +172,23 @@
                 <h4 style="color: blue">Summary stats</h4>
             </div>
             <div class="rectangle" style="height: 220px; border: 2px solid blue; display: flow; text-align: left ">
-                <h5>Average Score: replace</h5>
-                <h5>Last Written: replace</h5>
-                <h5>Total Written count: replace</h5>
-                <h5>Average Time Spent: replace</h5>
-                <h5>Top Scorer: <a href="/account?id=id">replace</a> </h5>
+                <%if(history.size()>0){%>
+                    <h5>Average Score: <%= WritenQuiz.getAvgScore(history) %></h5>
+                    <h5>Last Written: <%= WritenQuiz.getLastWritenDate(history) %></h5>
+                    <h5>Total Written count: <%=history.size()%></h5>
+                    <h5>Average Time Spent: <%= WritenQuiz.getAvgTime(history) %></h5>
+                    <%User top = ((Dao)application.getAttribute(Dao.DBID)).getUserById(WritenQuiz.getTopScorer(history));%>
+                    <h5>Top Scorer: <a href="/account?id=<%=top.getId()%>>"><%=top.getUsername()%>></a> </h5>
+                <%}else{%>
+                    <h5>Average Score: Not Available</h5>
+                    <h5>Last Written: Not Available</h5>
+                    <h5>Total Written count: Not Available</h5>
+                    <h5>Average Time Spent: Not Available</h5>
+                    <h5>Top Scorer: Not Available</h5>
+                <%}%>
             </div>
         </div>
     </div>
+    <script><%@include file="./scripts/quizHomePageScripts.js"%></script>
 </body>
 </html>

@@ -2,9 +2,11 @@ package models.DAO;
 
 import models.USER.Quiz;
 import models.USER.User;
+import models.USER.WritenQuiz;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class mySqlDb implements Dao{
     private final BasicDataSource dbSource;
@@ -104,6 +106,24 @@ public class mySqlDb implements Dao{
         String email = resultSet.getString("email");
         boolean isAdmin = resultSet.getBoolean("isAdmin");
         return new User(id , userName , password , email , isAdmin);
+    }
+
+    @Override
+    public ArrayList<WritenQuiz> getQuizHistory(Integer quizId) throws SQLException {
+        Connection connection = dbSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement("select quizHistory.score, quizHistory.startTime, TIMESTAMPDIFF(MINUTE, quizHistory.endTime, quizHistory.startTime) AS time_Spent, quizHistory.userId from quizHistory where quizHistory.quizId = ? order by quizHistory.score, TIMESTAMPDIFF(MINUTE, quizHistory.endTime, quizHistory.startTime)");
+        statement.setString(1 , quizId.toString());
+        ResultSet resultSet = statement.executeQuery();
+        ArrayList<WritenQuiz> writenQuizzes = new ArrayList<>();
+        while(resultSet.next()){
+            Double score = resultSet.getDouble("score");
+            Date start = resultSet.getDate("startTime");
+            Double time = resultSet.getDouble("time_Spent");
+            int id = resultSet.getInt("userId");
+            WritenQuiz quiz = new WritenQuiz(score,start, time, quizId, id);
+            writenQuizzes.add(quiz);
+        }
+        return writenQuizzes;
     }
 
 }
