@@ -1,15 +1,13 @@
-.container-top {
-    width: 65%;
+.container-one{
+    width: 68%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #ee0000;
-    padding: 0;
     background-color: transparent;
-    border-bottom: none;
-    padding-top: 20px;
+    padding-top: 40px;
 }
 .name {
+    color: #ff4200;
     font-size: 1.5em;
     font-weight: bold;
 }
@@ -18,41 +16,108 @@
     color: #007bff;
     font-size: 1.2em;
 }
+
+.container-two{
+    width: 100%;
+    display: flex;
+    background-color: transparent;
+    padding-top: 2px;
+}
+
 .rectangle {
-    margin-top: 2px;
-    width: 65%;
+    width: 100%;
     height: 300px;
     background-color: #e7e7e7;
     position: relative;
     border-radius: 15px;
     border: 2px solid black;
 }
+
 . {
     display: flex;
     justify-content: space-between; /* This aligns items along the main axis with space between */
 }
-.content {
-    width: 90%;
-    height: 90%;
-    background-color: #cacaca;
-    margin: 5% auto;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.container-second {
-    display: flex;
-    justify-content: space-between; /* This aligns items along the main axis with space between */
-}
 
-.container button{
+
+button{
+    font-weight: bold;
     background-color: #ff4200;
     color: #fff;
     font-size: 12px;
     padding: 10px 45px;
     border: 1px solid transparent;
     border-radius: 8px;
-    font-weight: 600;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     margin-top: 10px;
     cursor: pointer;
+}
+button:hover {
+    background-color: #ff2000; /* New background color on hover */
+}
+.buttons {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+.container-for-table-parts {
+    text-align: center; /* Center align contents horizontally */
+    width: 20%;
+}
+.container-for-table-parts h4{
+    padding-right: 10px;
+}
+.container-for-table-parts h6{
+    color: #ff4200;
+}
+
+.table-container {
+    width: 100%;
+    height: 500px;
+    background-color: #e7e7e7;
+    position: relative;
+    border-radius: 15px;
+    border: 1px solid black;
+    overflow: auto; /* Enable scrolling */
+}
+
+.label-container {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio-buttons {
+    margin-left: 2px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: none;
+    padding: 8px;
+    text-align: left;
+    height: 25px;
+}
+th {
+    background-color: #ff4200;
+    color: white;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.container-three {
+    width: 68%;
+    display: flex;
+    background-color: transparent;
+    padding-top: 0;
 }
