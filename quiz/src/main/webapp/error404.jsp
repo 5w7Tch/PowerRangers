@@ -11,6 +11,6 @@
     <title>Title</title>
 </head>
 <body>
-  <h1>Error</h1>
+    <img src="static/icons/error404.jpg" alt="bla">
 </body>
 </html>

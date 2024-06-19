@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style><%@include file="./styles/loginStyles.css"%></style>
+<%--    <style><%@include file="./styles/loginStyles.css"%></style>--%>
+    <link rel="stylesheet" type="text/css" href="static/styles/loginStyles.css">
     <title>Qwiztime</title>
     <link rel="icon" href="icons/logo.png" type="image/png">
 </head>
