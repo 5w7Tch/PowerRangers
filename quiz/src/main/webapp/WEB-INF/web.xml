@@ -32,6 +32,11 @@
     <servlet-class>servlets.createQuiz</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>logout</servlet-name>
+    <servlet-class>servlets.logout</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>home</servlet-name>
     <url-pattern>/</url-pattern>
@@ -50,6 +55,11 @@
   <servlet-mapping>
     <servlet-name>createQuiz</servlet-name>
     <url-pattern>/createQuiz</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>logout</servlet-name>
+    <url-pattern>/logout</url-pattern>
   </servlet-mapping>
 
 
