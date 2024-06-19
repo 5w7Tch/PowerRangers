@@ -11,13 +11,13 @@ import java.io.OutputStream;
 
 public class staticFiles extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("static");
         returnStatic(request,response);
     }
 
     private void returnStatic(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType(request.getContentType());
-        String realPath = getServletContext().getRealPath("/icons/error404.jpg");
+        String url = request.getRequestURI();
+        String realPath = getServletContext().getRealPath(url.substring(7));
         try (FileInputStream fis = new FileInputStream(realPath);
              OutputStream os = response.getOutputStream()) {
 
@@ -27,7 +27,7 @@ public class staticFiles extends HttpServlet {
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); // 500
+            response.sendError(HttpServletResponse.SC_NOT_FOUND); // 404
         }
     }
 
