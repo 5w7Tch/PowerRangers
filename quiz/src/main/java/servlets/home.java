@@ -4,19 +4,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 
 public class home extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // if logged in show user home page
-        // else redirect to /login
         String[] arr = request.getServletPath().split("/");
         if(arr.length!=0){
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
+
         if(request.getSession().getAttribute("user")!=null){
             request.getRequestDispatcher("home.jsp").forward(request,response);
         }else{
@@ -28,4 +29,5 @@ public class home extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }
+
 }
