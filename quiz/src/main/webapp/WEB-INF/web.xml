@@ -62,11 +62,6 @@
     <url-pattern>/static/*</url-pattern>
   </servlet-mapping>
 
-  <error-page>
-    <error-code>404</error-code>
-    <location>/error404.jsp</location>
-  </error-page>
-
   <servlet-mapping>
     <servlet-name>createQuiz</servlet-name>
     <url-pattern>/createQuiz</url-pattern>
@@ -76,6 +71,11 @@
     <servlet-name>logout</servlet-name>
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error404.jsp</location>
+  </error-page>
 
 
 </web-app>
