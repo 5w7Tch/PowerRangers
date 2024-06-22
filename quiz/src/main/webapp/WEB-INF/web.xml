@@ -26,6 +26,11 @@
     <servlet-name>signup</servlet-name>
     <servlet-class>servlets.signup</servlet-class>
   </servlet>
+  
+  <servlet>
+    <servlet-name>statics</servlet-name>
+    <servlet-class>servlets.staticFiles</servlet-class>
+  </servlet>
 
   <servlet>
     <servlet-name>createQuiz</servlet-name>
@@ -51,6 +56,16 @@
     <servlet-name>signup</servlet-name>
     <url-pattern>/signup</url-pattern>
   </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>statics</servlet-name>
+    <url-pattern>/static/*</url-pattern>
+  </servlet-mapping>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/error404.jsp</location>
+  </error-page>
 
   <servlet-mapping>
     <servlet-name>createQuiz</servlet-name>
