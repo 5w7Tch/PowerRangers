@@ -4,10 +4,9 @@ import models.USER.WritenQuiz;
 
 import java.util.Comparator;
 
-public class compareByDate implements Comparator<WritenQuiz> {
-
+public class compareByScore implements Comparator<WritenQuiz> {
     @Override
     public int compare(WritenQuiz writenQuiz, WritenQuiz t1) {
-        return -1*(writenQuiz.getDate().compareTo(t1.getDate()));
+        return -1*(writenQuiz.getScore().compareTo(t1.getScore()));
     }
 }

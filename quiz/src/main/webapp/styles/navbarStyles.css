@@ -8,9 +8,9 @@
 .navbar{
     background: #ff4200;
     font-family: Calibri, serif;
-    padding-right: 15px;
-    padding-left: 15px;
+    width: 100%;
     border-bottom-style: dashed;
+    height: 40px;
 }
 
 .navDiv{

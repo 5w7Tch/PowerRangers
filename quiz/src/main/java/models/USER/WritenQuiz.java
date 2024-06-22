@@ -5,21 +5,29 @@ package models.USER;
 import com.mysql.cj.conf.ConnectionUrlParser;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class WritenQuiz {
     Double score;
+    String scoreString;
     Double time;
+    String timeString;
+    String dateString;
     Date date;
     int userId;
     int quizId;
     String writerName;
+    static DecimalFormat df = new DecimalFormat("#.00");
 
     public WritenQuiz(Double score, Date date, Double time, int quizId, int userId, String writerName) {
         this.score = score;
+        this.scoreString = score.toString();
         this.date = date;
         this.time = time;
+        this.timeString = time.toString();
+        this.dateString = date.toString();
         this.quizId = quizId;
         this.userId = userId;
         this.writerName = writerName;
@@ -45,12 +53,12 @@ public class WritenQuiz {
     public int getUserId() {
         return userId;
     }
-    public static Double getAvgScore(ArrayList<WritenQuiz> writtenQuizList){
+    public static String getAvgScore(ArrayList<WritenQuiz> writtenQuizList){
         Double res = new Double(0);
         for(WritenQuiz w: writtenQuizList){
             res += w.getScore();
         }
-        return res/writtenQuizList.size();
+        return df.format(res/writtenQuizList.size());
     }
     public static Date getLastWritenDate(ArrayList<WritenQuiz> writtenQuizList){
         Date res = new Date(0);
@@ -62,12 +70,12 @@ public class WritenQuiz {
         return res;
     }
 
-    public static Double getAvgTime(ArrayList<WritenQuiz> writtenQuizList){
+    public static String getAvgTime(ArrayList<WritenQuiz> writtenQuizList){
         Double res = new Double(0);
         for(WritenQuiz w: writtenQuizList){
             res += w.getTime();
         }
-        return res/writtenQuizList.size();
+        return df.format(res/writtenQuizList.size());
     }
 
     public static ConnectionUrlParser.Pair<Integer, String> getTopScorer(ArrayList<WritenQuiz> writtenQuizList){
@@ -80,5 +88,17 @@ public class WritenQuiz {
             }
         }
         return res;
+    }
+
+    public String getTimeString() {
+        return timeString;
+    }
+
+    public String getScoreString() {
+        return scoreString;
+    }
+
+    public String getDateString() {
+        return dateString;
     }
 }
