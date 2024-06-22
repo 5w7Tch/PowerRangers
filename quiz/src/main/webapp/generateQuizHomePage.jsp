@@ -18,8 +18,9 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style><%@include file="./styles/quizHomePageStyles.css"%></style>
-    <style><%@include file="./styles/navbarStyles.css"%></style>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/quizHomePageStyles.css">
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/navbarStyles.css">
+    <link rel="icon" href="<%=request.getContextPath()%>/static/icons/logo.png" type="image/png">
 
     <%
             Dao myDb = (Dao)application.getAttribute(Dao.DBID);
@@ -38,7 +39,7 @@
     %>
 </head>
 <body>
-<%@ include file="./html/navbar.html" %>
+<%@ include file="navbar.jsp" %>
 
     <div class="container-one">
         <div class="name"><%=quiz.getName()%></div>
@@ -196,6 +197,6 @@
             </div>
         </div>
     </div>
-    <script><%@include file="./scripts/quizHomePageScripts.js"%></script>
+   <script><%@include file="./scripts/quizHomePageScripts.js"%></script>
 </body>
 </html>
