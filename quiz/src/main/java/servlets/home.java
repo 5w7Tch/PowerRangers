@@ -13,8 +13,8 @@ public class home extends HttpServlet {
         // else redirect to /login
 
         if(request.getSession().getAttribute("user")!=null){
-            response.sendRedirect("/createQuiz");
-//            request.getRequestDispatcher("/home.jsp").forward(request,response);
+//            response.sendRedirect("/createQuiz");
+            request.getRequestDispatcher("/home.jsp").forward(request,response);
         }else{
             response.sendRedirect("/login");
         }

@@ -1,3 +1,10 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Serif', sans-serif;
+}
+
 .container-one{
     width: 68%;
     display: flex;
@@ -5,6 +12,7 @@
     align-items: center;
     background-color: transparent;
     padding-top: 40px;
+    padding-left: 10px;
 }
 .name {
     color: #ff4200;
@@ -22,6 +30,8 @@
     display: flex;
     background-color: transparent;
     padding-top: 2px;
+    padding-left: 10px;
+
 }
 
 .rectangle {
@@ -31,6 +41,7 @@
     position: relative;
     border-radius: 15px;
     border: 2px solid black;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
 }
 
 . {
@@ -39,9 +50,9 @@
 }
 
 
-button{
+.buttons button{
     font-weight: bold;
-    background-color: #ff4200;
+    background-color: #28a745;
     color: #fff;
     font-size: 12px;
     padding: 10px 45px;
@@ -51,9 +62,10 @@ button{
     text-transform: uppercase;
     margin-top: 10px;
     cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
 }
 button:hover {
-    background-color: #ff2000; /* New background color on hover */
+    background-color: #218838; /* New background color on hover */
 }
 .buttons {
     display: flex;
@@ -68,7 +80,7 @@ button:hover {
     width: 20%;
 }
 .container-for-table-parts h4{
-    padding-right: 10px;
+
 }
 .container-for-table-parts h6{
     color: #ff4200;
@@ -82,6 +94,8 @@ button:hover {
     border-radius: 15px;
     border: 1px solid black;
     overflow: auto; /* Enable scrolling */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+
 }
 
 .label-container {
@@ -97,6 +111,7 @@ button:hover {
 table {
     width: 100%;
     border-collapse: collapse;
+
 }
 
 th, td {

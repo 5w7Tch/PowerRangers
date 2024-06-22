@@ -30,13 +30,6 @@
       </select>
     </div>
     <div class="form-group">
-      <label for="pageMode">Page Mode</label>
-      <select id="pageMode" name="pageMode">
-        <option value="single">Single Page</option>
-        <option value="multiple">Multiple Pages</option>
-      </select>
-    </div>
-    <div class="form-group">
       <label for="immediateCorrection">Immediate Correction</label>
       <select id="immediateCorrection" name="immediateCorrection">
         <option value="true">Yes</option>

@@ -19,14 +19,16 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style><%@include file="./styles/quizHomePageStyles.css"%></style>
+    <style><%@include file="./styles/navbarStyles.css"%></style>
+
     <%
             Dao myDb = (Dao)application.getAttribute(Dao.DBID);
             Quiz quiz = myDb.getQuiz(request.getParameter("quizid"));
-            session.setAttribute("quiz", quiz);
         %>
     <title><%=quiz.getName()%></title>
     <%
         ArrayList<WritenQuiz> history = myDb.getQuizHistory(quiz.getId());
+        session.setAttribute("history", history);
         ArrayList<WritenQuiz> userHistory = new ArrayList<WritenQuiz>();
         for(int i = 0; i< history.size(); i++){
             if(history.get(i).getUserId() == ((User)session.getAttribute("user")).getId()){
@@ -36,6 +38,8 @@
     %>
 </head>
 <body>
+<%@ include file="./html/navbar.html" %>
+
     <div class="container-one">
         <div class="name"><%=quiz.getName()%></div>
         <a href="/account?id=<%=quiz.getAuthor()%>"><%=myDb.getUserById(quiz.getAuthor()).getUsername()%></a>
@@ -60,8 +64,8 @@
                                 for (int i = 0; i < history.size(); i++) {%>
                             <tr>
                                 <td><a href="/account?id=<%=history.get(i).getUserId()%>"><%=history.get(i).getWriterName()%></a></td>
-                                <td><%= history.get(i).getScore() %></td>
-                                <td><%= history.get(i).getTime().toString()%></td>
+                                <td><%= history.get(i).getScoreString() %></td>
+                                <td><%= history.get(i).getTimeString()%></td>
                             </tr>
                             <%}%>
                             </tbody>
@@ -91,8 +95,8 @@
                                         if(history.get(i).getDate().compareTo(calendar.getTime()) >0){%>
                                         <tr>
                                             <td><a href="/account?id=<%=history.get(i).getUserId()%>"><%=history.get(i).getWriterName()%></a></td>
-                                            <td><%= history.get(i).getScore() %></td>
-                                            <td><%= history.get(i).getTime() %></td>
+                                            <td><%= history.get(i).getScoreString() %></td>
+                                            <td><%= history.get(i).getTimeString() %></td>
                                         </tr>
                                     <%}%>
                             <%}%>
@@ -117,8 +121,8 @@
                                 for (int i = 0; i < history.size(); i++) {%>
                             <tr>
                                 <td><a href="/account?id=<%=history.get(i).getUserId()%>"><%=history.get(i).getWriterName()%></a></td>
-                                <td><%= history.get(i).getScore() %></td>
-                                <td><%= history.get(i).getTime() %></td>
+                                <td><%= history.get(i).getScoreString() %></td>
+                                <td><%= history.get(i).getTimeString() %></td>
                             </tr>
                             <%}%>
                             </tbody>
@@ -130,7 +134,8 @@
 
 
         <div class="buttons">
-            <button type="button" id="start">Start</button>
+            <button type="button" id="startSinglePage">Start Single Page</button>
+            <button type="button" id="startMultiPage">Start Multi Page</button>
             <% if(quiz.isPracticable()) {%>
                 <button type="button" id="practise" style="background-color: blue">Practise</button>
             <%}%>
@@ -146,9 +151,9 @@
                 <h4>Your History</h4>
                 <h6>Order By</h6>
                 <div class="radio-buttons">
-                    <label><input type="radio" onchange="updateTable()" name="options" value="Score">Score</label>
-                    <label><input type="radio" onchange="updateTable()" name="options" value="Time">Time</label>
-                    <label><input type="radio" onchange="updateTable()" name="options" value="Date">Date</label>
+                    <label><input type="radio" onchange="update()" name="options" value="Score">Score</label>
+                    <label><input type="radio" onchange="update()" name="options" value="Time">Time</label>
+                    <label><input type="radio" onchange="update()" name="options" value="Date">Date</label>
                 </div>
             </div>
             <div class="table-container">
@@ -162,9 +167,9 @@
                     <%
                         for (int i = 0; i < userHistory.size(); i++) {%>
                             <tr>
-                                <td><%= userHistory.get(i).getScore() %></td>
-                                <td><%= userHistory.get(i).getTime() %></td>
-                                <td><%= userHistory.get(i).getDate() %></td>
+                                <td><%= userHistory.get(i).getScoreString() %></td>
+                                <td><%= userHistory.get(i).getTimeString() %></td>
+                                <td><%= userHistory.get(i).getDateString() %></td>
                             </tr>
                     <%}%>
                     </tbody>

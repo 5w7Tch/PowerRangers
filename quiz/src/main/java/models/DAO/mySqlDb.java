@@ -89,8 +89,9 @@ public class mySqlDb implements Dao{
         Date creationDate = resultSet.getDate("creationDate");
         String deck = resultSet.getString("description");
         boolean isPracticable = resultSet.getBoolean("isPracticable");
+        boolean rand = resultSet.getBoolean("areQuestionsRandom");
         Double duration = resultSet.getDouble("quizTime");
-        return new Quiz(id, author , name , creationDate , deck , isPracticable , duration);
+        return new Quiz(id, author , name , creationDate , deck , isPracticable ,rand, duration);
     }
 
     @Override

@@ -5,6 +5,7 @@ import models.DAO.Dao;
 import models.USER.Quiz;
 import models.USER.WritenQuiz;
 import models.comparators.compareByDate;
+import models.comparators.compareByScore;
 import models.comparators.compareByTime;
 
 import javax.servlet.annotation.WebServlet;
@@ -23,25 +24,21 @@ public class quizPersonalDataServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String orderBy = request.getParameter("orderBy");
-        System.out.println(orderBy);
-        List<WritenQuiz> dataList = null;
-        try {
-            dataList = ((Dao)request.getServletContext().getAttribute(Dao.DBID)).getQuizHistory(((Quiz)request.getSession().getAttribute("quiz")).getId());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
+        ArrayList<WritenQuiz> dataList = (ArrayList<WritenQuiz>)request.getSession().getAttribute("history");;
+
         if (orderBy != null) {
             if(orderBy.equals("Time")){
                 dataList.sort(new compareByTime());
             }else if(orderBy.equals("Date")){
                 dataList.sort(new compareByDate());
+            }else{
+                dataList.sort(new compareByScore());
             }
         }
-
         // Convert the list to JSON
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonResponse = objectMapper.writeValueAsString(dataList);
-
         // Set response content type to JSON
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

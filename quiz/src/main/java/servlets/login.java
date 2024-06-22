@@ -40,7 +40,6 @@ public class login extends HttpServlet {
             String res;
 
             if (dao.accountExists(username , Hasher.getPasswordHash(password))){
-                System.out.println("found");
                 User curUser = dao.getUser(username , password);
                 request.getSession().setAttribute("user" , curUser);
                 res = "found";

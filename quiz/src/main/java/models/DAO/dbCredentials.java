@@ -4,5 +4,5 @@ public interface dbCredentials {
     String url = "jdbc:mysql://localhost:3306/quizdb";
     String userName = "root";
 
-    String password = "Badrisaba123";
+    String password = "rootroot";
 }
