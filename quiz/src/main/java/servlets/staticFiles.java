@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -15,9 +16,20 @@ public class staticFiles extends HttpServlet {
     }
 
     private void returnStatic(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType(request.getContentType());
         String url = request.getRequestURI();
         String realPath = getServletContext().getRealPath(url.substring(7));
+
+        String mimeType = getServletContext().getMimeType(realPath);
+        if (mimeType == null) {
+            mimeType = "application/octet-stream";
+        }
+
+        response.setContentType(mimeType);
+
+        File file = new File(realPath);
+        response.setContentLength((int) file.length());
+
+
         try (FileInputStream fis = new FileInputStream(realPath);
              OutputStream os = response.getOutputStream()) {
 

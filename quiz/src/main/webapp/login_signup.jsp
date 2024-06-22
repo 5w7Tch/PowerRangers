@@ -49,7 +49,6 @@
         </div>
     </div>
 </div>
-<%--<script src="<%=request.getContextPath()%>/static/scripts/loginAnimations.js"></script>--%>
-<script><%@include file="scripts/loginAnimations.js"%></script>
+<script src="<%=request.getContextPath()%>/static/scripts/loginAnimations.js"></script>
 </body>
 </html>
