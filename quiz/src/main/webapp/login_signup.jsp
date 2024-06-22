@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style><%@include file="./styles/loginStyles.css"%></style>
-    <title>QuizTime</title>
-    <link rel="icon" href="icons/logo.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/loginStyles.css">
+    <title>Qwiztime</title>
+    <link rel="icon" href="<%=request.getContextPath()%>/static/icons/logo.png" type="image/png">
 </head>
 <body>
 <div class="container" id="container">
@@ -48,6 +48,7 @@
         </div>
     </div>
 </div>
-<script><%@include file="./scripts/loginAnimations.js"%></script>
+<%--<script src="<%=request.getContextPath()%>/static/scripts/loginAnimations.js"></script>--%>
+<script><%@include file="scripts/loginAnimations.js"%></script>
 </body>
 </html>

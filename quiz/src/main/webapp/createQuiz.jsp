@@ -6,11 +6,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Quiz</title>
-  <style><%@include file="./styles/createQuizStyles.css"%></style>
-  <style><%@include file="./styles/navbarStyles.css"%></style>
+  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/createQuizStyles.css">
+  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/navbarStyles.css">
 </head>
 <body>
-<%@ include file="./html/navbar.html" %>
+<%@ include file="navbar.jsp" %>
 <div class="container">
   <h2>Create a New Quiz</h2>
   <form action="SaveQuizServlet" method="post">
