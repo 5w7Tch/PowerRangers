@@ -10,9 +10,11 @@
 <head>
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/errorPage.css">
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/navbarStyles.css">
     <link rel="icon" href="<%=request.getContextPath()%>/static/icons/logo.png" type="image/png">
 </head>
 <body>
+    <%@include file="navbar.jsp"%>
     <img class="error_wallpaper" src="<%=request.getContextPath()%>/static/icons/error404.jpg" alt="bla">
 </body>
 </html>
