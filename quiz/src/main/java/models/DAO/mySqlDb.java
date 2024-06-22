@@ -82,15 +82,17 @@ public class mySqlDb implements Dao{
         PreparedStatement statement = connection.prepareStatement("select * from quizzes where quizId = ?");
         statement.setString(1 , quizId);
         ResultSet resultSet = statement.executeQuery();
-        resultSet.next();
-        int id = resultSet.getInt("quizId");
-        int author = resultSet.getInt("author");
-        String name = resultSet.getString("name");
-        Date creationDate = resultSet.getDate("creationDate");
-        String deck = resultSet.getString("description");
-        boolean isPracticable = resultSet.getBoolean("isPracticable");
-        Double duration = resultSet.getDouble("quizTime");
-        return new Quiz(id, author , name , creationDate , deck , isPracticable , duration);
+        if(resultSet.next()){
+            int id = resultSet.getInt("quizId");
+            int author = resultSet.getInt("author");
+            String name = resultSet.getString("name");
+            Date creationDate = resultSet.getDate("creationDate");
+            String deck = resultSet.getString("description");
+            boolean isPracticable = resultSet.getBoolean("isPracticable");
+            double duration = resultSet.getDouble("quizTime");
+            return new Quiz(id, author , name , creationDate , deck , isPracticable , duration);
+        }
+        return null;
     }
 
     @Override
