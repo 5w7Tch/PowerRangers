@@ -23,7 +23,7 @@ public class quizPersonalDataServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String orderBy = request.getParameter("orderBy");
-
+        System.out.println(orderBy);
         List<WritenQuiz> dataList = null;
         try {
             dataList = ((Dao)request.getServletContext().getAttribute(Dao.DBID)).getQuizHistory(((Quiz)request.getSession().getAttribute("quiz")).getId());
@@ -37,6 +37,7 @@ public class quizPersonalDataServlet extends HttpServlet {
                 dataList.sort(new compareByDate());
             }
         }
+
         // Convert the list to JSON
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonResponse = objectMapper.writeValueAsString(dataList);

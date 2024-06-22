@@ -6,7 +6,8 @@
 <%@ page import="models.USER.WritenQuiz" %>
 <%@ page import="models.comparators.compareByDate" %>
 <%@ page import="java.sql.Date" %>
-<%@ page import="java.util.Calendar" %><%--
+<%@ page import="java.util.Calendar" %>
+<%@ page import="com.mysql.cj.conf.ConnectionUrlParser" %><%--
   Created by IntelliJ IDEA.
   User: sw1tch
   Date: 17.06.24
@@ -18,17 +19,15 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style><%@include file="./styles/quizHomePageStyles.css"%></style>
-    <% Quiz quiz = null;
-        try {
-            quiz = ((Dao)application.getAttribute(Dao.DBID)).getQuiz(request.getParameter("quizid"));
+    <%
+            Dao myDb = (Dao)application.getAttribute(Dao.DBID);
+            Quiz quiz = myDb.getQuiz(request.getParameter("quizid"));
             session.setAttribute("quiz", quiz);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }%>
+        %>
     <title><%=quiz.getName()%></title>
     <%
-        ArrayList<WritenQuiz> history = ((Dao)application.getAttribute(Dao.DBID)).getQuizHistory(quiz.getId());
-        ArrayList<WritenQuiz> userHistory = new ArrayList();
+        ArrayList<WritenQuiz> history = myDb.getQuizHistory(quiz.getId());
+        ArrayList<WritenQuiz> userHistory = new ArrayList<WritenQuiz>();
         for(int i = 0; i< history.size(); i++){
             if(history.get(i).getUserId() == ((User)session.getAttribute("user")).getId()){
                 userHistory.add(history.get(i));
@@ -39,7 +38,7 @@
 <body>
     <div class="container-one">
         <div class="name"><%=quiz.getName()%></div>
-        <a href="/account?id=<%=quiz.getAuthor()%>"><%=((Dao)application.getAttribute(Dao.DBID)).getUserById(quiz.getAuthor()).getUsername()%></a>
+        <a href="/account?id=<%=quiz.getAuthor()%>"><%=myDb.getUserById(quiz.getAuthor()).getUsername()%></a>
     </div>
     <div class="container-two">
         <div style="width: 68%">
@@ -60,9 +59,9 @@
                             <%
                                 for (int i = 0; i < history.size(); i++) {%>
                             <tr>
-                                <td><a href="/account?id=<%=history.get(i).getUserId()%>>"><%=((Dao)application.getAttribute(Dao.DBID)).getUserById(history.get(i).getUserId()).getUsername()%>></a></td>
+                                <td><a href="/account?id=<%=history.get(i).getUserId()%>"><%=history.get(i).getWriterName()%></a></td>
                                 <td><%= history.get(i).getScore() %></td>
-                                <td><%= history.get(i).getTime() %></td>
+                                <td><%= history.get(i).getTime().toString()%></td>
                             </tr>
                             <%}%>
                             </tbody>
@@ -91,7 +90,7 @@
                                     <%
                                         if(history.get(i).getDate().compareTo(calendar.getTime()) >0){%>
                                         <tr>
-                                            <td><a href="/account?id=<%=history.get(i).getUserId()%>>"><%=((Dao)application.getAttribute(Dao.DBID)).getUserById(history.get(i).getUserId()).getUsername()%>></a></td>
+                                            <td><a href="/account?id=<%=history.get(i).getUserId()%>"><%=history.get(i).getWriterName()%></a></td>
                                             <td><%= history.get(i).getScore() %></td>
                                             <td><%= history.get(i).getTime() %></td>
                                         </tr>
@@ -117,7 +116,7 @@
                                 history.sort(new compareByDate());
                                 for (int i = 0; i < history.size(); i++) {%>
                             <tr>
-                                <td><a href="/account?id=<%=history.get(i).getUserId()%>>"><%=((Dao)application.getAttribute(Dao.DBID)).getUserById(history.get(i).getUserId()).getUsername()%>></a></td>
+                                <td><a href="/account?id=<%=history.get(i).getUserId()%>"><%=history.get(i).getWriterName()%></a></td>
                                 <td><%= history.get(i).getScore() %></td>
                                 <td><%= history.get(i).getTime() %></td>
                             </tr>
@@ -133,10 +132,13 @@
         <div class="buttons">
             <button type="button" id="start">Start</button>
             <% if(quiz.isPracticable()) {%>
-                <button type="button" id="practise">Practise</button>
+                <button type="button" id="practise" style="background-color: blue">Practise</button>
             <%}%>
             <% if(quiz.getAuthor() == ((User)session.getAttribute("user")).getId()) {%>
-                <button type="button" id="edit">Edit</button>
+                <button type="button" id="edit" style="background-color: gray">Edit</button>
+            <%}%>
+            <% if(((User)session.getAttribute("user")).isAdmin()) {%>
+            <button type="button" id="Delete" style="background-color: red">Delete Quiz</button>
             <%}%>
         </div>
         <div class="container-for-table-parts">
@@ -144,9 +146,9 @@
                 <h4>Your History</h4>
                 <h6>Order By</h6>
                 <div class="radio-buttons">
-                    <label><input type="radio" onselect="updateTable()" name="options" value="Score">Score</label>
-                    <label><input type="radio" onselect="updateTable()" name="options" value="Time">Time</label>
-                    <label><input type="radio" onselect="updateTable()" name="options" value="Date">Date</label>
+                    <label><input type="radio" onchange="updateTable()" name="options" value="Score">Score</label>
+                    <label><input type="radio" onchange="updateTable()" name="options" value="Time">Time</label>
+                    <label><input type="radio" onchange="updateTable()" name="options" value="Date">Date</label>
                 </div>
             </div>
             <div class="table-container">
@@ -156,7 +158,7 @@
                         <th>Score</th> <th>Spent time</th> <th>Date</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="tableBody">
                     <%
                         for (int i = 0; i < userHistory.size(); i++) {%>
                             <tr>
@@ -177,8 +179,8 @@
                     <h5>Last Written: <%= WritenQuiz.getLastWritenDate(history) %></h5>
                     <h5>Total Written count: <%=history.size()%></h5>
                     <h5>Average Time Spent: <%= WritenQuiz.getAvgTime(history) %></h5>
-                    <%User top = ((Dao)application.getAttribute(Dao.DBID)).getUserById(WritenQuiz.getTopScorer(history));%>
-                    <h5>Top Scorer: <a href="/account?id=<%=top.getId()%>>"><%=top.getUsername()%>></a> </h5>
+                    <%ConnectionUrlParser.Pair<Integer, String> top = WritenQuiz.getTopScorer(history);%>
+                    <h5>Top Scorer: <a href="/account?id=<%=top.left%>"><%=top.right%></a></h5>
                 <%}else{%>
                     <h5>Average Score: Not Available</h5>
                     <h5>Last Written: Not Available</h5>

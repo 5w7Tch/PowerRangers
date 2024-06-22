@@ -1,5 +1,9 @@
 package models.USER;
 
+
+
+import com.mysql.cj.conf.ConnectionUrlParser;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,14 +14,15 @@ public class WritenQuiz {
     Date date;
     int userId;
     int quizId;
+    String writerName;
 
-
-    public WritenQuiz(Double score, Date date, Double time, int quizId, int userId) {
+    public WritenQuiz(Double score, Date date, Double time, int quizId, int userId, String writerName) {
         this.score = score;
         this.date = date;
         this.time = time;
         this.quizId = quizId;
         this.userId = userId;
+        this.writerName = writerName;
     }
 
     public Double getScore() {
@@ -35,6 +40,7 @@ public class WritenQuiz {
     public int getQuizId() {
         return quizId;
     }
+    public String getWriterName() {return writerName;}
 
     public int getUserId() {
         return userId;
@@ -64,12 +70,12 @@ public class WritenQuiz {
         return res/writtenQuizList.size();
     }
 
-    public static Integer getTopScorer(ArrayList<WritenQuiz> writtenQuizList){
-        Integer res = 0;
+    public static ConnectionUrlParser.Pair<Integer, String> getTopScorer(ArrayList<WritenQuiz> writtenQuizList){
+        ConnectionUrlParser.Pair<Integer, String> res = new ConnectionUrlParser.Pair<>(1, "1");
         Double Score = new Double(0);
         for(WritenQuiz w: writtenQuizList){
             if(Double.compare(Score, w.getScore())<0){
-                res = w.getUserId();
+                res = new ConnectionUrlParser.Pair<>( w.getUserId(), w.getWriterName());
                 Score = w.getScore();
             }
         }

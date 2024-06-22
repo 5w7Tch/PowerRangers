@@ -1,36 +1,46 @@
 function retrievePersonData() {
-    // Perform AJAX request to retrieve data
-    let radios = document.getElementsByName('options');
-    var selectedValue = null;
-    for (var i = 0; i < radios.length; i++) {
-        if (radios[i].checked) {
-            selectedValue = radios[i].value;
-            break;
+        // Perform AJAX request to retrieve data
+        let radios = document.getElementsByName('options');
+        var selectedValue = null;
+        for (var i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                selectedValue = radios[i].value;
+                break;
+            }
         }
-    }
-    var xhr = new XMLHttpRequest();
-    let url ='/personData?orderBy='+selectedValue;
-    xhr.open('post', url, true);
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            return JSON.parse(xhr.responseText); // Example: Output the person's age
-        } else {
-            console.error('Error fetching person data: ' + xhr.statusText);
+    let url = '/personData?orderBy=' + encodeURIComponent(selectedValue);
+    let result;
+    fetch(url, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
         }
-    };
-    xhr.send();
+    })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            console.log("bla bla");
+            result = JSON.parse(data);
+        })
+        .catch(function(error) {
+            console.error('There was a problem with fetch operation:', error.message);
+        });
+    return result;
 }
 
 function updateTable() {
     // Example data to update the table
-    let newData = retrievePersonData();
+    var newData = retrievePersonData();
 
     // Access the table body element
     var tableBody = document.getElementById("tableBody");
 
     // Clear existing rows
     tableBody.innerHTML = "";
-
     // Loop through the data and create rows
     newData.forEach((ROW) => {
         var row = tableBody.insertRow();

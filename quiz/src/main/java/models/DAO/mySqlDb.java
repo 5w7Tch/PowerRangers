@@ -111,7 +111,7 @@ public class mySqlDb implements Dao{
     @Override
     public ArrayList<WritenQuiz> getQuizHistory(Integer quizId) throws SQLException {
         Connection connection = dbSource.getConnection();
-        PreparedStatement statement = connection.prepareStatement("select quizHistory.score, quizHistory.startTime, TIMESTAMPDIFF(MINUTE, quizHistory.endTime, quizHistory.startTime) AS time_Spent, quizHistory.userId from quizHistory where quizHistory.quizId = ? order by quizHistory.score, TIMESTAMPDIFF(MINUTE, quizHistory.endTime, quizHistory.startTime)");
+        PreparedStatement statement = connection.prepareStatement("select quizHistory.score, quizHistory.startTime, TIMESTAMPDIFF(MINUTE, quizHistory.startTime, quizHistory.endTime) AS time_Spent, quizHistory.userId from quizHistory where quizHistory.quizId = ? order by quizHistory.score desc, TIMESTAMPDIFF(MINUTE, quizHistory.endTime, quizHistory.startTime) asc");
         statement.setString(1 , quizId.toString());
         ResultSet resultSet = statement.executeQuery();
         ArrayList<WritenQuiz> writenQuizzes = new ArrayList<>();
@@ -120,7 +120,7 @@ public class mySqlDb implements Dao{
             Date start = resultSet.getDate("startTime");
             Double time = resultSet.getDouble("time_Spent");
             int id = resultSet.getInt("userId");
-            WritenQuiz quiz = new WritenQuiz(score,start, time, quizId, id);
+            WritenQuiz quiz = new WritenQuiz(score,start, time, quizId, id, getUserById(id).getUsername());
             writenQuizzes.add(quiz);
         }
         return writenQuizzes;
