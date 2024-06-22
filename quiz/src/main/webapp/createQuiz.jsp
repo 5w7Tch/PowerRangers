@@ -53,5 +53,6 @@
     <button type="submit" class="btn">Create Quiz</button>
   </form>
 </div>
+<script type="text/javascript" src="<%=request.getContextPath()%>/static/scripts/createQuiz.js"></script>
 </body>
 </html>
