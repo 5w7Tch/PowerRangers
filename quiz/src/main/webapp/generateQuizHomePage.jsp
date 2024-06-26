@@ -7,7 +7,8 @@
 <%@ page import="models.comparators.compareByDate" %>
 <%@ page import="java.sql.Date" %>
 <%@ page import="java.util.Calendar" %>
-<%@ page import="com.mysql.cj.conf.ConnectionUrlParser" %><%--
+<%@ page import="com.mysql.cj.conf.ConnectionUrlParser" %>
+<%--
   Created by IntelliJ IDEA.
   User: sw1tch
   Date: 17.06.24
@@ -15,13 +16,14 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8"%>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/quizHomePageStyles.css">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/navbarStyles.css">
     <link rel="icon" href="<%=request.getContextPath()%>/static/icons/logo.png" type="image/png">
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <%
             Dao myDb = (Dao)application.getAttribute(Dao.DBID);
             Quiz quiz = myDb.getQuiz(request.getParameter("quizid"));
@@ -39,7 +41,7 @@
     %>
 </head>
 <body>
-<%@ include file="navbar.jsp" %>
+    <%@ include file="navbar.jsp" %>
 
     <div class="container-one">
         <div class="name"><%=quiz.getName()%></div>
@@ -73,7 +75,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="container-for-table-parts" style="padding-left: 40px; padding-right: 40px;">
+                <div class="container-for-table-parts" style="margin-left: 40px; margin-right: 40px">
                     <div class="label-container" style="justify-content: center;">
                         <h4>Last Day Leader Board</h4>
                     </div>
@@ -144,7 +146,7 @@
                 <button type="button" id="edit" style="background-color: gray">Edit</button>
             <%}%>
             <% if(((User)session.getAttribute("user")).isAdmin()) {%>
-            <button type="button" id="Delete" style="background-color: red">Delete Quiz</button>
+            <button type="button" id="Delete" style="background-color: #ff0000">Delete Quiz</button>
             <%}%>
         </div>
         <div class="container-for-table-parts">
@@ -176,11 +178,11 @@
                     </tbody>
                 </table>
             </div>
-            <div class="label-container" style="justify-content: center">
+            <div class="label-container" style="justify-content: center; margin-top: 40px;">
                 <h4 style="color: blue">Summary stats</h4>
             </div>
-            <div class="rectangle" style="height: 220px; border: 2px solid blue; display: flow; text-align: left ">
-                <%if(history.size()>0){%>
+            <div class="rectangle" style="height: 160px; border: 2px solid blue; display: flow; text-align: left;">
+                <%if(!history.isEmpty()){%>
                     <h5>Average Score: <%= WritenQuiz.getAvgScore(history) %></h5>
                     <h5>Last Written: <%= WritenQuiz.getLastWritenDate(history) %></h5>
                     <h5>Total Written count: <%=history.size()%></h5>
@@ -197,6 +199,7 @@
             </div>
         </div>
     </div>
-   <script><%@include file="./scripts/quizHomePageScripts.js"%></script>
+
+    <script type="text/javascript" src="<%=request.getContextPath()%>/static/scripts/quizHomePageScripts.js"></script>
 </body>
 </html>

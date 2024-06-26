@@ -13,3 +13,4 @@ public class quizHome extends HttpServlet {
         request.getRequestDispatcher("generateQuizHomePage.jsp").forward(request,response);
     }
 }
+

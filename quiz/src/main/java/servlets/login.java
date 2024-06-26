@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -38,10 +39,10 @@ public class login extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             String res;
-
             if (dao.accountExists(username , Hasher.getPasswordHash(password))){
                 User curUser = dao.getUser(username , password);
-                request.getSession().setAttribute("user" , curUser);
+                HttpSession session = request.getSession(true);
+                session.setAttribute("user", curUser);
                 res = "found";
             }else{
                 res = "notFound";

@@ -10,6 +10,8 @@ function update() {
     }
     let url = '/personData?orderBy=' + encodeURIComponent(selectedValue);
     let result;
+    let hist = sessionStorage.getItem('history');
+    console.log(hist);
     fetch(url, {
         method: 'post',
         headers: {
@@ -47,3 +49,22 @@ function updateTable(newData) {
         cell3.innerHTML = ROW.dateString;
     });
 }
+
+$(window).on('beforeunload', function () {
+   if($(window).pendingRequests){
+       $(window).pendingRequests.forEach(function (req) {
+          req.abort(); 
+       });
+   } 
+});
+
+$(window).ajaxSend(function (event, jqXHR, options) {
+    $(window).pendingRequests = $(window).pendingRequests || [];
+    $(window).pendingRequests.push(jqXHR);
+   jqXHR.always(function () {
+       var index = $(window).pendingRequests.indexOf(jqXHR);
+       if(index > -1){
+           $(window).pendingRequests.splice(index, 1);
+       }
+   });
+});
