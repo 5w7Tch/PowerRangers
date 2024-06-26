@@ -89,6 +89,7 @@
     <select id="question-types" class="form-control form-select" aria-label="Default select example">
       <option>questionResponse</option>
       <option>fillInBlank</option>
+      <option>multipleChoice</option>
     </select>
   </div>
 
