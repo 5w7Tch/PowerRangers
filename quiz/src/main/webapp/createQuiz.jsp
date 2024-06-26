@@ -73,7 +73,7 @@
       <div id="addQuestBody" class="modal-body">
 
       </div>
-      <div class="modal-footer">
+      <div id="footer" class="modal-footer">
         <button type="button" id="submit-quest" class="btn btn-primary">Save changes</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
