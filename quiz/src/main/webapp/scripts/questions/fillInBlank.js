@@ -48,11 +48,18 @@ $(document).ready(function (){
     $('body').on('click','#add-answer',function (){
         addAnswerHtml();
     })
+
+    $('body').on('click','.remove-btn',function (){
+        $(this).closest('.answer-div').remove();
+    })
 })
 
 function addAnswerHtml(){
     let elem = `
-            <textarea style="margin: 5px auto" class="fillInBlank-answer form-control"></textarea>
+            <div class="answer-div">
+                <button class="remove-btn" style="background-color: #ff0000"></button>
+                <textarea style="margin: 5px auto" class="fillInBlank-answer form-control"></textarea>
+            </div>
         `
     $('#answers').append(elem);
 }
