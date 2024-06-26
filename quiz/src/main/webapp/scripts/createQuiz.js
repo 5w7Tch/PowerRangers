@@ -11,10 +11,10 @@ $(document).ready(function (){
             instance = questions[type-1];
         }else{
             instance = man.generateInstance(type);
-            if(questions.length%4===0){
-                $('#questions-container').append(`<div class="row mb-3" id="quest-box-${Math.floor(questions.length/4)}"></div>`);
+            if(questions.length%2===0){
+                $('#questions-container').append(`<div class="row mb-3" id="quest-box-${Math.floor(questions.length/2)}"></div>`);
             }
-            $('#quest-box-'+Math.floor(questions.length/4)).append(`
+            $('#quest-box-'+Math.floor(questions.length/2)).append(`
                 <div class="col">
                     <button class="prev-btn btn btn-primary" data-toggle="modal" data-target="#addQuest">${questions.length+1}</button>
                 </div>`);
@@ -23,7 +23,6 @@ $(document).ready(function (){
         instance.readInfo();
 
         $('#addQuest').modal('hide')
-        window.scrollTo(0, document.body.scrollHeight);
     })
 
     $('#showAddForm').click(function (){

@@ -13,6 +13,57 @@
 </head>
 <body>
 
+<div id="main-box">
+  <div class="container" id="desc-box">
+    <h2>Create a New Quiz</h2>
+    <form action="SaveQuizServlet" method="post">
+      <div class="form-group">
+        <label for="quizTitle">Quiz Title</label>
+        <input type="text" class="form-control" id="quizTitle" name="quizTitle" required>
+      </div>
+      <div class="form-group">
+        <label for="quizDescription">Quiz Description</label>
+        <textarea id="quizDescription" class="form-control" name="quizDescription" rows="3" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="randomQuestions">Randomize Questions</label>
+        <select class="form-control" id="randomQuestions" name="randomQuestions">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="pageMode">Page Mode</label>
+        <select class="form-control" id="pageMode" name="pageMode">
+          <option value="single">Single Page</option>
+          <option value="multiple">Multiple Pages</option>
+        </select>
+      </div>
+      <div class="form-group">
+
+        <label for="immediateCorrection">Immediate Correction</label>
+        <select class="form-control" id="immediateCorrection" name="immediateCorrection">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="practiceMode">Practice Mode</label>
+        <select class="form-control" id="practiceMode" name="practiceMode">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <button type="submit" id="submit-btn" class="form-control btn btn-success">Create Quiz</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="questions-container" class="overflow-auto container border border-primary rounded"></div>
+</div>
+
+
 <div class="modal fade" id="addQuest" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -30,57 +81,11 @@
   </div>
 </div>
 
-<div class="container" id="desc-box">
-  <h2>Create a New Quiz</h2>
-  <form action="SaveQuizServlet" method="post">
-    <div class="form-group">
-      <label for="quizTitle">Quiz Title</label>
-      <input type="text" class="form-control" id="quizTitle" name="quizTitle" required>
-    </div>
-    <div class="form-group">
-      <label for="quizDescription">Quiz Description</label>
-      <textarea id="quizDescription" class="form-control" name="quizDescription" rows="3" required></textarea>
-    </div>
-    <div class="form-group">
-      <label for="randomQuestions">Randomize Questions</label>
-      <select class="form-control" id="randomQuestions" name="randomQuestions">
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="pageMode">Page Mode</label>
-      <select class="form-control" id="pageMode" name="pageMode">
-        <option value="single">Single Page</option>
-        <option value="multiple">Multiple Pages</option>
-      </select>
-    </div>
-    <div class="form-group">
-
-      <label for="immediateCorrection">Immediate Correction</label>
-      <select class="form-control" id="immediateCorrection" name="immediateCorrection">
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="practiceMode">Practice Mode</label>
-      <select class="form-control" id="practiceMode" name="practiceMode">
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <button type="submit" id="submit-btn" class="form-control btn btn-success">Create Quiz</button>
-    </div>
-  </form>
-</div>
-
 <div id="button-container">
   <div class="form group">
     <button id="showAddForm" type="button" class="form-control btn btn-primary" data-toggle="modal" data-target="#addQuest">Add question</button>
   </div>
-  <div style="margin-left: 20px; width: 30%" class="form group">
+  <div style="width: 190px;margin-left: 10px" class="form group">
     <select id="question-types" class="form-control form-select" aria-label="Default select example">
       <option>questionResponse</option>
       <option>fillInBlank</option>
@@ -89,10 +94,6 @@
 
 </div>
 
-
-<div id="questions-container" class="container border border-primary rounded">
-
-</div>
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

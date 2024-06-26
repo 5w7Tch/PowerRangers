@@ -13,6 +13,9 @@ body {
 #button-container{
     display: flex;
     justify-content: center;
+    position: absolute;
+    bottom: 30px;
+    right: 140px;
 }
 
 #questions-container{
@@ -37,4 +40,11 @@ h2 {
 
 #questions-container{
     padding-top: 20px;
+    width: auto;
+    max-height: 500px;
+}
+
+#main-box{
+    display: flex;
+    justify-content: space-between;
 }
