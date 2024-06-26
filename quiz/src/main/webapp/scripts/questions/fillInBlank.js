@@ -1,19 +1,58 @@
 export class fillInBlank{
     getCreateHtml(type){
         return `
-            <p>${type}</p>
+            <p id="type" style="display: none">${type}</p>
+            <div class="form-group">
+                <label for="question">Question</label>
+                <textarea class="form-control" id="question" rows="3"></textarea>
+                <hr>
+                <h3 style="border: none" class="form-control">Answers</h3>
+                <div id="answers" >
+                    
+                </div>
+                <button id="add-answer" class="btn btn-success">add Answer</button> 
+            </div>
         `
     }
 
     readInfo(){
-
+        this.question = $('#question').val();
+        let answers = [];
+        $('.fillInBlank-answer').each(function (index){
+            let val = $(this).val();
+            answers.push(val);
+        });
+        this.answers = answers;
     }
 
     setPreview(){
+        $('#question').text(this.question);
+        let answers = this.answers;
+        for (let i = 0; i < answers.length; i++) {
+            addAnswerHtml();
+        }
+
+        $('.fillInBlank-answer').each(function (index){
+            $(this).text(answers[index]);
+        })
+
 
     }
 
     generateJson(){
 
     }
+}
+
+$(document).ready(function (){
+    $('body').on('click','#add-answer',function (){
+        addAnswerHtml();
+    })
+})
+
+function addAnswerHtml(){
+    let elem = `
+            <textarea style="margin: 5px auto" class="fillInBlank-answer form-control"></textarea>
+        `
+    $('#answers').append(elem);
 }
