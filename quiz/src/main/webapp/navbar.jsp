@@ -1,12 +1,11 @@
 <nav class = "navbar">
     <div class = "navDiv">
         <div>
-            <p class = "quizName">QuizTime</p>
+            <a href="/"><p class = "quizName">QuizTime</p></a>
         </div>
 
         <ul>
             <li><a href = "/">Home</a></li>
-            <li><a href = "/profile">Profile</a></li>
         </ul>
         <%
             if(request.getSession().getAttribute("user")==null){ %>

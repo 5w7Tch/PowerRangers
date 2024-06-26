@@ -1,59 +1,40 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
+    padding-bottom: 2%;
 }
-.container {
+
+#desc-box{
     max-width: 600px;
-    margin: 0 auto;
-    background: #fff;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
 }
+
+#button-container{
+    display: flex;
+    justify-content: center;
+}
+
+#questions-container{
+    margin-top: 10px;
+}
+
 h2 {
     text-align: center;
     color: #333;
 }
-.form-group {
-    margin-bottom: 15px;
+
+#submit-btn{
+    width: 50%;
+    margin-left: 25%;
+    margin-top: 20px;
 }
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
+
+.modal-header, .modal-footer{
+    border-top: none;
+    border-bottom: none;
 }
-.form-group input,
-.form-group textarea,
-.form-group select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-.btn {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-.btn:hover {
-    background-color: #218838;
-}
-.navbar {
-    background-color: #007bff;
-    padding: 10px;
-    color: #fff;
-    text-align: center;
-    margin-bottom: 20px;
-}
-.navbar a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 10px;
-}
-.navbar a:hover {
-    text-decoration: underline;
+
+#questions-container{
+    padding-top: 20px;
 }
