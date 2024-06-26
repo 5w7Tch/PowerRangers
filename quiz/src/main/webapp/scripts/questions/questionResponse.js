@@ -24,9 +24,5 @@ export class questionResponse{
     generateJson(){
 
     }
-
-    greet(){
-        console.log("Greet")
-    }
 }
 
