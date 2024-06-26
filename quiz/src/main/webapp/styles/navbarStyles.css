@@ -5,6 +5,10 @@
     padding: 0px;
 }
 
+a{
+    display: contents;
+}
+
 .navbar{
     background: #ff4200;
     font-family: Calibri, serif;

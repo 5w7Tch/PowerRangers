@@ -6,53 +6,88 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Quiz</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/createQuizStyles.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/navbarStyles.css">
+  <%--  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/navbarStyles.css">--%>
+<%--  <script type="text/javascript" src="<%=request.getContextPath()%>/static/scripts/questions/questionResponse.js"></script>--%>
 </head>
 <body>
-<%@ include file="navbar.jsp" %>
-<div class="container">
+
+<div class="modal fade" id="addQuest" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">New Question</h5>
+      </div>
+      <div id="addQuestBody" class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="submit-quest" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" id="desc-box">
   <h2>Create a New Quiz</h2>
   <form action="SaveQuizServlet" method="post">
     <div class="form-group">
       <label for="quizTitle">Quiz Title</label>
-      <input type="text" id="quizTitle" name="quizTitle" required>
+      <input type="text" class="form-control" id="quizTitle" name="quizTitle" required>
     </div>
     <div class="form-group">
       <label for="quizDescription">Quiz Description</label>
-      <textarea id="quizDescription" name="quizDescription" rows="3" required></textarea>
+      <textarea id="quizDescription" class="form-control" name="quizDescription" rows="3" required></textarea>
     </div>
     <div class="form-group">
       <label for="randomQuestions">Randomize Questions</label>
-      <select id="randomQuestions" name="randomQuestions">
+      <select class="form-control" id="randomQuestions" name="randomQuestions">
         <option value="true">Yes</option>
         <option value="false">No</option>
       </select>
     </div>
     <div class="form-group">
       <label for="pageMode">Page Mode</label>
-      <select id="pageMode" name="pageMode">
+      <select class="form-control" id="pageMode" name="pageMode">
         <option value="single">Single Page</option>
         <option value="multiple">Multiple Pages</option>
       </select>
     </div>
     <div class="form-group">
       <label for="immediateCorrection">Immediate Correction</label>
-      <select id="immediateCorrection" name="immediateCorrection">
+      <select class="form-control" id="immediateCorrection" name="immediateCorrection">
         <option value="true">Yes</option>
         <option value="false">No</option>
       </select>
     </div>
     <div class="form-group">
       <label for="practiceMode">Practice Mode</label>
-      <select id="practiceMode" name="practiceMode">
+      <select class="form-control" id="practiceMode" name="practiceMode">
         <option value="true">Yes</option>
         <option value="false">No</option>
       </select>
     </div>
-    <button type="submit" class="btn">Create Quiz</button>
+    <div class="form-group">
+      <button type="submit" id="submit-btn" class="form-control btn btn-success">Create Quiz</button>
+    </div>
   </form>
 </div>
-<script type="text/javascript" src="<%=request.getContextPath()%>/static/scripts/createQuiz.js"></script>
+
+<div id="button-container">
+  <button id="showAddForm" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addQuest">Add question</button>
+</div>
+
+
+<div id="questions-container" class="container border border-primary rounded">
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="module" src="<%=request.getContextPath()%>/static/scripts/createQuiz.js"></script>
 </body>
 </html>
