@@ -9,6 +9,6 @@ export class manager{
     }
 
     generateInstance(name){
-        return new this.questionClasses['questionResponse']();
+        return new this.questionClasses[name]();
     }
 }

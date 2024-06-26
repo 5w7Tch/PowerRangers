@@ -80,8 +80,9 @@
     <button id="showAddForm" type="button" class="form-control btn btn-primary" data-toggle="modal" data-target="#addQuest">Add question</button>
   </div>
   <div style="margin-left: 20px; width: 30%" class="form group">
-    <select class="form-control form-select" aria-label="Default select example">
+    <select id="question-types" class="form-control form-select" aria-label="Default select example">
       <option>questionResponse</option>
+      <option>fillInBlank</option>
     </select>
   </div>
 

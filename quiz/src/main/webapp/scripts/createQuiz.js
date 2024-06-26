@@ -27,7 +27,7 @@ $(document).ready(function (){
     })
 
     $('#showAddForm').click(function (){
-        let type = 'questionResponse';
+        let type = $('#question-types').val();
         $('#addQuestBody').html(man.generateInstance(type).getCreateHtml(type));
     })
 
