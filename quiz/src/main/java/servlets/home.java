@@ -17,7 +17,6 @@ public class home extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-
         if(request.getSession().getAttribute("user")!=null){
             request.getRequestDispatcher("/home.jsp").forward(request,response);
         }else{

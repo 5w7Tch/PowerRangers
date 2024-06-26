@@ -1,10 +1,19 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Serif', sans-serif;
+}
+
 .container-one{
-    width: 68%;
+    width: 67%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: transparent;
     padding-top: 40px;
+    padding-left: 10px;
+    margin-left: 10px;
 }
 .name {
     color: #ff4200;
@@ -22,6 +31,9 @@
     display: flex;
     background-color: transparent;
     padding-top: 2px;
+    padding-left: 10px;
+    justify-content: center;
+    padding-right: 10px;
 }
 
 .rectangle {
@@ -31,6 +43,9 @@
     position: relative;
     border-radius: 15px;
     border: 2px solid black;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    overflow: auto;
+    padding: 5px;
 }
 
 . {
@@ -39,21 +54,22 @@
 }
 
 
-button{
+.buttons button{
     font-weight: bold;
-    background-color: #ff4200;
+    background-color: #1fe100;
     color: #fff;
     font-size: 12px;
-    padding: 10px 45px;
+    padding: 10px 20px;
     border: 1px solid transparent;
     border-radius: 8px;
     letter-spacing: 0.5px;
     text-transform: uppercase;
     margin-top: 10px;
     cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
 }
 button:hover {
-    background-color: #ff2000; /* New background color on hover */
+    background-color: #18af00;
 }
 .buttons {
     display: flex;
@@ -64,11 +80,11 @@ button:hover {
 
 
 .container-for-table-parts {
-    text-align: center; /* Center align contents horizontally */
+    text-align: center;
     width: 20%;
 }
 .container-for-table-parts h4{
-    padding-right: 10px;
+
 }
 .container-for-table-parts h6{
     color: #ff4200;
@@ -82,6 +98,8 @@ button:hover {
     border-radius: 15px;
     border: 1px solid black;
     overflow: auto; /* Enable scrolling */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+
 }
 
 .label-container {
@@ -119,5 +137,9 @@ tr:nth-child(even) {
     width: 68%;
     display: flex;
     background-color: transparent;
-    padding-top: 0;
+    margin-top: 40px;
+}
+
+h5 {
+    margin-bottom: 10px;
 }

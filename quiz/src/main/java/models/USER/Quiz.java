@@ -9,9 +9,10 @@ public class Quiz {
     private Date creationDate;
     private String description;
     private boolean isPracticable;
+    private boolean isRandomQuestionSec;
     private double duration;
 
-    public Quiz(int id, int author, String name, Date creationDate, String description, boolean isPracticable, double duration) {
+    public Quiz(int id, int author, String name, Date creationDate, String description, boolean isPracticable, boolean rand, double duration) {
         this.id = id;
         this.author = author;
         this.name = name;
@@ -19,6 +20,7 @@ public class Quiz {
         this.description = description;
         this.isPracticable = isPracticable;
         this.duration = duration;
+        this.isRandomQuestionSec = rand;
     }
 
     public int getId() {
@@ -43,6 +45,10 @@ public class Quiz {
 
     public boolean isPracticable() {
         return isPracticable;
+    }
+
+    public boolean isQuestionSecRand() {
+        return isRandomQuestionSec;
     }
 
     public double getDuration() {

@@ -7,7 +7,8 @@
 <%@ page import="models.comparators.compareByDate" %>
 <%@ page import="java.sql.Date" %>
 <%@ page import="java.util.Calendar" %>
-<%@ page import="com.mysql.cj.conf.ConnectionUrlParser" %><%--
+<%@ page import="com.mysql.cj.conf.ConnectionUrlParser" %>
+<%--
   Created by IntelliJ IDEA.
   User: sw1tch
   Date: 17.06.24
@@ -15,18 +16,22 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8"%>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style><%@include file="./styles/quizHomePageStyles.css"%></style>
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/quizHomePageStyles.css">
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/navbarStyles.css">
+    <link rel="icon" href="<%=request.getContextPath()%>/static/icons/logo.png" type="image/png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <%
             Dao myDb = (Dao)application.getAttribute(Dao.DBID);
             Quiz quiz = myDb.getQuiz(request.getParameter("quizid"));
-            session.setAttribute("quiz", quiz);
         %>
     <title><%=quiz.getName()%></title>
     <%
         ArrayList<WritenQuiz> history = myDb.getQuizHistory(quiz.getId());
+        session.setAttribute("history", history);
         ArrayList<WritenQuiz> userHistory = new ArrayList<WritenQuiz>();
         for(int i = 0; i< history.size(); i++){
             if(history.get(i).getUserId() == ((User)session.getAttribute("user")).getId()){
@@ -36,6 +41,8 @@
     %>
 </head>
 <body>
+    <%@ include file="navbar.jsp" %>
+
     <div class="container-one">
         <div class="name"><%=quiz.getName()%></div>
         <a href="/account?id=<%=quiz.getAuthor()%>"><%=myDb.getUserById(quiz.getAuthor()).getUsername()%></a>
@@ -60,15 +67,15 @@
                                 for (int i = 0; i < history.size(); i++) {%>
                             <tr>
                                 <td><a href="/account?id=<%=history.get(i).getUserId()%>"><%=history.get(i).getWriterName()%></a></td>
-                                <td><%= history.get(i).getScore() %></td>
-                                <td><%= history.get(i).getTime().toString()%></td>
+                                <td><%= history.get(i).getScoreString() %></td>
+                                <td><%= history.get(i).getTimeString()%></td>
                             </tr>
                             <%}%>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                <div class="container-for-table-parts" style="padding-left: 40px; padding-right: 40px;">
+                <div class="container-for-table-parts" style="margin-left: 40px; margin-right: 40px">
                     <div class="label-container" style="justify-content: center;">
                         <h4>Last Day Leader Board</h4>
                     </div>
@@ -91,8 +98,8 @@
                                         if(history.get(i).getDate().compareTo(calendar.getTime()) >0){%>
                                         <tr>
                                             <td><a href="/account?id=<%=history.get(i).getUserId()%>"><%=history.get(i).getWriterName()%></a></td>
-                                            <td><%= history.get(i).getScore() %></td>
-                                            <td><%= history.get(i).getTime() %></td>
+                                            <td><%= history.get(i).getScoreString() %></td>
+                                            <td><%= history.get(i).getTimeString() %></td>
                                         </tr>
                                     <%}%>
                             <%}%>
@@ -117,8 +124,8 @@
                                 for (int i = 0; i < history.size(); i++) {%>
                             <tr>
                                 <td><a href="/account?id=<%=history.get(i).getUserId()%>"><%=history.get(i).getWriterName()%></a></td>
-                                <td><%= history.get(i).getScore() %></td>
-                                <td><%= history.get(i).getTime() %></td>
+                                <td><%= history.get(i).getScoreString() %></td>
+                                <td><%= history.get(i).getTimeString() %></td>
                             </tr>
                             <%}%>
                             </tbody>
@@ -130,7 +137,8 @@
 
 
         <div class="buttons">
-            <button type="button" id="start">Start</button>
+            <button type="button" id="startSinglePage">Start Single Page</button>
+            <button type="button" id="startMultiPage">Start Multi Page</button>
             <% if(quiz.isPracticable()) {%>
                 <button type="button" id="practise" style="background-color: blue">Practise</button>
             <%}%>
@@ -138,7 +146,7 @@
                 <button type="button" id="edit" style="background-color: gray">Edit</button>
             <%}%>
             <% if(((User)session.getAttribute("user")).isAdmin()) {%>
-            <button type="button" id="Delete" style="background-color: red">Delete Quiz</button>
+            <button type="button" id="Delete" style="background-color: #ff0000">Delete Quiz</button>
             <%}%>
         </div>
         <div class="container-for-table-parts">
@@ -146,9 +154,9 @@
                 <h4>Your History</h4>
                 <h6>Order By</h6>
                 <div class="radio-buttons">
-                    <label><input type="radio" onchange="updateTable()" name="options" value="Score">Score</label>
-                    <label><input type="radio" onchange="updateTable()" name="options" value="Time">Time</label>
-                    <label><input type="radio" onchange="updateTable()" name="options" value="Date">Date</label>
+                    <label><input type="radio" onchange="update()" name="options" value="Score">Score</label>
+                    <label><input type="radio" onchange="update()" name="options" value="Time">Time</label>
+                    <label><input type="radio" onchange="update()" name="options" value="Date">Date</label>
                 </div>
             </div>
             <div class="table-container">
@@ -162,19 +170,19 @@
                     <%
                         for (int i = 0; i < userHistory.size(); i++) {%>
                             <tr>
-                                <td><%= userHistory.get(i).getScore() %></td>
-                                <td><%= userHistory.get(i).getTime() %></td>
-                                <td><%= userHistory.get(i).getDate() %></td>
+                                <td><%= userHistory.get(i).getScoreString() %></td>
+                                <td><%= userHistory.get(i).getTimeString() %></td>
+                                <td><%= userHistory.get(i).getDateString() %></td>
                             </tr>
                     <%}%>
                     </tbody>
                 </table>
             </div>
-            <div class="label-container" style="justify-content: center">
+            <div class="label-container" style="justify-content: center; margin-top: 40px;">
                 <h4 style="color: blue">Summary stats</h4>
             </div>
-            <div class="rectangle" style="height: 220px; border: 2px solid blue; display: flow; text-align: left ">
-                <%if(history.size()>0){%>
+            <div class="rectangle" style="height: 160px; border: 2px solid blue; display: flow; text-align: left;">
+                <%if(!history.isEmpty()){%>
                     <h5>Average Score: <%= WritenQuiz.getAvgScore(history) %></h5>
                     <h5>Last Written: <%= WritenQuiz.getLastWritenDate(history) %></h5>
                     <h5>Total Written count: <%=history.size()%></h5>
@@ -191,6 +199,7 @@
             </div>
         </div>
     </div>
-    <script><%@include file="./scripts/quizHomePageScripts.js"%></script>
+
+    <script type="text/javascript" src="<%=request.getContextPath()%>/static/scripts/quizHomePageScripts.js"></script>
 </body>
 </html>

@@ -1,15 +1,17 @@
-function retrievePersonData() {
-        // Perform AJAX request to retrieve data
-        let radios = document.getElementsByName('options');
-        var selectedValue = null;
-        for (var i = 0; i < radios.length; i++) {
-            if (radios[i].checked) {
-                selectedValue = radios[i].value;
-                break;
-            }
+function update() {
+
+    let radios = document.getElementsByName('options');
+    var selectedValue = null;
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            selectedValue = radios[i].value;
+            break;
         }
+    }
     let url = '/personData?orderBy=' + encodeURIComponent(selectedValue);
     let result;
+    let hist = sessionStorage.getItem('history');
+    console.log(hist);
     fetch(url, {
         method: 'post',
         headers: {
@@ -23,8 +25,7 @@ function retrievePersonData() {
             return response.json();
         })
         .then(function(data) {
-            console.log("bla bla");
-            result = JSON.parse(data);
+            updateTable(data);
         })
         .catch(function(error) {
             console.error('There was a problem with fetch operation:', error.message);
@@ -32,13 +33,9 @@ function retrievePersonData() {
     return result;
 }
 
-function updateTable() {
-    // Example data to update the table
-    var newData = retrievePersonData();
-
+function updateTable(newData) {
     // Access the table body element
     var tableBody = document.getElementById("tableBody");
-
     // Clear existing rows
     tableBody.innerHTML = "";
     // Loop through the data and create rows
@@ -47,8 +44,27 @@ function updateTable() {
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
         var cell3 = row.insertCell(2);
-        cell1.innerHTML = ROW.score;
-        cell2.innerHTML = ROW.time;
-        cell3.innerHTML = ROW.date;
+        cell1.innerHTML = ROW.scoreString;
+        cell2.innerHTML = ROW.timeString;
+        cell3.innerHTML = ROW.dateString;
     });
 }
+
+$(window).on('beforeunload', function () {
+   if($(window).pendingRequests){
+       $(window).pendingRequests.forEach(function (req) {
+          req.abort(); 
+       });
+   } 
+});
+
+$(window).ajaxSend(function (event, jqXHR, options) {
+    $(window).pendingRequests = $(window).pendingRequests || [];
+    $(window).pendingRequests.push(jqXHR);
+   jqXHR.always(function () {
+       var index = $(window).pendingRequests.indexOf(jqXHR);
+       if(index > -1){
+           $(window).pendingRequests.splice(index, 1);
+       }
+   });
+});
