@@ -57,9 +57,10 @@ function addQuestionToDOMList(val){
         $('#questions-container').append(`<div class="row mb-3" id="quest-box-${Math.floor(val/2)}"></div>`);
     }
     $('#quest-box-'+Math.floor(val/2)).append(`
-                <div class="col">
-                    <button class="prev-btn btn btn-primary" data-toggle="modal" data-target="#addQuest">${val+1}</button>
-                </div>`);
+        <div class="col">
+            <button class="prev-btn btn btn-primary" data-toggle="modal" data-target="#addQuest">${val+1}</button>
+        </div>
+    `);
 }
 
 

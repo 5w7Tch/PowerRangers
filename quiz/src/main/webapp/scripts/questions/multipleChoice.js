@@ -16,30 +16,6 @@ export class multipleChoice{
                 <div id="answersContainer"></div>
                 <button id="addAnswerButton" style="background-color: #1fe100">Add Possible Answer</button>           
             </div>
-            <script>
-              document.getElementById('addAnswerButton').addEventListener('click', function() {
-                    var answersContainer = document.getElementById('answersContainer');
-                    var textareaId = '' + answersContainer.children.length;
-                    var textarea = document.createElement('textarea');
-                    var deleteBtn = document.createElement('button');
-                    deleteBtn.id = textareaId;
-                    deleteBtn.name = "delete";
-                    deleteBtn.addEventListener('click', function() {
-                        answersContainer.removeChild(textarea);
-                        answersContainer.removeChild(deleteBtn);
-                    });
-                    deleteBtn.style.backgroundColor = "#ff0000";
-                    textarea.className = 'form-control';
-                    textarea.style.marginBottom = '5px';
-                    textarea.id = textareaId;
-                    textarea.rows = 3;
-                    answersContainer.appendChild(deleteBtn);
-                    answersContainer.appendChild(textarea);
-                    
-              });
-              
-        
-            </script>
         `;
     }
 
@@ -88,5 +64,25 @@ export class multipleChoice{
     }
 }
 
-
+$(document).ready(function(){
+    $('body').on('click','#addAnswerButton',function (){
+        var answersContainer = document.getElementById('answersContainer');
+        var textareaId = '' + answersContainer.children.length;
+        var textarea = document.createElement('textarea');
+        var deleteBtn = document.createElement('button');
+        deleteBtn.id = textareaId;
+        deleteBtn.name = "delete";
+        deleteBtn.addEventListener('click', function() {
+            answersContainer.removeChild(textarea);
+            answersContainer.removeChild(deleteBtn);
+        });
+        deleteBtn.style.backgroundColor = "#ff0000";
+        textarea.className = 'form-control';
+        textarea.style.marginBottom = '5px';
+        textarea.id = textareaId;
+        textarea.rows = 3;
+        answersContainer.appendChild(deleteBtn);
+        answersContainer.appendChild(textarea);
+    })
+})
 
