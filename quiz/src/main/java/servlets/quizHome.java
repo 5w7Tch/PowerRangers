@@ -16,7 +16,7 @@ public class quizHome extends HttpServlet {
         String quiz = request.getParameter("quizid");
         Dao myDb = (Dao)request.getServletContext().getAttribute(Dao.DBID);
         try {
-            if(quiz != null && myDb.getQuiz(quiz) != null){
+            if(quiz != null && myDb.getQuiz(quiz) != null && request.getSession().getAttribute("user") != null){
                 request.getRequestDispatcher("generateQuizHomePage.jsp").forward(request,response);
             }else{
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
