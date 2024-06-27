@@ -1,8 +1,8 @@
-package services;
+package models.services;
 
 import models.DAO.mySqlDb;
 import models.friend.abstractions.IFriendRequest;
-import services.abstractions.IFriendRequestService;
+import models.services.abstractions.IFriendRequestService;
 
 import java.util.List;
 

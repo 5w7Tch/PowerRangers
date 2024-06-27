@@ -1,4 +1,4 @@
-package services.abstractions;
+package models.services.abstractions;
 
 import models.friend.abstractions.IFriendRequest;
 
