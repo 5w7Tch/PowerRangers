@@ -137,16 +137,18 @@
 
 
         <div class="buttons">
-            <button type="button" id="startSinglePage">Start Single Page</button>
-            <button type="button" id="startMultiPage">Start Multi Page</button>
+            <input class="button" type="submit" id="startSinglePage" value="Start Single Page">
+            <input class="button" type="submit" id="startMultiPage" value="Start Multi Page">
             <% if(quiz.isPracticable()) {%>
-                <button type="button" id="practise" style="background-color: blue">Practise</button>
+                <input class="button" type="submit" id="practise" value="Practise" style="background-color: blue">
             <%}%>
             <% if(quiz.getAuthor() == ((User)session.getAttribute("user")).getId()) {%>
-                <button type="button" id="edit" style="background-color: gray">Edit</button>
+                <input class="button" type="submit" id="edit" value="Edit" style="background-color: gray">
             <%}%>
             <% if(((User)session.getAttribute("user")).isAdmin()) {%>
-            <button type="button" id="Delete" style="background-color: #ff0000">Delete Quiz</button>
+            <form id="deleteForm" action="deleteQuiz?quizId=<%=quiz.getId()%>" method="post">
+                <input class="button" type="submit" value="Delete Quiz" id="delete" style="background-color: #ff0000" onclick="confirmDelete(event)">
+            </form>
             <%}%>
         </div>
         <div class="container-for-table-parts">

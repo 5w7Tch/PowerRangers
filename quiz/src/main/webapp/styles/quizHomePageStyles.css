@@ -54,7 +54,7 @@
 }
 
 
-.buttons button{
+.button{
     font-weight: bold;
     background-color: #1fe100;
     color: #fff;
@@ -67,8 +67,9 @@
     margin-top: 10px;
     cursor: pointer;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    width: 200px;
 }
-button:hover {
+.button:hover {
     background-color: #18af00;
 }
 .buttons {
@@ -76,6 +77,7 @@ button:hover {
     flex-direction: column;
     padding-left: 10px;
     padding-right: 10px;
+    align-items: center;
 }
 
 

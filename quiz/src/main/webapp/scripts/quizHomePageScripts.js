@@ -68,3 +68,13 @@ $(window).ajaxSend(function (event, jqXHR, options) {
        }
    });
 });
+
+function confirmDelete(event) {
+    event.preventDefault();
+
+    var userConfirmed = confirm("Are you sure you want to Delete this Quiz?");
+
+    if (userConfirmed) {
+        document.getElementById("deleteForm").submit();
+    }
+}

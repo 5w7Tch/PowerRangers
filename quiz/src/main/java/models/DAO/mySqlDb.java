@@ -155,4 +155,46 @@ public class mySqlDb implements Dao {
             }
         }
     }
+
+    @Override
+    public void eraseQuiz(String quizId) throws SQLException {
+        //delete from challenges
+        String query = "DELETE FROM challenges WHERE challenges.quizId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, quizId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //delete from questions
+        query = "DELETE FROM questions WHERE questions.quizId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, quizId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //delete from history
+        query = "DELETE FROM quizHistory WHERE quizHistory.quizId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, quizId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        //erase quiz
+        query = "DELETE FROM quizzes WHERE quizzes.quizId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, quizId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
