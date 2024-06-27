@@ -20,6 +20,9 @@ body {
 
 #questions-container{
     margin-top: 10px;
+    width: 15%;
+    padding-top: 20px;
+    max-height: 500px;
 }
 
 h2 {
@@ -36,12 +39,6 @@ h2 {
 .modal-header, .modal-footer{
     border-top: none;
     border-bottom: none;
-}
-
-#questions-container{
-    padding-top: 20px;
-    width: auto;
-    max-height: 500px;
 }
 
 #main-box{
