@@ -43,8 +43,58 @@ $(document).ready(function (){
         addRemainigQuestions();
     })
 
+    $('#submit-btn').click(function (){
+        if(!allDataSubmitted()){
+            console.log("submit quiz info first");
+            return;
+        }
 
+        let quizJson = generateJsonObject();
+        $.ajax({
+            url: '/createQuiz',
+            type: 'POST',
+            data: JSON.stringify(quizJson),
+            contentType: 'application/json; charset=UTF-8',
+            beforeSend: function (xhr){
+                $('#submit-btn').attr("disabled",true)
+                $('#showAddForm').attr("disabled",true)
+                $('#submit-btn').text('uploading...')
+            },
+            success: function (result,status,xhr){
+                // todo: redirect ot quiz home page
+                console.log(result.status)
+            },
+            error: function (xhr,status,error){
+                // todo: redirect to error page
+            }
+        })
+    })
 })
+
+function allDataSubmitted(){
+    return true;
+}
+
+
+function generateJsonObject(){
+    return {
+        'title' : $('#quizTitle').val(),
+        'description' : $('#quizDescription').val(),
+        'pageType' : $('#pageType').val(),
+        'isRandom' : $('#randomQuestions').val(),
+        'immediateCorrection' : $('#immediateCorrection').val(),
+        'practiceMode' : $('#practiceMode').val(),
+        'questions' : generateQuestionsJson()
+    }
+}
+
+function generateQuestionsJson(){
+    let jsonArr = [];
+    for(let i=0;i<questions.length;i++){
+        jsonArr.push(questions[i].generateJson());
+    }
+    return jsonArr;
+}
 
 function addRemainigQuestions(){
     questions.forEach(function (val,idx){

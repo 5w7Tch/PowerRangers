@@ -22,7 +22,11 @@ export class questionResponse{
     }
 
     generateJson(){
-
+        return {
+            'type' : 'questionResponse',
+            'question' : this.question,
+            'answer' : this.answer
+        }
     }
 }
 

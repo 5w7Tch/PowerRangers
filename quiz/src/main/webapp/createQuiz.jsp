@@ -16,7 +16,7 @@
 <div id="main-box">
   <div class="container" id="desc-box">
     <h2>Create a New Quiz</h2>
-    <form action="SaveQuizServlet" method="post">
+    <div>
       <div class="form-group">
         <label for="quizTitle">Quiz Title</label>
         <input type="text" class="form-control" id="quizTitle" name="quizTitle" required>
@@ -26,6 +26,13 @@
         <textarea id="quizDescription" class="form-control" name="quizDescription" rows="3" required></textarea>
       </div>
       <div class="form-group">
+        <label for="pageType">One Page or Multiple Page</label>
+        <select class="form-control" id="pageType" name="randomQuestions">
+          <option value="true">One Page</option>
+          <option value="false">Multiple Page</option>
+        </select>
+      </div>
+      <div class="form-group">
         <label for="randomQuestions">Randomize Questions</label>
         <select class="form-control" id="randomQuestions" name="randomQuestions">
           <option value="true">Yes</option>
@@ -33,14 +40,6 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="pageMode">Page Mode</label>
-        <select class="form-control" id="pageMode" name="pageMode">
-          <option value="single">Single Page</option>
-          <option value="multiple">Multiple Pages</option>
-        </select>
-      </div>
-      <div class="form-group">
-
         <label for="immediateCorrection">Immediate Correction</label>
         <select class="form-control" id="immediateCorrection" name="immediateCorrection">
           <option value="true">Yes</option>
@@ -55,9 +54,9 @@
         </select>
       </div>
       <div class="form-group">
-        <button type="submit" id="submit-btn" class="form-control btn btn-success">Create Quiz</button>
+        <button id="submit-btn" class="form-control btn btn-success">Create Quiz</button>
       </div>
-    </form>
+    </div>
   </div>
 
   <div id="questions-container" class="overflow-auto container border border-primary rounded"></div>
@@ -97,7 +96,7 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script type="module" src="<%=request.getContextPath()%>/static/scripts/createQuiz.js"></script>
