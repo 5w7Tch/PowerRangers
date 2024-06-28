@@ -89,9 +89,9 @@
       <option>questionResponse</option>
       <option>fillInBlank</option>
       <option>multipleChoice</option>
+      <option>matching</option>
     </select>
   </div>
-
 </div>
 
 

@@ -2,6 +2,7 @@
 export class multipleChoice{
     constructor() {
         this.answers = [];
+        this.score = 0;
     }
 
     getCreateHtml(type){
@@ -14,12 +15,15 @@ export class multipleChoice{
                 <textarea class="form-control" id="answer" rows="3"></textarea>
                 <label for="answer">Wrong Answers</label>
                 <div id="answersContainer"></div>
-                <button id="addAnswerButton" style="background-color: #1fe100">Add Possible Answer</button>           
+                <button id="addAnswerButton" style="background-color: #1fe100">Add Possible Answer</button>  
+                <label style="color: red;font-weight: bold;"> Score:</label>     
+                <input type="number" id="score" style="width: 80px" value="1">         
             </div>
         `;
     }
 
     readInfo(){
+        this.score = $('#score').val();
         this.question = $('#question').val();
         this.answers = [];
         let anss = this.answers;
@@ -32,6 +36,7 @@ export class multipleChoice{
     setPreview(){
         $('#question').text(this.question);
         $('#answer').text(this.answer);
+        $('#score').val(this.score);
         let idx = 0;
         var answersContainer = document.getElementById('answersContainer');
         answersContainer.innerHTML = '';
