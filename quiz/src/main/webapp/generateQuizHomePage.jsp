@@ -135,7 +135,6 @@
             </div>
         </div>
 
-
         <div class="buttons">
             <input class="button" type="submit" id="startSinglePage" value="Start Single Page">
             <input class="button" type="submit" id="startMultiPage" value="Start Multi Page">

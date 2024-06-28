@@ -13,6 +13,9 @@ import java.sql.SQLException;
 public class quizHome extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setHeader("Expires", "0");
         String quiz = request.getParameter("quizid");
         Dao myDb = (Dao)request.getServletContext().getAttribute(Dao.DBID);
         try {
