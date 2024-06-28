@@ -78,3 +78,12 @@ function confirmDelete(event) {
         document.getElementById("deleteForm").submit();
     }
 }
+function confirmClear(event) {
+    event.preventDefault();
+
+    var userConfirmed = confirm("Are you sure you want to clear this Quiz History?");
+
+    if (userConfirmed) {
+        document.getElementById("clearForm").submit();
+    }
+}

@@ -20,4 +20,5 @@ public interface Dao {
     User getUserById(Integer id) throws SQLException;
     ArrayList<WritenQuiz> getQuizHistory(Integer quizId) throws SQLException;
     void eraseQuiz(String quizId) throws SQLException;
+    void clearQuizHistory(String quizId) throws SQLException;
 }

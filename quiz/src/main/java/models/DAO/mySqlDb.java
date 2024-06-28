@@ -177,14 +177,7 @@ public class mySqlDb implements Dao {
             e.printStackTrace();
         }
         //delete from history
-        query = "DELETE FROM quizHistory WHERE quizHistory.quizId = ?";
-        try (Connection connection = dbSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, quizId);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        clearQuizHistory(quizId);
         //erase quiz
         query = "DELETE FROM quizzes WHERE quizzes.quizId = ?";
         try (Connection connection = dbSource.getConnection();
@@ -195,6 +188,17 @@ public class mySqlDb implements Dao {
             e.printStackTrace();
         }
 
+    }
+    @Override
+    public void clearQuizHistory(String quizId) throws SQLException {
+        String query = "DELETE FROM quizHistory WHERE quizHistory.quizId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, quizId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

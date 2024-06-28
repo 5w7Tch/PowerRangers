@@ -149,6 +149,9 @@
             <form id="deleteForm" action="deleteQuiz?quizId=<%=quiz.getId()%>" method="post">
                 <input class="button" type="submit" value="Delete Quiz" id="delete" style="background-color: #ff0000" onclick="confirmDelete(event)">
             </form>
+            <form id="clearForm" action="clearQuizHistory?quizId=<%=quiz.getId()%>" method="post">
+                <input class="button" type="submit" value="Clear Quiz History" id="clear" style="background-color: Yellow; color: black" onclick="confirmClear(event)">
+            </form>
             <%}%>
         </div>
         <div class="container-for-table-parts">
