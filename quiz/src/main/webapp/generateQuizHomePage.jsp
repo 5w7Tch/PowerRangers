@@ -136,7 +136,10 @@
         </div>
 
         <div class="buttons">
-            <input class="button" type="submit" id="startSinglePage" value="Start Single Page">
+            <form action="quizSinglePage?quizId=<%=quiz.getId()%>" method="post">
+                <input class="button" type="submit" id="startSinglePage" value="Start Single Page">
+            </form>
+
             <input class="button" type="submit" id="startMultiPage" value="Start Multi Page">
             <% if(quiz.isPracticable()) {%>
                 <input class="button" type="submit" id="practise" value="Practise" style="background-color: blue">

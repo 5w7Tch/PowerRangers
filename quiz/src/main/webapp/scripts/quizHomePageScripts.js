@@ -11,7 +11,7 @@ function update() {
     let url = '/personData?orderBy=' + encodeURIComponent(selectedValue);
     let result;
     let hist = sessionStorage.getItem('history');
-    console.log(hist);
+
     fetch(url, {
         method: 'post',
         headers: {
