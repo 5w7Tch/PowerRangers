@@ -3,8 +3,8 @@ package models.DAO;
 import models.USER.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
+import models.questions.Question;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -21,4 +21,5 @@ public interface Dao {
     ArrayList<WritenQuiz> getQuizHistory(Integer quizId) throws SQLException;
     void eraseQuiz(String quizId) throws SQLException;
     void clearQuizHistory(String quizId) throws SQLException;
+    ArrayList<Question> getQuizQuestions(String quizId) throws SQLException;
 }

@@ -3,6 +3,7 @@ package models.DAO;
 import models.USER.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
+import models.questions.Question;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.*;
@@ -199,6 +200,13 @@ public class mySqlDb implements Dao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public ArrayList<Question> getQuizQuestions(String quizId) throws SQLException {
+        ArrayList<Question> res = new ArrayList<>();
+
+        return res;
     }
 
 }

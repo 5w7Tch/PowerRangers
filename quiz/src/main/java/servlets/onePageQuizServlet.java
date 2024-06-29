@@ -18,9 +18,11 @@ public class onePageQuizServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String quizId = request.getParameter("quizId");
         request.getSession(false).setAttribute("history", null);
+        Dao db = (Dao)request.getServletContext().getAttribute(Dao.DBID);
         try {
-            request.getSession(false).setAttribute("quiz", ((Dao)request.getServletContext().getAttribute(Dao.DBID)).getQuiz(quizId));
+            request.getSession(false).setAttribute("quiz", db.getQuiz(quizId));
             request.getSession(false).setAttribute("startTime", new Date());
+            request.getSession(false).setAttribute("questions", db.getQuizQuestions(quizId));
             request.getRequestDispatcher("onePageQuiz.jsp").forward(request,response);
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
