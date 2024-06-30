@@ -1,8 +1,6 @@
-package servlets;
+package servlets.quizServlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import models.DAO.Dao;
-import models.USER.Quiz;
 import models.USER.WritenQuiz;
 import models.comparators.compareByDate;
 import models.comparators.compareByScore;
@@ -13,11 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 @WebServlet("/personData")
 public class quizPersonalDataServlet extends HttpServlet {

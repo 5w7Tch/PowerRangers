@@ -1,4 +1,4 @@
-package servlets;
+package servlets.quizServlets;
 
 import models.DAO.Dao;
 
@@ -9,18 +9,20 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/clearQuizHistory")
-public class clearQuizHistServlet extends HttpServlet {
+@WebServlet("/deleteQuiz")
+public class deleteQuizServlet extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         request.getSession().setAttribute("history", null);
         String quizId = request.getParameter("quizId");
         try {
-            ((Dao)request.getServletContext().getAttribute(Dao.DBID)).clearQuizHistory(quizId);
+            ((Dao)request.getServletContext().getAttribute(Dao.DBID)).eraseQuiz(quizId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        response.sendRedirect("/quiz?quizid=" + quizId);
+        response.sendRedirect("/");
     }
+
 }

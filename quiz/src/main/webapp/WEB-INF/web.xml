@@ -34,7 +34,7 @@
 
   <servlet>
     <servlet-name>createQuiz</servlet-name>
-    <servlet-class>servlets.createQuiz</servlet-class>
+    <servlet-class>servlets.quizServlets.createQuiz</servlet-class>
   </servlet>
 
   <servlet>
@@ -44,7 +44,7 @@
   
   <servlet>
     <servlet-name>quizHome</servlet-name>
-    <servlet-class>servlets.quizHome</servlet-class>
+    <servlet-class>servlets.quizServlets.quizHome</servlet-class>
   </servlet>
 
   <servlet-mapping>

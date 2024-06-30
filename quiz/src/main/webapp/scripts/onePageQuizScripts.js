@@ -56,45 +56,21 @@ function updateCountdown() {
 // Function to show timeout message
 function showTimeoutMessage() {
     clearInterval(countdownInterval);
-    document.getElementById('quizContent').style.display = 'none';
-    document.getElementById('timeoutMessage').style.display = 'block';
+    window.location.replace('/timeOut');
 }
-
-// Event listener for retake quiz button
-document.getElementById('retake').addEventListener('click', function() {
-    window.location.href = '/quiz?quizid=' + quizId;
-});
-
-// Event listener for go to account button
-document.getElementById('Account').addEventListener('click', function() {
-    window.location.href = '/';
-});
-
-// Event listener for retake quiz button
-document.getElementById('retakeQuiz').addEventListener('click', function() {
-    window.location.href = '/quiz?quizid=' + quizId;
-});
-
-// Event listener for go to account button
-document.getElementById('goToAccount').addEventListener('click', function() {
-    window.location.href = '/';
-});
 
 // Event listener for submit quiz button
 document.getElementById('submitQuiz').addEventListener('click', function() {
     clearInterval(countdownInterval);
     // Submit logic TO-DO
-    window.location.href = '/finished';
+    window.location.replace('/finished');
 });
-
-
 
 // Listen for visibility change events
 document.addEventListener('visibilitychange', function() {
     if (document.visibilityState !== 'visible') {
         clearInterval(countdownInterval);
-        document.getElementById('quizContent').style.display = 'none';
-        document.getElementById('cheatedMessage').style.display = 'block';
+        window.location.replace('/cheated');
     }
 });
 

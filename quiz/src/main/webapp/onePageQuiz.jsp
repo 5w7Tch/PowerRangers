@@ -24,18 +24,6 @@
 </head>
 <body>
 
-<div id="timeoutMessage" class="timeOut">
-    <p>Your Time is Out</p>
-    <button id="retakeQuiz">Retake</button>
-    <button id="goToAccount">Cancel</button>
-</div>
-
-<div id="cheatedMessage" class="timeOut">
-    <p>Visibility change detected! possibility of cheating Quiz! canceled!</p>
-    <button id="retake">Retake</button>
-    <button id="Account">Cancel</button>
-</div>
-
 <div id="quizContent">
     <div class="info">
         <div id="countdown" class="countDown">Time left: <span id="time">00:00:00</span> </div>

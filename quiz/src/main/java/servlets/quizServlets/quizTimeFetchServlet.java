@@ -1,4 +1,4 @@
-package servlets;
+package servlets.quizServlets;
 
 import models.USER.Quiz;
 import org.json.simple.JSONObject;
