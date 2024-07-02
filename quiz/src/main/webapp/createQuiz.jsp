@@ -58,8 +58,22 @@
       </div>
     </div>
   </div>
-
-  <div id="questions-container" class="overflow-auto container border border-primary rounded"></div>
+  <div class="container" style="margin-top:30px">
+    <div id="questions-container" class="overflow-auto container border border-primary rounded"></div>
+    <div id="button-container">
+      <div class="form-group">
+        <button id="showAddForm" type="button" class="form-control btn btn-primary" data-toggle="modal" data-target="#addQuest">Add question</button>
+      </div>
+      <div style="width: 190px;margin-left: 10px" class="form-group">
+        <select id="question-types" class="form-control form-select" aria-label="Default select example">
+          <option>questionResponse</option>
+          <option>fillInBlank</option>
+          <option>multipleChoice</option>
+          <option>matching</option>
+        </select>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -77,20 +91,6 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
-  </div>
-</div>
-
-<div id="button-container">
-  <div class="form group">
-    <button id="showAddForm" type="button" class="form-control btn btn-primary" data-toggle="modal" data-target="#addQuest">Add question</button>
-  </div>
-  <div style="width: 190px;margin-left: 10px" class="form group">
-    <select id="question-types" class="form-control form-select" aria-label="Default select example">
-      <option>questionResponse</option>
-      <option>fillInBlank</option>
-      <option>multipleChoice</option>
-      <option>matching</option>
-    </select>
   </div>
 </div>
 
