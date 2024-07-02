@@ -67,6 +67,10 @@ export class multipleChoice{
     generateJson() {
 
     }
+
+    isValid(){
+        return true;
+    }
 }
 
 $(document).ready(function(){

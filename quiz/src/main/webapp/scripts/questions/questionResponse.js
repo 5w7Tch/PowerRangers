@@ -28,5 +28,17 @@ export class questionResponse{
             'answer' : this.answer
         }
     }
+
+    isValid(){
+        return this.question!=='' && this.answer!=='';
+    }
+
+    getType(){
+        return 'questionResponse';
+    }
+
+    allertMsg(){
+        return 'Fill all Fields';
+    }
 }
 

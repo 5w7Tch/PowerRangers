@@ -9,12 +9,23 @@ $(document).ready(function (){
         let instance;
         if(isNumber(type)){
             instance = questions[type-1];
+            let tmpInstance = man.generateInstance(instance.getType());
+            tmpInstance.readInfo();
+            if(tmpInstance.isValid()){
+                instance.readInfo();
+            }else{
+                alert(instance.allertMsg());
+            }
         }else{
             instance = man.generateInstance(type);
-            addQuestionToDOMList(questions.length);
-            questions[questions.length]=instance;
+            instance.readInfo();
+            if(instance.isValid()){
+                addQuestionToDOMList(questions.length);
+                questions[questions.length]=instance;
+            }else{
+                alert(instance.allertMsg());
+            }
         }
-        instance.readInfo();
         $('#addQuest').modal('hide')
     })
 
@@ -37,10 +48,7 @@ $(document).ready(function (){
 
     $('body').on('click','#delete-quest',function (){
         let idx = $('#type').val();
-        questions.splice(idx,1);
-        $('#addQuest').modal('hide')
-        $('#questions-container').empty()
-        addRemainigQuestions();
+        deleteQuestion(idx);
     })
 
     $('#submit-btn').click(function (){
@@ -70,6 +78,13 @@ $(document).ready(function (){
         })
     })
 })
+
+function deleteQuestion(idx){
+    questions.splice(idx,1);
+    $('#addQuest').modal('hide')
+    $('#questions-container').empty()
+    addRemainigQuestions();
+}
 
 function allDataSubmitted(){
     return true;

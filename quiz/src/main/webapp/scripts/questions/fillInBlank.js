@@ -42,6 +42,10 @@ export class fillInBlank{
     generateJson(){
 
     }
+
+    isValid(){
+        return true;
+    }
 }
 
 $(document).ready(function (){

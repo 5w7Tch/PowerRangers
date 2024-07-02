@@ -68,6 +68,10 @@ export class matching{
     generateJson() {
 
     }
+
+    isValid(){
+        return true;
+    }
 }
 
 $(document).ready(function(){
