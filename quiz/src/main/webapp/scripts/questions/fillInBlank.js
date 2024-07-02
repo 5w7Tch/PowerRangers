@@ -11,6 +11,8 @@ export class fillInBlank{
                     
                 </div>
                 <button id="add-answer" class="btn btn-success">add Answer</button> 
+                <label style="color: red;font-weight: bold;"> Score:</label>     
+                <input type="number" id="score" style="width: 80px" value="1">
             </div>
         `
     }
@@ -23,6 +25,7 @@ export class fillInBlank{
             answers.push(val);
         });
         this.answers = answers;
+        this.score = $('#score').val();
     }
 
     setPreview(){
@@ -35,8 +38,7 @@ export class fillInBlank{
         $('.fillInBlank-answer').each(function (index){
             $(this).text(answers[index]);
         })
-
-
+        $('#score').val(this.score);
     }
 
     generateJson(){
@@ -45,6 +47,10 @@ export class fillInBlank{
 
     isValid(){
         return true;
+    }
+
+    getType(){
+        return 'fillInBlank';
     }
 }
 

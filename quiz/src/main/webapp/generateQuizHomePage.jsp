@@ -1,5 +1,5 @@
 <%@ page import="models.DAO.Dao" %>
-<%@ page import="models.USER.Quiz" %>
+<%@ page import="models.quizes.Quiz" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="models.USER.User" %>
 <%@ page import="java.util.ArrayList" %>

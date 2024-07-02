@@ -26,15 +26,15 @@
         <textarea id="quizDescription" class="form-control" name="quizDescription" rows="3" required></textarea>
       </div>
       <div class="form-group">
-        <label for="pageType">One Page or Multiple Page</label>
-        <select class="form-control" id="pageType" name="randomQuestions">
-          <option value="true">One Page</option>
-          <option value="false">Multiple Page</option>
+        <label for="randomQuestions">Randomize Questions</label>
+        <select class="form-control" id="randomQuestions" name="randomQuestions">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="randomQuestions">Randomize Questions</label>
-        <select class="form-control" id="randomQuestions" name="randomQuestions">
+        <label for="practiceMode">Practice Mode</label>
+        <select class="form-control" id="practiceMode" name="practiceMode">
           <option value="true">Yes</option>
           <option value="false">No</option>
         </select>
@@ -47,11 +47,8 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="practiceMode">Practice Mode</label>
-        <select class="form-control" id="practiceMode" name="practiceMode">
-          <option value="true">Yes</option>
-          <option value="false">No</option>
-        </select>
+        <label for="duration">Duration in minutes</label>
+        <input type="number" id="duration" class="form-control" value="60">
       </div>
       <div class="form-group">
         <button id="submit-btn" class="form-control btn btn-success">Create Quiz</button>

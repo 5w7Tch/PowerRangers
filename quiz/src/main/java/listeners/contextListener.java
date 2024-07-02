@@ -5,6 +5,7 @@ import models.DAO.dbCredentials;
 import models.DAO.mySqlDb;
 import models.DAO.Dao;
 
+import models.quizes.questions.Question;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.servlet.ServletContextEvent;
@@ -19,6 +20,8 @@ public class contextListener implements ServletContextListener  {
         source.setPassword(dbCredentials.password);
         Dao db = new mySqlDb(source);
         servletContextEvent.getServletContext().setAttribute(mySqlDb.DBID,db);
+
+        Question.registerTypes();
     }
 
     @Override

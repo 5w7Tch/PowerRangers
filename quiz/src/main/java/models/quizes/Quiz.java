@@ -1,4 +1,4 @@
-package models.USER;
+package models.quizes;
 
 import java.util.Date;
 
@@ -11,8 +11,9 @@ public class Quiz {
     private boolean isPracticable;
     private boolean isRandomQuestionSec;
     private double duration;
+    private boolean immediateCorrection;
 
-    public Quiz(int id, int author, String name, Date creationDate, String description, boolean isPracticable, boolean rand, double duration) {
+    public Quiz(int id, int author, String name, Date creationDate, String description, boolean isPracticable, boolean rand, double duration,boolean immediateCorrection) {
         this.id = id;
         this.author = author;
         this.name = name;
@@ -21,10 +22,15 @@ public class Quiz {
         this.isPracticable = isPracticable;
         this.duration = duration;
         this.isRandomQuestionSec = rand;
+        this.immediateCorrection=immediateCorrection;
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id){
+        this.id=id;
     }
 
     public int getAuthor() {
@@ -53,5 +59,9 @@ public class Quiz {
 
     public double getDuration() {
         return duration;
+    }
+
+    public boolean isImmediateCorrection() {
+        return immediateCorrection;
     }
 }

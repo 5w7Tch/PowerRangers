@@ -53,7 +53,7 @@ $(document).ready(function (){
 
     $('#submit-btn').click(function (){
         if(!allDataSubmitted()){
-            console.log("submit quiz info first");
+            alert("Fill all fields");
             return;
         }
 
@@ -87,7 +87,7 @@ function deleteQuestion(idx){
 }
 
 function allDataSubmitted(){
-    return true;
+    return $('#quizTitle').val()!=='' || $('#quizDescription').val()!=='';
 }
 
 
@@ -95,10 +95,10 @@ function generateJsonObject(){
     return {
         'title' : $('#quizTitle').val(),
         'description' : $('#quizDescription').val(),
-        'pageType' : $('#pageType').val(),
         'isRandom' : $('#randomQuestions').val(),
         'immediateCorrection' : $('#immediateCorrection').val(),
         'practiceMode' : $('#practiceMode').val(),
+        'duration' : $('#duration').val(),
         'questions' : generateQuestionsJson()
     }
 }

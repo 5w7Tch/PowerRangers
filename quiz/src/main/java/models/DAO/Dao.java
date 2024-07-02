@@ -1,10 +1,9 @@
 package models.DAO;
 
-import models.USER.Quiz;
+import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
