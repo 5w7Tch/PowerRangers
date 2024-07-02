@@ -11,8 +11,9 @@ public class Quiz {
     private boolean isPracticable;
     private boolean isRandomQuestionSec;
     private double duration;
+    private boolean isImmediateCorrection;
 
-    public Quiz(int id, int author, String name, Date creationDate, String description, boolean isPracticable, boolean rand, double duration) {
+    public Quiz(int id, int author, String name, Date creationDate, String description, boolean isPracticable, boolean rand, double duration, boolean immediateCorrection) {
         this.id = id;
         this.author = author;
         this.name = name;
@@ -21,6 +22,7 @@ public class Quiz {
         this.isPracticable = isPracticable;
         this.duration = duration;
         this.isRandomQuestionSec = rand;
+        this.isImmediateCorrection = immediateCorrection;
     }
 
     public int getId() {
@@ -54,4 +56,6 @@ public class Quiz {
     public double getDuration() {
         return duration;
     }
+
+    public boolean isImmediateCorrection() {return isImmediateCorrection;}
 }

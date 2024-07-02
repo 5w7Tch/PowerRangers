@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @WebServlet("/getQuizSessionAttribute")
 public class quizTimeFetchServlet extends HttpServlet {
@@ -23,6 +26,13 @@ public class quizTimeFetchServlet extends HttpServlet {
             JSONObject json = new JSONObject();
             json.put("quizTime", quiz.getDuration());
             json.put("quizId", quiz.getId());
+
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime nowPlus5Minutes = now.plusMinutes((long)quiz.getDuration());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            json.put("startDate", now.format(formatter));
+            json.put("endDate", nowPlus5Minutes.format(formatter));
 
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");

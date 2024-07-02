@@ -134,14 +134,17 @@
         </div>
 
         <div class="buttons">
-            <form action="quizSinglePage?quizId=<%=quiz.getId()%>" method="post">
-                <input class="button" type="submit" id="startSinglePage" value="Start Single Page">
-            </form>
-
-            <input class="button" type="submit" id="startMultiPage" value="Start Multi Page">
             <% if(quiz.isPracticable()) {%>
-                <input class="button" type="submit" id="practise" value="Practise" style="background-color: blue">
+                <h4 style="color: #007bff">Practise: </h4>
+                <div class="radio-buttons">
+                    <label><input type="radio" onchange="update()" name="practise" value="on">ON</label>
+                    <label><input type="radio" onchange="update()" name="practise" value="off">OFF</label>
+                </div>
             <%}%>
+            <button class="button" id="startSinglePage" name="<%=quiz.getId()%>">Start Single Page</button>
+            <button class="button" id="startMultiPage" name="<%=quiz.getId()%>">Start Multi Page</button>
+
+
             <% if(quiz.getAuthor() == ((User)session.getAttribute("user")).getId()) {%>
                 <input class="button" type="submit" id="edit" value="Edit" style="background-color: gray">
             <%}%>

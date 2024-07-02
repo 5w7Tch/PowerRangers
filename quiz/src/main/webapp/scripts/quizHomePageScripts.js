@@ -87,3 +87,35 @@ function confirmClear(event) {
         document.getElementById("clearForm").submit();
     }
 }
+
+document.getElementById('startSinglePage').addEventListener('click', function () {
+    let radios = document.getElementsByName('practise');
+    var selectedValue = null;
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            selectedValue = radios[i].value;
+            break;
+        }
+    }
+    if(selectedValue === 'off'){
+        window.location.href = '/quizSinglePage?practise=off&quizId='+this.getAttribute('name');
+    }else{
+        window.location.href = '/quizSinglePage?practise=on&quizId='+this.getAttribute('name');
+    }
+});
+
+document.getElementById('startMultiPage').addEventListener('click', function () {
+    let radios = document.getElementsByName('practise');
+    var selectedValue = null;
+    for (var i = 0; i < radios.length; i++) {
+        if (radios[i].checked) {
+            selectedValue = radios[i].value;
+            break;
+        }
+    }
+    if(selectedValue === 'off'){
+        window.location.href = '/quizMultiplePage?practise=off&quizId='+this.getAttribute('name');
+    }else{
+        window.location.href = '/quizMultiplePage?practise=on&quizId='+this.getAttribute('name');
+    }
+});

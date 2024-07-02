@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS quizzes (
       isPracticable BOOLEAN DEFAULT TRUE,
       areQuestionsRandom BOOLEAN default True,
       quizTime DOUBLE,
+      immediateCorrection boolean,
       FOREIGN KEY (author) REFERENCES users(userId)
 );
 
@@ -116,7 +117,7 @@ CREATE TABLE if not exists userAchievements(
 
 insert into users values (1,'nika','nika@', '34bff7be484da58a7c244a79ef278630f334a732',  true);
 
-insert into quizzes values (1,1,'ito arabets rostevan', sysdate(), 'it was created to ftest something', true, true, 30);
+insert into quizzes values (1,1,'ito arabets rostevan', sysdate(), 'it was created to ftest something', true, true, 30, true);
 
 insert into quizHistory values (1,1,1,DATE_SUB(NOW(), INTERVAL 10 MINUTE) ,sysdate() , 30);
 

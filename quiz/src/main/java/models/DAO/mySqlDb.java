@@ -104,7 +104,8 @@ public class mySqlDb implements Dao {
                     boolean isPracticable = resultSet.getBoolean("isPracticable");
                     boolean areQuestionsRandom = resultSet.getBoolean("areQuestionsRandom");
                     double quizTime = resultSet.getDouble("quizTime");
-                    return new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime);
+                    boolean immediateCorrection = resultSet.getBoolean("immediateCorrection");
+                    return new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime, immediateCorrection);
                 } else {
                     return null;
                 }

@@ -66,11 +66,7 @@ document.getElementById('submitQuiz').addEventListener('click', function() {
     window.location.replace('/finished');
 });
 
-// Listen for visibility change events
-document.addEventListener('visibilitychange', function() {
-    if (document.visibilityState !== 'visible') {
-        clearInterval(countdownInterval);
-        window.location.replace('/cheated');
-    }
-});
 
+window.addEventListener('beforeunload', function() {
+    sessionStorage.removeItem('timeRemaining');
+});
