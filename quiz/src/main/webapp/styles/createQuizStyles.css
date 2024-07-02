@@ -44,3 +44,27 @@ h2 {
     display: flex;
     justify-content: space-between;
 }
+
+@media screen and (max-width: 1170px) {
+    #questions-container{
+        width: 32%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    #questions-container{
+        width: 37%;
+    }
+}
+
+@media screen and (max-width: 868px) {
+    #questions-container{
+        width: 42%;
+    }
+}
+
+@media screen and (max-width: 772px) {
+    #questions-container{
+        width: 47%;
+    }
+}
