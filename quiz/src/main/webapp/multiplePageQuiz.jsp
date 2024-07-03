@@ -39,32 +39,12 @@
                 bla bla bla
             </div>
         </div>
-        <div class="question-box">
-            <div class="question-text">Fill in!</div>
-            <div class="question-text">
-                bla bla bla
-                <input type="text" id="ans_3" name="question_3" class="answer_response">
-                bla bla bla
-            </div>
-        </div><div class="question-box">
-        <div class="question-text">Fill in!</div>
-        <div class="question-text">
-            bla bla bla
-            <input type="text" id="ans_3" name="question_3" class="answer_response">
-            bla bla bla
-        </div>
-    </div><div class="question-box">
-        <div class="question-text">Fill in!</div>
-        <div class="question-text">
-            bla bla bla
-            <input type="text" id="ans_3" name="question_3" class="answer_response">
-            bla bla bla
-        </div>
-    </div>
 
         <%for(int i = 0; i< quests.size(); i++){%>
         <%=quests.get(i).getQuestion()%>
         <%}%>
+    </div>
+
         <div class="button-container">
 
             <%if(quiz.isImmediateCorrection()){%>
