@@ -1,6 +1,6 @@
 package models.quizes;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Quiz {
     private int id;

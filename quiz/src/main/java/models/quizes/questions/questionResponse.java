@@ -7,8 +7,8 @@ public class questionResponse extends Question{
     private String question;
     private String answer;
     private int score;
-    public questionResponse(JsonObject jsonObject,int authorId,int orderNum){
-        super(authorId,orderNum);
+    public questionResponse(JsonObject jsonObject,int questionId,int authorId,int orderNum){
+        super(questionId,authorId,orderNum);
         this.type = "questionResponse";
         question = jsonObject.get("question").getAsString();
         answer = jsonObject.get("answer").getAsString();

@@ -7,6 +7,7 @@ public abstract class Question {
     private static final Map<String, Class<?>> questions = new HashMap<>();
     protected int quizId;
     protected int orderNum;
+    protected int questionId;
 
     public static void registerTypes(){
         questions.put("questionResponse", questionResponse.class);
@@ -16,7 +17,8 @@ public abstract class Question {
         return questions.get(type);
     }
 
-    public Question(int quizId,int orderNum){
+    public Question(int questionId,int quizId,int orderNum){
+        this.questionId = questionId;
         this.quizId = quizId;
         this.orderNum = orderNum;
     }
@@ -24,8 +26,6 @@ public abstract class Question {
     public abstract void printObj();
 
     public abstract String getQuestionJson();
-
-
 
     public abstract String getType();
 
@@ -37,5 +37,12 @@ public abstract class Question {
 
     public int getOrderNum(){
         return orderNum;
+    }
+
+    public int getQuestionId(){
+        return questionId;
+    }
+    public void setQuestionId(int id){
+        questionId=id;
     }
 }

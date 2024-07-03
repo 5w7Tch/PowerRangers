@@ -3,6 +3,7 @@ package models.DAO;
 import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
+import models.quizes.questions.Question;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.*;
@@ -200,6 +201,35 @@ public class mySqlDb implements Dao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void addQuiz(Quiz quiz) throws SQLException {
+        Connection con = dbSource.getConnection();
+        PreparedStatement stm = con.prepareStatement("insert into quizzes" +
+                "(author, name, creationDate, description, isPracticable, areQuestionsRandom, immediateCorrection, quizTime) values (?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+        stm.setInt(1,quiz.getAuthor());
+        stm.setString(2,quiz.getName());
+        stm.setDate(3,quiz.getCreationDate());
+        stm.setString(4,quiz.getDescription());
+        stm.setBoolean(5,quiz.isPracticable());
+        stm.setBoolean(6,quiz.isQuestionSecRand());
+        stm.setBoolean(7,quiz.isImmediateCorrection());
+        stm.setDouble(8,quiz.getDuration());
+        int rowsAffected = stm.executeUpdate();
+        if(rowsAffected==0){
+            throw new SQLException();
+        }
+
+        ResultSet set = stm.getGeneratedKeys();
+        if(set.next()){
+            quiz.setId(set.getInt(1));
+        }
+    }
+
+    @Override
+    public void addQuestion(Question question){
+
     }
 
 }
