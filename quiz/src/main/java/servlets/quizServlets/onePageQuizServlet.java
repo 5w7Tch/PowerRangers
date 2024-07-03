@@ -22,10 +22,20 @@ public class onePageQuizServlet extends HttpServlet {
         Dao db = (Dao)request.getServletContext().getAttribute(Dao.DBID);
         try {
             request.getSession(false).setAttribute("quiz", db.getQuiz(quizId));
-            request.getSession(false).setAttribute("startTime", new Date());
+            Date oldStart = (Date) request.getSession().getAttribute("startTime");
+            if(oldStart != null){
+                Double time = db.getQuiz(quizId).getDuration();
+                time =  time * 60 * 1000L;
+                Date oldEnd = new Date(oldStart.getTime() + time.longValue()+60000);
+                int res = oldEnd.compareTo(new Date());
+                if(res<=0){
+                    request.getSession(false).setAttribute("startTime", new Date());
+                }
+            }else{
+                request.getSession(false).setAttribute("startTime", new Date());
+            }
             request.getSession(false).setAttribute("questions", db.getQuizQuestions(quizId));
             request.getSession(false).setAttribute("practise", practise);
-
             request.getRequestDispatcher("onePageQuiz.jsp").forward(request,response);
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

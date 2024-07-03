@@ -1,6 +1,7 @@
 package servlets.quizServlets;
 
 import models.USER.Quiz;
+import org.json.simple.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,19 +14,26 @@ import java.util.Date;
 @WebServlet("/finished")
 public class QuizFinishServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Date finishDate = new Date();
         Date startDate = (Date) request.getSession(false).getAttribute("startTime");
-
         long time1 = finishDate.getTime();
         long time2 = startDate.getTime();
-        double differenceInMinutes = (time1-time2)/(1000.0 * 60.0);
+        double differenceInMinutes = Math.abs((time1-time2)/(1000.0 * 60.0));
+        JSONObject json = new JSONObject();
+
         if(differenceInMinutes>((Quiz)request.getSession(false).getAttribute("quiz")).getDuration()+1){
-            //give him window where he is notified that he took to mush time and can restart or go to his home page.
-            //this will happen only if quiz writer cheats and changes client side code.
-            //so we can even ban him for doing this, erase his account and give red banner that he cheated
+            json.put("bad", 1);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json.toString());
         }else{
-            //display quiz result page
+            //remember
+
+            json.put("bad", 0);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json.toString());
         }
     }
 }

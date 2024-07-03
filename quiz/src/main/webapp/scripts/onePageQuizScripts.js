@@ -1,6 +1,7 @@
 let timeRemaining;
 let quizId = 0;
 
+
 function setState(data){
     let lastEndDate = new Date(sessionStorage.getItem('endTime'));
     if(lastEndDate == null){
@@ -81,3 +82,31 @@ window.addEventListener('beforeunload', function() {
     }
 });
 
+function radioChange(thisObj, name) {
+    const radios = document.getElementsByName(name.id);
+    for (let i = 0; i < radios.length; i++) {
+        radios[i].style.backgroundColor = '#f9f9f9'
+    }
+    thisObj.style.backgroundColor = "yellow";
+}
+
+
+function questionResponseChange(name) {
+
+}
+
+function fillInChange(name) {
+
+}
+
+function matchChange(name) {
+
+}
+
+function pictureResponseChange(name) {
+
+}
+
+function multiResponseChange(name) {
+
+}

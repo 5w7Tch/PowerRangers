@@ -79,16 +79,44 @@ function showTimeoutMessage() {
     window.location.replace('/timeOut');
 }
 
+
+
 function finish() {
     clearInterval(countdownInterval);
-    // Submit logic TO-DO
-    window.location.replace('/finished');
+
+
+    fetch('/finished', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ inputs: inputValues })
+    })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            if(data.bad == 1){
+                window.location.replace('/timeOut');
+            }else{
+                window.location.replace('/success');
+            }
+        })
+        .catch((error) => {
+            console.error('There was a problem with fetch operation:', error.message);
+        });
+
 }
+
 
 // Event listener for submit quiz button
 document.getElementById('submitQuiz').addEventListener('click', function() {
     finish();
 });
+
 
 window.addEventListener('beforeunload', function() {
     for (let i = 0; i < document.querySelectorAll('.question-box').length; i++) {
@@ -156,3 +184,31 @@ document.getElementById('prevButton').addEventListener('click', function() {
 
 
 });
+
+function radioChange(thisObj, name) {
+    const radios = document.getElementsByName(name.id);
+    for (let i = 0; i < radios.length; i++) {
+        radios[i].style.backgroundColor = '#f9f9f9'
+    }
+    thisObj.style.backgroundColor = "yellow";
+}
+
+function questionResponseChange(name) {
+
+}
+
+function fillInChange(name) {
+
+}
+
+function matchChange(name) {
+
+}
+
+function pictureResponseChange(name) {
+
+}
+
+function multiResponseChange(name) {
+    
+}
