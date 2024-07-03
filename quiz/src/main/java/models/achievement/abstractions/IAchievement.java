@@ -7,7 +7,7 @@ import java.util.Date;
 public interface IAchievement
 {
     int getAchievementId();
-    void setAchievementId();
+    void setAchievementId(int id);
     String getName();
     void setName(String name);
     String getIcon();
