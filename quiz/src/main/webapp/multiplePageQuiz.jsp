@@ -32,22 +32,21 @@
         <div class="question-box">
             <div class="question-text">question?</div>
             <ul class="answers">
-                <input type="text" id="ans_2" name="question_2" class="answer_response">
+                <div class="answer_response" contenteditable="true"></div>
             </ul>
         </div>
         <div class="question-box">
             <div class="question-text">Fill in!</div>
             <div class="question-text">
                 bla bla bla
-                <input type="text" id="ans_3" name="question_3" class="answer_response">
+                <div class="answer_response" contenteditable="true"></div>
                 bla bla bla
             </div>
         </div>
 
-
-<%--        <%for(int i = 0; i< quests.size(); i++){%>--%>
-<%--        <%=quests.get(i).getQuestion()%>--%>
-<%--        <%}%>--%>
+        <%for(int i = 0; i< quests.size(); i++){%>
+        <%=quests.get(i).getQuestion()%>
+        <%}%>
         <div class="button-container">
 
             <%if(quiz.isImmediateCorrection()){%>

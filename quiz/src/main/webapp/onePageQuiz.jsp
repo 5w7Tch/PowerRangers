@@ -29,8 +29,21 @@
         <div id="countdown" class="countDown">Time left: <span id="time">00:00:00</span> </div>
         <button id="submitQuiz">Submit</button>
     </div>
-
     <div class="quiz-container">
+        <div class="question-box">
+            <div class="question-text">question?</div>
+            <ul class="answers">
+                <div class="answer_response" contenteditable="true"></div>
+            </ul>
+        </div>
+        <div class="question-box">
+            <div class="question-text">Fill in!</div>
+            <div class="question-text">
+                bla bla bla
+                <div class="answer_response" contenteditable="true"></div>
+                bla bla bla
+            </div>
+        </div>
         <%for(int i = 0; i< quests.size(); i++){%>
                 <%=quests.get(i).getQuestion()%>
         <%}%>

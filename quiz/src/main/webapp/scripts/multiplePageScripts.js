@@ -17,10 +17,12 @@ function setState(data){
         sessionStorage.setItem('endTime', new Date(data.endDate));
     }else{
         timeRemaining = lastEndDate-(new Date());
-        currentQuestionIndex = sessionStorage.getItem('currentQuestion');
-
-
-        questions = sessionStorage.getItem('quiz');
+        if(sessionStorage.getItem('currentQuestion') != null){
+            currentQuestionIndex = Number.parseInt(sessionStorage.getItem('currentQuestion'));
+        }
+        for (let i = 0; i < questions.length; i++) {
+            questions[i].innerHTML = sessionStorage.getItem('quest'+i);
+        }
     }
     quizId = data.quizId;
 
@@ -44,6 +46,7 @@ function fetchQuizAttribute() {
         .then(function(data) {
 
             setState(data);
+            loadFirstQuest();
             updateCountdown();
             countdownInterval = setInterval(updateCountdown, 1000);
         })
@@ -67,9 +70,6 @@ function updateCountdown() {
         document.getElementById('time').textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         timeRemaining -= 1000;
         // Store timeRemaining in sessionStorage to persist across page reloads
-
-        sessionStorage.setItem('quiz', questions);
-        sessionStorage.setItem('currentQuestion', currentQuestionIndex);
     }
 }
 
@@ -90,19 +90,14 @@ document.getElementById('submitQuiz').addEventListener('click', function() {
     finish();
 });
 
+window.addEventListener('beforeunload', function() {
+    for (let i = 0; i < document.querySelectorAll('.question-box').length; i++) {
+        sessionStorage.setItem('quest'+i, document.querySelectorAll('.question-box')[i].innerHTML);
+    }
+});
 
-
-
-// Load the first question
-
-loadFirstQuest();
 
 function loadFirstQuest() {
-    currentQuestionIndex = 0;
-    let cur = sessionStorage.getItem('currentQuestion');
-    if (cur) {
-        currentQuestionIndex = cur;
-    }
     questions[currentQuestionIndex].style.display = 'block';
     questions[currentQuestionIndex].classList.add('slide-in', 'active');
 }
@@ -117,6 +112,7 @@ function showQuestion(index) {
         questions[currentQuestionIndex].style.display = 'none';
 
         currentQuestionIndex = index;
+        sessionStorage.setItem('currentQuestion',currentQuestionIndex);
         questions[currentQuestionIndex].style.display = 'block';
         questions[currentQuestionIndex].classList.add('slide-in', 'active');
 
@@ -149,7 +145,7 @@ document.getElementById('nextButton').addEventListener('click', function() {
     if (currentQuestionIndex < questions.length - 1) {
         showQuestion(currentQuestionIndex + 1);
     }
-    console.log('next');
+
 
 });
 
@@ -157,6 +153,6 @@ document.getElementById('prevButton').addEventListener('click', function() {
     if (currentQuestionIndex > 0) {
         showQuestion(currentQuestionIndex - 1);
     }
-    console.log('prev');
+
 
 });

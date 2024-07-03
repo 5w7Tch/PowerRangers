@@ -1,6 +1,25 @@
 let timeRemaining;
 let quizId = 0;
 
+function setState(data){
+    let lastEndDate = new Date(sessionStorage.getItem('endTime'));
+    if(lastEndDate == null){
+        sessionStorage.clear();
+        timeRemaining = data.quizTime * 60000;
+        sessionStorage.setItem('endTime', new Date(data.endDate));
+    }else if(lastEndDate<(new Date(data.startDate))){
+        sessionStorage.clear();
+        timeRemaining = data.quizTime * 60000;
+        sessionStorage.setItem('endTime', new Date(data.endDate));
+    }else{
+        timeRemaining = lastEndDate-(new Date());
+        for (let i = 0; i < document.querySelectorAll('.question-box').length; i++) {
+            document.querySelectorAll('.question-box')[i].innerHTML = sessionStorage.getItem('quest'+i);
+        }
+    }
+    quizId = data.quizId;
+}
+
 // Function to fetch quiz attributes and initialize timer
 function fetchQuizAttribute() {
     fetch('/getQuizSessionAttribute', {
@@ -16,16 +35,7 @@ function fetchQuizAttribute() {
             return response.json();
         })
         .then(function(data) {
-            // Check if there is already time remaining stored in sessionStorage
-            timeRemaining = sessionStorage.getItem('timeRemaining');
-            if (timeRemaining === null) {
-                // If not stored, calculate from server data
-                timeRemaining = data.quizTime * 60000;
-            } else {
-                // If stored, parse it as integer
-                timeRemaining = parseInt(timeRemaining);
-            }
-            quizId = data.quizId;
+            setState(data);
             updateCountdown(); // Update countdown initially
             countdownInterval = setInterval(updateCountdown, 1000); // Start countdown
         })
@@ -49,7 +59,6 @@ function updateCountdown() {
         document.getElementById('time').textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         timeRemaining -= 1000;
         // Store timeRemaining in sessionStorage to persist across page reloads
-        sessionStorage.setItem('timeRemaining', timeRemaining);
     }
 }
 
@@ -66,7 +75,9 @@ document.getElementById('submitQuiz').addEventListener('click', function() {
     window.location.replace('/finished');
 });
 
-
 window.addEventListener('beforeunload', function() {
-    sessionStorage.removeItem('timeRemaining');
+    for (let i = 0; i < document.querySelectorAll('.question-box').length; i++) {
+        sessionStorage.setItem('quest'+i, document.querySelectorAll('.question-box')[i].innerHTML);
+    }
 });
+
