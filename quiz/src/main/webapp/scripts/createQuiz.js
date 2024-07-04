@@ -39,7 +39,6 @@ $(document).ready(function (){
     })
 
     $('#questions-container').on('click','.prev-btn',function (){
-        console.log($('#delete-quest').length)
         $('#delete-quest').remove();
         let id = $(this).text();
         let instance = questions[id-1];

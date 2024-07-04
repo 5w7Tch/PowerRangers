@@ -45,6 +45,50 @@ h2 {
     justify-content: space-between;
 }
 
+.button-container{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 5px;
+}
+
+.score-container{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.multipleAnswer-footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.picture-container{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.picture-container button{
+    border-radius: 2px;
+    background-color: aquamarine;
+    margin-top: 7px;
+}
+
+#imagePreview{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-height: 40%;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
 @media screen and (max-width: 1170px) {
     #questions-container{
         width: 32%;

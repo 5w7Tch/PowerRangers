@@ -66,7 +66,10 @@
           <option>questionResponse</option>
           <option>fillInBlank</option>
           <option>multipleChoice</option>
+          <option>multipleAnswerChoice</option>
+          <option>multipleAnswerQuestion</option>
           <option>matching</option>
+          <option>pictureResponse</option>
         </select>
       </div>
     </div>
