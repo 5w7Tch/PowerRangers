@@ -4,6 +4,9 @@ let questions = [];
 let man = new manager();
 
 $(document).ready(function (){
+
+
+
     $('#submit-quest').click(function (){
         let type = $('#type').text();
         let instance;

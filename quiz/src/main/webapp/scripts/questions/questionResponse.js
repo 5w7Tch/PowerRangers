@@ -45,5 +45,8 @@ export class questionResponse{
     allertMsg(){
         return 'Fill all Fields';
     }
+
+
+
 }
 

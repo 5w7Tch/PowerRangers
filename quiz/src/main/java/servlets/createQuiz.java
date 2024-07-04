@@ -75,13 +75,8 @@ public class createQuiz extends HttpServlet {
                 Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
                 db.addQuestion(question);
 
-            } catch (InstantiationException e) {
-                throw new RuntimeException(e);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            } catch (InvocationTargetException e) {
-                throw new RuntimeException(e);
-            } catch (NoSuchMethodException e) {
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                     NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
         }
