@@ -1,5 +1,7 @@
 package models.quizes.questions;
 
+import com.google.gson.JsonObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,13 +25,22 @@ public abstract class Question {
         this.orderNum = orderNum;
     }
     
-    public abstract void printObj();
+    public void printObj(){
+        System.out.println(getQuestionId());
+        System.out.println(getType());
+        System.out.println(getQuestionJson());
+        System.out.println(getAnswerJson());
+        System.out.println(getOrderNum());
+        System.out.println(getScore());
+        System.out.println(getQuizId());
+    }
 
     public abstract String getQuestionJson();
+    public abstract String getAnswerJson();
 
     public abstract String getType();
 
-    public abstract int getScore();
+    public abstract double getScore();
 
     public int getQuizId(){
         return quizId;
@@ -45,4 +56,6 @@ public abstract class Question {
     public void setQuestionId(int id){
         questionId=id;
     }
+
+    public abstract JsonObject generateJson();
 }

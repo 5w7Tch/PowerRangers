@@ -1,31 +1,42 @@
 package models.quizes.questions;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class questionResponse extends Question{
     private String type;
-    private String question;
-    private String answer;
-    private int score;
+    private String questionJson;
+    private String answerJson;
+    private double score;
     public questionResponse(JsonObject jsonObject,int questionId,int authorId,int orderNum){
         super(questionId,authorId,orderNum);
         this.type = "questionResponse";
-        question = jsonObject.get("question").getAsString();
-        answer = jsonObject.get("answer").getAsString();
-        score = jsonObject.get("score").getAsInt();
+        questionJson = jsonObject.get("question").getAsString();
+        answerJson = jsonObject.get("answer").getAsString();
+        score = jsonObject.get("score").getAsDouble();
     }
 
-    public String getQuestion() {
-        return question;
+    public questionResponse(int questionId,int quizId,String type,String questionJson,String answerJson,int orderNum,double score){
+        super(questionId,quizId,orderNum);
+        this.type = type;
+        this.questionJson = questionJson;
+        this.answerJson = answerJson;
+        this.score = score;
     }
 
     @Override
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 
-    public String getAnswer() {
-        return answer;
+    @Override
+    public JsonObject generateJson() {
+        JsonObject object = new JsonObject();
+        object.addProperty("type",this.type);
+        object.addProperty("question", this.questionJson);
+        object.addProperty("answer", this.answerJson);
+        object.addProperty("score",this.score);
+        return object;
     }
 
     @Override
@@ -33,14 +44,13 @@ public class questionResponse extends Question{
         return type;
     }
 
-
     @Override
-    public void printObj() {
-        System.out.println(type+" "+question+" "+answer+" "+score);
+    public String getQuestionJson() {
+        return this.questionJson;
     }
 
     @Override
-    public String getQuestionJson() {
-        return "";
+    public String getAnswerJson() {
+        return this.answerJson;
     }
 }

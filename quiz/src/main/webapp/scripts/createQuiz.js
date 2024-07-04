@@ -2,9 +2,14 @@ import {manager} from "/static/scripts/questions/manager.js"
 
 let questions = [];
 let man = new manager();
+let isEditPage = false;
 
 $(document).ready(function (){
 
+    if($('#editQuizId').length > 0){
+        isEditPage = true;
+        initEditPage($('#editQuizId').text());
+    }
 
 
     $('#submit-quest').click(function (){
@@ -61,9 +66,19 @@ $(document).ready(function (){
         }
 
         let quizJson = generateJsonObject();
+        let url;
+        let method;
+        if(isEditPage){
+            url = '/createQuiz?quizId='+$('#editQuizId').text();
+            method = 'put';
+        }else{
+            url = '/createQuiz';
+            method = 'post';
+        }
+
         $.ajax({
-            url: '/createQuiz',
-            type: 'POST',
+            url: url,
+            type: method,
             data: JSON.stringify(quizJson),
             contentType: 'application/json; charset=UTF-8',
             beforeSend: function (xhr){
@@ -73,10 +88,11 @@ $(document).ready(function (){
             },
             success: function (result,status,xhr){
                 // todo: redirect ot quiz home page
+                window.location.href = "/";
                 console.log(result.status)
             },
             error: function (xhr,status,error){
-                // todo: redirect to error page
+                // todo: redirect to 500 error page
             }
         })
     })
@@ -129,6 +145,61 @@ function addQuestionToDOMList(val){
             <button class="prev-btn btn btn-primary" data-toggle="modal" data-target="#addQuest">${val+1}</button>
         </div>
     `);
+}
+
+function initEditPage(id){
+    $.ajax({
+        url: '/editQuiz',
+        type: 'POST',
+        data: JSON.stringify({"quizId":id}),
+        contentType: 'application/json; charset=UTF-8',
+        beforeSend: function (xhr){
+            $('#submit-btn').attr("disabled",true)
+            $('#showAddForm').attr("disabled",true)
+            $('#submit-btn').text('wait...')
+        },
+        success: function (result,status,xhr){
+            fillValues(result);
+            $('#submit-btn').attr("disabled",false)
+            $('#showAddForm').attr("disabled",false)
+            $('#submit-btn').text('Submit')
+        },
+        error: function (xhr,status,error){
+            // todo: redirect to 500 error page
+        }
+    })
+}
+
+function fillValues(data){
+    addQuizInfo(data);
+    addQuestions(data);
+}
+
+function addQuizInfo(data){
+    $('#quizTitle').val(data.title);
+    $('#quizDescription').val(data.description);
+    generateBoolean($('#randomQuestions'),data.randomSeq)
+    generateBoolean($('#practiceMode'),data.isPracticable)
+    generateBoolean($('#immediateCorrection'),data.immediateCorrection)
+    $('#duration').val(data.duration);
+}
+
+function addQuestions(data){
+    let quests = data.questions;
+    for(let i=0;i<quests.length;i++){
+        let instance = man.generateInstance(quests[i].type)
+        instance.setValues(quests[i].answer,quests[i].question,quests[i].score)
+        addQuestionToDOMList(questions.length)
+        questions[questions.length] = instance;
+    }
+}
+
+function generateBoolean(tag,bool){
+    if(bool){
+        tag.val("true");
+    }else{
+        tag.val("false");
+    }
 }
 
 

@@ -13,6 +13,12 @@ export class questionResponse{
         `;
     }
 
+    setValues(answer,question,score){
+        this.question=question;
+        this.answer=answer;
+        this.score=score;
+    }
+
     readInfo(){
         this.question = $('#question').val();
         this.answer = $('#answer').val();

@@ -6,8 +6,10 @@ import models.USER.WritenQuiz;
 import models.quizes.questions.Question;
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class mySqlDb implements Dao {
     private final BasicDataSource dbSource;
@@ -92,7 +94,7 @@ public class mySqlDb implements Dao {
     public Quiz getQuiz(String quizId) throws SQLException {
         String query = "SELECT * FROM quizzes WHERE quizId = ?";
         try (Connection connection = dbSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+            PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, quizId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -228,8 +230,62 @@ public class mySqlDb implements Dao {
     }
 
     @Override
-    public void addQuestion(Question question){
+    public void addQuestion(Question question) throws SQLException {
+        Connection con = dbSource.getConnection();
+        PreparedStatement stm = con.prepareStatement("insert into questions (quizId, type, questionJson, answerJson, orderNum, score) values (?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+        stm.setInt(1,question.getQuizId());
+        stm.setString(2,question.getType());
+        stm.setString(3,question.getQuestionJson());
+        stm.setString(4,question.getAnswerJson());
+        stm.setInt(5,question.getOrderNum());
+        stm.setDouble(6,question.getScore());
+        int rowsAffected = stm.executeUpdate();
+        if(rowsAffected==0){
+            throw new SQLException();
+        }
+        ResultSet set = stm.getGeneratedKeys();
+        if(set.next()){
+            question.setQuestionId(set.getInt(1));
+        }
 
+        question.printObj();
+
+    }
+
+    @Override
+    public boolean quizExists(int id) throws SQLException {
+        Connection con = dbSource.getConnection();
+        PreparedStatement stm = con.prepareStatement("select * from quizzes where quizId=?");
+        stm.setInt(1,id);
+        ResultSet set = stm.executeQuery();
+        return set.next();
+    }
+
+    @Override
+    public List<Question> getQuestionsByQuizId(int quizId) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        Connection con = dbSource.getConnection();
+        PreparedStatement stm = con.prepareStatement("select * from questions where quizId=? order by orderNum");
+        stm.setInt(1,quizId);
+        ResultSet set = stm.executeQuery();
+        List<Question> questions = new ArrayList<>();
+
+        while (set.next()){
+            int questionId = set.getInt("questionId");
+            String type = set.getString("type");
+            String questionJson = set.getString("questionJson");
+            String answerJson = set.getString("answerJson");
+            int orderNum = set.getInt("orderNum");
+            double score = set.getDouble("score");
+            Class<?> questionClass = Question.getClass(type);
+            Question question = (Question) questionClass.getConstructor(int.class,int.class,String.class,String.class,String.class,int.class,double.class)
+                    .newInstance(questionId,quizId,type,questionJson,answerJson,orderNum,score);
+            questions.add(question);
+        }
+
+        return questions;
+    }
+
+    public void updateQuiz(Quiz quiz){
     }
 
 }

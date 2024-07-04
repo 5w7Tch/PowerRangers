@@ -84,9 +84,10 @@ CREATE TABLE if not exists questions(
     questionId INT AUTO_INCREMENT PRIMARY KEY ,
     quizId INT NOT NULL,
     type nvarchar(30) NOT NULL,
-    text TEXT NOT NULL,
+    questionJson TEXT NOT NULL,
+    answerJson TEXT not null,
     orderNum INT NOT NULL,
-    score INT NOT NULL,
+    score DOUBLE NOT NULL,
     FOREIGN KEY (quizId) REFERENCES  quizzes(quizId)
 );
 

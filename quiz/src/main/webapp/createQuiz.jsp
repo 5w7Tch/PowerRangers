@@ -12,6 +12,10 @@
 <%--  <script type="text/javascript" src="<%=request.getContextPath()%>/static/scripts/questions/questionResponse.js"></script>--%>
 </head>
 <body>
+<%
+  if(request.getParameter("quizId")!=null){ %>
+    <p id="editQuizId" style="display: none"><%=request.getParameter("quizId")%></p>
+<% } %>
 
 <div id="main-box">
   <div class="container" id="desc-box">
@@ -51,7 +55,7 @@
         <input type="number" id="duration" class="form-control" value="60">
       </div>
       <div class="form-group">
-        <button id="submit-btn" class="form-control btn btn-success">Create Quiz</button>
+        <button id="submit-btn" class="form-control btn btn-success">Submit</button>
       </div>
     </div>
   </div>
