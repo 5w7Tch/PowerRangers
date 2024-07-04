@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @WebServlet("/getQuizSessionAttribute")
 public class quizTimeFetchServlet extends HttpServlet {

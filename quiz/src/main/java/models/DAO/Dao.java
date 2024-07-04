@@ -7,6 +7,7 @@ import models.questions.Question;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public interface Dao {
     String DBID = "db";
@@ -22,4 +23,5 @@ public interface Dao {
     void eraseQuiz(String quizId) throws SQLException;
     void clearQuizHistory(String quizId) throws SQLException;
     ArrayList<Question> getQuizQuestions(String quizId) throws SQLException;
+    void insertIntoQuizHistory(String quizId, String userId, java.sql.Date start, java.sql.Date end, Double score) throws SQLException;
 }

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Date;
+import java.sql.Date;
 
 @WebServlet("/quizSinglePage")
 public class onePageQuizServlet extends HttpServlet {
@@ -27,12 +27,12 @@ public class onePageQuizServlet extends HttpServlet {
                 Double time = db.getQuiz(quizId).getDuration();
                 time =  time * 60 * 1000L;
                 Date oldEnd = new Date(oldStart.getTime() + time.longValue()+60000);
-                int res = oldEnd.compareTo(new Date());
+                int res = oldEnd.compareTo(new Date(System.currentTimeMillis()));
                 if(res<=0){
-                    request.getSession(false).setAttribute("startTime", new Date());
+                    request.getSession(false).setAttribute("startTime", new Date(System.currentTimeMillis()));
                 }
             }else{
-                request.getSession(false).setAttribute("startTime", new Date());
+                request.getSession(false).setAttribute("startTime", new Date(System.currentTimeMillis()));
             }
             request.getSession(false).setAttribute("questions", db.getQuizQuestions(quizId));
             request.getSession(false).setAttribute("practise", practise);

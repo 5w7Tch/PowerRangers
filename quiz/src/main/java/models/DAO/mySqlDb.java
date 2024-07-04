@@ -210,4 +210,20 @@ public class mySqlDb implements Dao {
         return res;
     }
 
+    @Override
+    public void insertIntoQuizHistory(String quizId, String userId, java.sql.Date start, java.sql.Date end, Double score) throws SQLException {
+        String query = "insert into quizHistory (quizId, userId, startTime, endTime, score) values (?, ?, ?, ?, ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, quizId);
+            statement.setString(2,userId);
+            statement.setDate(3,start);
+            statement.setDate(4,end);
+            statement.setDouble(5,score);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

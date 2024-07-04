@@ -42,14 +42,14 @@
         <div class="question-box">
             <div class="question-text">question?</div>
             <ul class="answers">
-                <div class="answer_response" contenteditable="true"name="1" onchange="questionResponseChange(1)"></div>
+                <div class="answer_response" contenteditable="true"name="1"></div>
             </ul>
         </div>
         <div class="question-box">
             <div class="question-text">Fill in!</div>
             <div class="question-text">
                 bla bla bla
-                <div class="answer_response" contenteditable="true" name="2" onchange="fillInChange(2)"></div>
+                <div class="answer_response" contenteditable="true" name="2"></div>
                 bla bla bla
             </div>
         </div>
@@ -67,18 +67,19 @@
             </div>
             <div class="dropdown-container">
                 <h5>1.
-                    <div class="answer_response" contenteditable="true"name="5" onchange="matchChange(5)"></div>
+                    <div class="answer_response" contenteditable="true"name="3" ></div>
                 </h5>
                 <h5>2.
-                    <div class="answer_response" contenteditable="true"name="5" onchange="matchChange(5)"></div>
+                    <div class="answer_response" contenteditable="true"name="3"></div>
                 </h5>
             </div>
         </div>
-<%--        <%for(int i = 0; i< quests.size(); i++){%>--%>
-<%--                <%=quests.get(i).getQuestion()%>--%>
-<%--        <%}%>--%>
+        <%for(int i = 0; i< quests.size(); i++){%>
+                <%=quests.get(i).getQuestion()%>
+        <%}%>
     </div>
 </div>
+
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/scripts/onePageQuizScripts.js"></script>
 

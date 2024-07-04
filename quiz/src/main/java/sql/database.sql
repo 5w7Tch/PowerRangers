@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS quizHistory (
       userId INT NOT NULL ,
       startTime DATETIME NOT NULL ,
       endTime DATETIME NOT NULL ,
-      score INT NOT NULL ,
+      score Double NOT NULL ,
       FOREIGN KEY (quizId) REFERENCES quizzes(quizId),
       FOREIGN KEY (userId) REFERENCES users(userId)
 );
@@ -125,6 +125,3 @@ insert into quizHistory values (1,1,1,DATE_SUB(NOW(), INTERVAL 10 MINUTE) ,sysda
 insert into quizHistory values (2,1,1,DATE_SUB(NOW(), INTERVAL 10 MINUTE) ,sysdate() , 40);
 
 insert into quizHistory values (3,1,1,DATE_SUB(NOW(), INTERVAL 30 MINUTE) ,sysdate() , 78);
-
-INSERT INTO quizzes (author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime, immediateCorrection)
-VALUES (1, 'Math Basics', '2024-07-03', 'A quiz on basic math principles.', FALSE, TRUE, 30.0, FALSE);

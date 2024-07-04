@@ -1,6 +1,11 @@
 package servlets.quizServlets;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import models.DAO.Dao;
 import models.USER.Quiz;
+import models.USER.User;
+import models.questions.Question;
 import org.json.simple.JSONObject;
 
 import javax.servlet.ServletException;
@@ -8,32 +13,84 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Date;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.sql.Date;
+import java.util.Iterator;
 
 @WebServlet("/finished")
 public class QuizFinishServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Date finishDate = new Date();
+        Date finishDate = new Date(System.currentTimeMillis());
         Date startDate = (Date) request.getSession(false).getAttribute("startTime");
         long time1 = finishDate.getTime();
         long time2 = startDate.getTime();
         double differenceInMinutes = Math.abs((time1-time2)/(1000.0 * 60.0));
         JSONObject json = new JSONObject();
-
+        String practise = request.getParameter("practise");
         if(differenceInMinutes>((Quiz)request.getSession(false).getAttribute("quiz")).getDuration()+1){
             json.put("bad", 1);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(json.toString());
         }else{
-            //remember
-
+            ArrayList<Double> results = checkAnswers(request);
             json.put("bad", 0);
+            request.getSession().setAttribute("results", results);
+            if(practise.equals("on")){
+                try {
+                    remember(results, startDate, finishDate, request);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(json.toString());
         }
     }
+
+    private void remember(ArrayList<Double> results, Date startDate, Date finishDate, HttpServletRequest request) throws SQLException {
+        Double score = new Double(0);
+        for (int i = 0; i < results.size(); i++) {
+            score += results.get(i);
+        }
+        Dao dao = (Dao)request.getServletContext().getAttribute(Dao.DBID);
+        Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
+        User user = (User)request.getSession().getAttribute("user");
+        dao.insertIntoQuizHistory(quiz.getId().toString(), user.getId().toString(), startDate,finishDate, score);
+
+    }
+    private ArrayList<Double> checkAnswers(HttpServletRequest request) throws IOException {
+        ArrayList<Question> quests = (ArrayList<Question>) request.getSession().getAttribute("questions");
+        ArrayList<Double> results = new ArrayList<>(quests.size());
+
+        BufferedReader reader = request.getReader();
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line);
+        }
+        String jsonString = sb.toString();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonObject = mapper.readTree(jsonString);
+        Iterator<String> fieldNames = jsonObject.fieldNames();
+        while (fieldNames.hasNext()) {
+            String fieldName = fieldNames.next();
+            String answers = jsonObject.get(fieldName).toString();
+            String stringWithoutBrackets = answers.substring(1, answers.length() - 1);
+            String[] parts = stringWithoutBrackets.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+            for (int i = 0; i < parts.length; i++) {
+                parts[i] = parts[i].trim().replaceAll("^\"|\"$", "");
+
+            }
+//            Double score = quests.get(Integer.parseInt(fieldName)).checkAnswer(parts);
+//            results.set(Integer.parseInt(fieldName), score);
+        }
+        return results;
+    }
+
 }

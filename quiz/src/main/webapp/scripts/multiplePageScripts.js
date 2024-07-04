@@ -4,6 +4,7 @@ let timeRemaining;
 let quizId = 0;
 let currentQuestionIndex = 0;
 let countdownInterval;
+const answers = {};
 
 function setState(data){
     let lastEndDate = new Date(sessionStorage.getItem('endTime'));
@@ -47,6 +48,7 @@ function fetchQuizAttribute() {
 
             setState(data);
             loadFirstQuest();
+            answerListeners();
             updateCountdown();
             countdownInterval = setInterval(updateCountdown, 1000);
         })
@@ -82,15 +84,14 @@ function showTimeoutMessage() {
 
 
 function finish() {
-    clearInterval(countdownInterval);
-
-
     fetch('/finished', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ inputs: inputValues })
+
+        body: JSON.stringify(answers)
+
     })
         .then(function(response) {
             if (!response.ok) {
@@ -108,12 +109,12 @@ function finish() {
         .catch((error) => {
             console.error('There was a problem with fetch operation:', error.message);
         });
-
 }
 
 
 // Event listener for submit quiz button
 document.getElementById('submitQuiz').addEventListener('click', function() {
+    clearInterval(countdownInterval);
     finish();
 });
 
@@ -129,6 +130,7 @@ function loadFirstQuest() {
     questions[currentQuestionIndex].style.display = 'block';
     questions[currentQuestionIndex].classList.add('slide-in', 'active');
 }
+
 
 function showQuestion(index) {
 
@@ -149,14 +151,53 @@ function showQuestion(index) {
         }, 500);
     }, 500);
 }
+function parseJson(arr){
+    let i = currentQuestionIndex;
+    let res = '{';
+    for (const arrKey in arr) {
+        let id = ''+i;
+        res+= id + ':'+ arr[arrKey]+',';
+        i++;
+    }
+    res = res.substring(0, res.length-1);
+    res+='}';
+    return res;
+}
+
+function ckeckout() {
+    let result;
+
+    fetch('/checkAnswer', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(parseJson(answers[currentQuestionIndex]))
+    })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            result = data.res
+        })
+        .catch((error) => {
+            console.error('There was a problem with fetch operation:', error.message);
+        });
+
+    return result;
+}
 
 function check(index) {
-    // TO-DO: Implement your check logic
-    let correct = true;
-    if (correct) {
+    let correct = ckeckout();
+    if (correct == 0) {
         questions[index].style.backgroundColor = 'red';
-    } else {
+    } else if(correct == 2){
         questions[index].style.backgroundColor = 'green';
+    }else{
+        questions[index].style.backgroundColor = 'yellow';
     }
 }
 
@@ -165,7 +206,9 @@ document.getElementById('next').addEventListener('click', function() {
     if (currentQuestionIndex < questions.length - 1) {
         showQuestion(currentQuestionIndex + 1);
     } else {
-        finish();
+        setTimeout(() => {
+            finish();
+        }, 500);
     }
 });
 
@@ -173,42 +216,53 @@ document.getElementById('nextButton').addEventListener('click', function() {
     if (currentQuestionIndex < questions.length - 1) {
         showQuestion(currentQuestionIndex + 1);
     }
-
-
 });
 
 document.getElementById('prevButton').addEventListener('click', function() {
     if (currentQuestionIndex > 0) {
         showQuestion(currentQuestionIndex - 1);
     }
-
-
 });
 
+
+function answerListeners() {
+    const answerResponseDivs = document.querySelectorAll('.answer_response');
+
+    answerResponseDivs.forEach(div => {
+        div.addEventListener('input', function() {
+            answerChange(this, this.getAttribute('name'));
+        });
+        answerChange(div, div.getAttribute('name'));
+    });
+
+}
+
 function radioChange(thisObj, name) {
-    const radios = document.getElementsByName(name.id);
+    const radios = document.getElementsByName(name);
+
     for (let i = 0; i < radios.length; i++) {
-        radios[i].style.backgroundColor = '#f9f9f9'
+        radios[i].style.backgroundColor = '#f9f9f9';
     }
-    thisObj.style.backgroundColor = "yellow";
+    thisObj.style.backgroundColor = 'yellow';
+
+    for (let i = 0; i < radios.length; i++) {
+        if (radios[i].style.backgroundColor === 'yellow') {
+            answers[name] = [radios[i].innerText];
+            break;
+        }
+    }
+
+    console.log(answers);
 }
 
-function questionResponseChange(name) {
+function answerChange(thisObj, name) {
+    const fillers = document.getElementsByName(name);
+    let arr = new Array(fillers.length);
 
+    for (let i = 0; i < fillers.length; i++) {
+        arr[i] = fillers[i].innerText;
+    }
+    answers[name] = arr;
 }
 
-function fillInChange(name) {
 
-}
-
-function matchChange(name) {
-
-}
-
-function pictureResponseChange(name) {
-
-}
-
-function multiResponseChange(name) {
-    
-}

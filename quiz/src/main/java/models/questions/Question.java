@@ -11,7 +11,8 @@ public interface Question {
         matching
     }
     String getQuestion();
-    String getAnswer();
+    Double checkAnswer(String[] answers);
     int getType();
+    Double getScore();
 
 }

@@ -141,9 +141,10 @@
                     <label><input type="radio" onchange="update()" name="practise" value="off">OFF</label>
                 </div>
             <%}%>
-            <button class="button" id="startSinglePage" name="<%=quiz.getId()%>">Start Single Page</button>
+            <%if(!quiz.isImmediateCorrection()){%>
+                <button class="button" id="startSinglePage" name="<%=quiz.getId()%>">Start Single Page</button>
+            <%}%>
             <button class="button" id="startMultiPage" name="<%=quiz.getId()%>">Start Multi Page</button>
-
 
             <% if(quiz.getAuthor() == ((User)session.getAttribute("user")).getId()) {%>
                 <input class="button" type="submit" id="edit" value="Edit" style="background-color: gray">

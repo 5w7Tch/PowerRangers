@@ -1,5 +1,6 @@
 let timeRemaining;
 let quizId = 0;
+const answers = {};
 
 
 function setState(data){
@@ -37,6 +38,7 @@ function fetchQuizAttribute() {
         })
         .then(function(data) {
             setState(data);
+            answerListeners();
             updateCountdown(); // Update countdown initially
             countdownInterval = setInterval(updateCountdown, 1000); // Start countdown
         })
@@ -69,11 +71,38 @@ function showTimeoutMessage() {
     window.location.replace('/timeOut');
 }
 
+function finish() {
+    fetch('/finished', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify(answers)
+
+    })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            if(data.bad == 1){
+                window.location.replace('/timeOut');
+            }else{
+                window.location.replace('/success');
+            }
+        })
+        .catch((error) => {
+            console.error('There was a problem with fetch operation:', error.message);
+        });
+}
+
 // Event listener for submit quiz button
 document.getElementById('submitQuiz').addEventListener('click', function() {
     clearInterval(countdownInterval);
-    // Submit logic TO-DO
-    window.location.replace('/finished');
+    finish();
 });
 
 window.addEventListener('beforeunload', function() {
@@ -82,31 +111,43 @@ window.addEventListener('beforeunload', function() {
     }
 });
 
+
+function answerListeners() {
+    const answerResponseDivs = document.querySelectorAll('.answer_response');
+
+    answerResponseDivs.forEach(div => {
+        div.addEventListener('input', function() {
+            answerChange(this, this.getAttribute('name'));
+        });
+        answerChange(div, div.getAttribute('name'));
+    });
+
+}
+
 function radioChange(thisObj, name) {
-    const radios = document.getElementsByName(name.id);
+    const radios = document.getElementsByName(name);
+
     for (let i = 0; i < radios.length; i++) {
-        radios[i].style.backgroundColor = '#f9f9f9'
+        radios[i].style.backgroundColor = '#f9f9f9';
     }
-    thisObj.style.backgroundColor = "yellow";
+    thisObj.style.backgroundColor = 'yellow';
+
+    for (let i = 0; i < radios.length; i++) {
+        if (radios[i].style.backgroundColor === 'yellow') {
+            answers[name] = [radios[i].innerText];
+            break;
+        }
+    }
+
+    console.log(answers);
 }
 
+function answerChange(thisObj, name) {
+    const fillers = document.getElementsByName(name);
+    let arr = new Array(fillers.length);
 
-function questionResponseChange(name) {
-
-}
-
-function fillInChange(name) {
-
-}
-
-function matchChange(name) {
-
-}
-
-function pictureResponseChange(name) {
-
-}
-
-function multiResponseChange(name) {
-
+    for (let i = 0; i < fillers.length; i++) {
+        arr[i] = fillers[i].innerText;
+    }
+    answers[name] = arr;
 }

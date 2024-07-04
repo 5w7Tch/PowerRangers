@@ -1,5 +1,4 @@
 function update() {
-
     let radios = document.getElementsByName('options');
     var selectedValue = null;
     for (var i = 0; i < radios.length; i++) {
