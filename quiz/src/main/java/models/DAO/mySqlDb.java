@@ -298,13 +298,53 @@ public class mySqlDb implements Dao {
     }
 
     @Override
-    public boolean acceptFriendRequest(int fromUserId, int toUserId) {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+    public IFriendRequest getFriendRequestById(int friendRequestId) throws SQLException{
+        String query = "SELECT * FROM friendRequests WHERE friendRequests.requestId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, friendRequestId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int requestId = resultSet.getInt("requestId");
+                    int fromUserId = resultSet.getInt("fromUserId");
+                    int toUserId = resultSet.getInt("toUserId");
+                    Date sendTime = resultSet.getDate("sendTime");
+                    return new FriendRequest(requestId, fromUserId, toUserId, sendTime);
+                } else {
+                    return null;
+                }
+            }
         }
-        return false;
+    }
+
+    @Override
+    public boolean addFriend(IFriendRequest friendRequest) throws SQLException {
+        String query = "INSERT INTO friends (user1Id, user2Id) VALUES (?, ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, friendRequest.getFromId());
+            statement.setInt(2, friendRequest.getToId());
+            boolean rowInserted = statement.executeUpdate() > 0;
+            statement.close();
+            return rowInserted;
+        }
+    }
+
+    @Override
+    public boolean acceptFriendRequest(IFriendRequest friendRequest) throws SQLException{
+        return addFriend(friendRequest) && removeFriendRequest(friendRequest);
+    }
+
+    @Override
+    public boolean removeFriendRequest(IFriendRequest friendRequest) throws SQLException{
+        String query = "DELETE FROM friendRequests WHERE requestId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, friendRequest.getId());
+            boolean rowDeleted = statement.executeUpdate() > 0;
+            statement.close();
+            return rowDeleted;
+        }
     }
 
 }

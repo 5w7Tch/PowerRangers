@@ -154,6 +154,8 @@ FROM users u1
 ORDER BY RAND()
 LIMIT 10;
 
+DROP PROCEDURE IF EXISTS insert_random_friend_requests;
+
 DELIMITER $$
 
 CREATE PROCEDURE insert_random_friend_requests(IN num_requests INT)
@@ -176,4 +178,4 @@ END $$
 
 DELIMITER ;
 
-CALL insert_random_friend_requests(100);
+CALL insert_random_friend_requests(3);

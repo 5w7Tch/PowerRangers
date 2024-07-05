@@ -25,23 +25,36 @@
         User user = (User) request.getSession().getAttribute("user");
         ArrayList<INotification> notifications = myDb.getUserNotifications(user.getId());
     %>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
         function acceptChallenge(quizId) {
             window.location.href = `<%= request.getContextPath() %>/quiz?quizid=` + encodeURIComponent(quizId);
         }
-        function acceptFriendRequest(fromUserId, index) {
+        function handleFriendRequest(request, friendRequestId, index) {
             let div = document.getElementsByClassName('friend-request-info')[index];
             div.classList.remove('justify-content-between');
             div.classList.add('justify-content-center');
             div.classList.add('align-items-center');
-            div.innerHTML = `<p class="mx-auto">Friend Request Accepted</p>`
-        }
-        function rejectFriendRequest(fromUserId, index) {
-            let div = document.getElementsByClassName('friend-request-info')[index];
-            div.classList.add('d-flex');
-            div.classList.add('justify-content-center');
-            div.classList.add('align-items-center');
-            div.innerHTML = `<p class="mx-auto">Friend Request Rejected</p>`
+            let args = {
+                'friendRequestId': friendRequestId,
+            }
+            $.ajax({
+                url: `/`+request+`FriendRequest`,
+                type: 'POST',
+                data: JSON.stringify(args),
+                contentType: 'application/json; charset=UTF-8',
+                beforeSend: function (xhr){
+                    //
+                },
+                success: function (result,status,xhr){
+                    div.innerHTML = `<p class="mx-auto">Friend Request `+request+`ed</p>`
+                },
+                error: function (xhr,status,error){
+                    div.classList.add('justify-content-between');
+                    div.classList.remove('justify-content-center');
+                    div.classList.remove('align-items-center');
+                }
+            })
         }
     </script>
 </head>
@@ -97,8 +110,8 @@
                                             IFriendRequest friendRequest = (FriendRequest) notification;
                                 %>
                                     <div class="friend-request-info d-flex justify-content-between">
-                                        <button onclick="acceptFriendRequest(<%=friendRequest.getFromId()%>, <%=i%>)" class="btn btn-outline-primary px-4 rounded-0 mx-auto mt-2">Accept</button>
-                                        <button onclick="rejectFriendRequest(<%=friendRequest.getFromId()%>, <%=i%>)" class="btn btn-outline-secondary px-4 rounded-0 mx-auto mt-2">Reject</button>
+                                        <button onclick="handleFriendRequest('Accept', <%=friendRequest.getId()%>, <%=i%>)" class="btn btn-outline-primary px-4 rounded-0 mx-auto mt-2">Accept</button>
+                                        <button onclick="handleFriendRequest('Reject', <%=friendRequest.getId()%>, <%=i%>)" class="btn btn-outline-secondary px-4 rounded-0 mx-auto mt-2">Reject</button>
                                     </div>
                                 <%
                                         i++;

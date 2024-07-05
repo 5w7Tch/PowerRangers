@@ -13,19 +13,4 @@ function onNotifications() {
         notificationsButton.classList.add('btn-primary');
     }
     showNotifications = !showNotifications;
-
-    if (showNotifications) {
-        // fetch('/notifications?userId=1') // Assuming userId is 1
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         notificationList.innerHTML = '';
-        //         data.forEach(notification => {
-        //             let item = document.createElement('a');
-        //             item.href = '#';
-        //             item.className = 'dropdown-item';
-        //             item.textContent = notification.message;
-        //             notificationList.appendChild(item);
-        //         });
-        //     });
-    }
 }

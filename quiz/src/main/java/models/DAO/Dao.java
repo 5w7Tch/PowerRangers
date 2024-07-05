@@ -29,5 +29,8 @@ public interface Dao {
     ArrayList<INote> getUserNotes(int userId) throws SQLException;
     ArrayList<IChallenge> getUserChallenges(int userId) throws SQLException;
     ArrayList<IFriendRequest> getUserFriendRequests(int userId) throws SQLException;
-    boolean acceptFriendRequest(int fromUserId, int toUserId) throws SQLException;
+    IFriendRequest getFriendRequestById(int friendRequestId) throws SQLException;
+    boolean addFriend(IFriendRequest friendRequest) throws SQLException;
+    boolean acceptFriendRequest(IFriendRequest friendRequest) throws SQLException;
+    boolean removeFriendRequest(IFriendRequest friendRequest) throws SQLException;
 }
