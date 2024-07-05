@@ -1,7 +1,7 @@
-<%@ page import="models.USER.Quiz" %>
+<%@ page import="models.quizes.Quiz" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="models.USER.User" %>
-<%@ page import="models.questions.Question" %>
+<%@ page import="models.quizes.questions.Question" %>
 <%@ page import="models.USER.WritenQuiz" %>
 <%@ page import="models.DAO.Dao" %><%--
   Created by IntelliJ IDEA.
@@ -34,16 +34,15 @@
             <%for (int i = 0; i < quests.size(); i++) {%>
                 <div class="questResult">
                     <%=results.get(i)%>/<%=quests.get(i).getScore()%>
-                    <div class="container">
-                        <div class="question-box">
-                            <%=quests.get(i).getQuestion()%>
+                        <div style="display: flex; align-items: center; justify-content: space-between" >
+                            <%=quests.get(i).getQuestion(i)%>
+
+                            <%if(!results.get(i).equals(quests.get(i).getScore()) && results.get(i).equals(0.0)){%>
+                                <img class="icon" src="<%=request.getContextPath()%>/static/icons/wrong.png" alt="bla">
+                            <%}else{%>
+                                <img class="icon" src="<%=request.getContextPath()%>/static/icons/check.png" alt="bla">
+                            <%}%>
                         </div>
-                        <%if(!results.get(i).equals(quests.get(i).getScore()) && results.get(i).equals(0.0)){%>
-                            <img src="icons/wrong.png" alt="wrong">
-                        <%}else{%>
-                            <img src="icons/check.png" alt="correct">
-                        <%}%>
-                    </div>
                 </div>
             <%}%>
         </div>

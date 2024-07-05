@@ -53,4 +53,23 @@ public class questionResponse extends Question{
     public String getAnswerJson() {
         return this.answerJson;
     }
+
+    public Double checkAnswer(String[] answer){
+        if (answer[0].equals(getAnswerJson())) {
+            return getScore();
+        }
+        return 0.0;
+    }
+
+    @Override
+    public String getQuestion(int orderNumber) {
+        String question = "<div class=\"question-box\">\n" +
+                "        <div class=\"question-text\">"+getQuestionJson()+"</div>\n" +
+                "        <ul class=\"answers\">\n" +
+                "            <div class=\"answer_response\" contenteditable=\"true\"name=\""+orderNumber+"\"></div>\n" +
+                "        </ul>\n" +
+                "    </div>";
+
+        return question;
+    }
 }

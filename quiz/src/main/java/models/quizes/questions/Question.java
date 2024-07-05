@@ -53,9 +53,14 @@ public abstract class Question {
     public int getQuestionId(){
         return questionId;
     }
+
     public void setQuestionId(int id){
         questionId=id;
     }
 
     public abstract JsonObject generateJson();
+
+    public abstract String getQuestion(int orderNum);
+
+    public abstract Double checkAnswer(String[] answer);
 }

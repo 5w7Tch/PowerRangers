@@ -36,7 +36,6 @@ body {
     border: 2px solid black;
     border-radius: 15px;
     padding: 20px;
-    margin-bottom: 50px;
 }
 
 .rectangle {
@@ -74,6 +73,11 @@ body {
 
 }
 
+.icon{
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
 
 .container-for-table-parts {
     text-align: center;

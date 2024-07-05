@@ -1,4 +1,4 @@
-<%@ page import="models.USER.Quiz" %><%--
+<%@ page import="models.quizes.Quiz" %><%--
   Created by IntelliJ IDEA.
   User: sw1tch
   Date: 30.06.24

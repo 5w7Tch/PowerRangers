@@ -96,10 +96,10 @@ document.getElementById('startSinglePage').addEventListener('click', function ()
             break;
         }
     }
-    if(selectedValue === 'off'){
-        window.location.href = '/quizSinglePage?practise=off&quizId='+this.getAttribute('name');
-    }else{
+    if(selectedValue === 'on'){
         window.location.href = '/quizSinglePage?practise=on&quizId='+this.getAttribute('name');
+    }else{
+        window.location.href = '/quizSinglePage?practise=off&quizId='+this.getAttribute('name');
     }
 });
 
@@ -112,9 +112,9 @@ document.getElementById('startMultiPage').addEventListener('click', function () 
             break;
         }
     }
-    if(selectedValue === 'off'){
-        window.location.href = '/quizMultiplePage?practise=off&quizId='+this.getAttribute('name');
-    }else{
+    if(selectedValue === 'on'){
         window.location.href = '/quizMultiplePage?practise=on&quizId='+this.getAttribute('name');
+    }else{
+        window.location.href = '/quizMultiplePage?practise=off&quizId='+this.getAttribute('name');
     }
 });

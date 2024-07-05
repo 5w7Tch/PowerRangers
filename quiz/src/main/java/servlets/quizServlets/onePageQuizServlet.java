@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.sql.Date;
 
@@ -34,11 +35,13 @@ public class onePageQuizServlet extends HttpServlet {
             }else{
                 request.getSession(false).setAttribute("startTime", new Date(System.currentTimeMillis()));
             }
-            request.getSession(false).setAttribute("questions", db.getQuizQuestions(quizId));
+            request.getSession(false).setAttribute("questions", db.getQuestionsByQuizId(Integer.parseInt(quizId)));
             request.getSession(false).setAttribute("practise", practise);
             request.getRequestDispatcher("onePageQuiz.jsp").forward(request,response);
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 }
