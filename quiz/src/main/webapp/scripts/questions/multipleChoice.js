@@ -27,7 +27,7 @@ export class multipleChoice{
         this.question = $('#question').val();
         this.answers = [];
         let anss = this.answers;
-        this.answer = $('#answer').val();
+        this.correctAnswer = $('#answer').val();
         $('#answersContainer textarea').each(function() {
             anss.push($(this).val());
         });
@@ -35,7 +35,7 @@ export class multipleChoice{
 
     setPreview(){
         $('#question').text(this.question);
-        $('#answer').text(this.answer);
+        $('#answer').text(this.correctAnswer);
         $('#score').val(this.score);
         let idx = 0;
         var answersContainer = document.getElementById('answersContainer');
@@ -65,11 +65,25 @@ export class multipleChoice{
     }
 
     generateJson() {
-
+        return{
+            'type': this.getType(),
+            'question': this.question,
+            'answers': this.answers,
+            'correctAnswer': this.correctAnswer,
+            'score': this.score
+        }
     }
 
     isValid(){
-        return true;
+        return this.question !== '' && this.correctAnswer !== '';
+    }
+
+    getType(){
+        return 'multipleChoice';
+    }
+
+    allertMsg(){
+        return 'Fill Question Description And add Correct answer';
     }
 }
 
