@@ -45,11 +45,22 @@ public class createQuiz extends HttpServlet {
     }
 
     public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("got1");
         JsonObject quizObj = (JsonObject) servletGeneralFunctions.readObj(request);
         Quiz quiz = readQuizInfo(quizObj,request);
         quiz.setId(Integer.parseInt(request.getParameter("quizId")));
         Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
-        db.updateQuiz(quiz);
+        System.out.println("got2");
+        try {
+            db.updateQuiz(quiz);
+            db.deleteQuestions(quiz.getId());
+            JsonArray questionArr = quizObj.get("questions").getAsJsonArray();
+            uploadQuestionsToDB(questionArr,quiz.getId());
+        } catch (SQLException e) {
+            // todo: erise 500 error
+            throw new RuntimeException(e);
+        }
+        sendResponse(response);
     }
 
     private int uploadQuizInfo(JsonObject quizObj,HttpServletRequest request) throws SQLException {
@@ -68,7 +79,7 @@ public class createQuiz extends HttpServlet {
         boolean isRandom = quizObj.get("isRandom").getAsBoolean();
         boolean immediateCorrection = quizObj.get("immediateCorrection").getAsBoolean();
         boolean practiceMode = quizObj.get("practiceMode").getAsBoolean();
-        double duration = quizObj.get("duration").getAsInt();
+        double duration = quizObj.get("duration").getAsDouble();
 
         return new Quiz(-1,authorId,title,creationDate,description,practiceMode,isRandom,duration,immediateCorrection);
     }

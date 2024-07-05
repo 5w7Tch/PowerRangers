@@ -172,14 +172,8 @@ public class mySqlDb implements Dao {
             e.printStackTrace();
         }
         //delete from questions
-        query = "DELETE FROM questions WHERE questions.quizId = ?";
-        try (Connection connection = dbSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, quizId);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        deleteQuestions(Integer.parseInt(quizId));
+
         //delete from history
         clearQuizHistory(quizId);
         //erase quiz
@@ -207,85 +201,113 @@ public class mySqlDb implements Dao {
 
     @Override
     public void addQuiz(Quiz quiz) throws SQLException {
-        Connection con = dbSource.getConnection();
-        PreparedStatement stm = con.prepareStatement("insert into quizzes" +
-                "(author, name, creationDate, description, isPracticable, areQuestionsRandom, immediateCorrection, quizTime) values (?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
-        stm.setInt(1,quiz.getAuthor());
-        stm.setString(2,quiz.getName());
-        stm.setDate(3,quiz.getCreationDate());
-        stm.setString(4,quiz.getDescription());
-        stm.setBoolean(5,quiz.isPracticable());
-        stm.setBoolean(6,quiz.isQuestionSecRand());
-        stm.setBoolean(7,quiz.isImmediateCorrection());
-        stm.setDouble(8,quiz.getDuration());
-        int rowsAffected = stm.executeUpdate();
-        if(rowsAffected==0){
-            throw new SQLException();
-        }
+        try(Connection con = dbSource.getConnection()){
+            PreparedStatement stm = con.prepareStatement("insert into quizzes" +
+                    "(author, name, creationDate, description, isPracticable, areQuestionsRandom, immediateCorrection, quizTime) values (?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            stm.setInt(1,quiz.getAuthor());
+            stm.setString(2,quiz.getName());
+            stm.setDate(3,quiz.getCreationDate());
+            stm.setString(4,quiz.getDescription());
+            stm.setBoolean(5,quiz.isPracticable());
+            stm.setBoolean(6,quiz.isQuestionSecRand());
+            stm.setBoolean(7,quiz.isImmediateCorrection());
+            stm.setDouble(8,quiz.getDuration());
+            int rowsAffected = stm.executeUpdate();
+            if(rowsAffected==0){
+                throw new SQLException();
+            }
 
-        ResultSet set = stm.getGeneratedKeys();
-        if(set.next()){
-            quiz.setId(set.getInt(1));
+            try(ResultSet set = stm.getGeneratedKeys()){
+                if(set.next()){
+                    quiz.setId(set.getInt(1));
+                }
+            }
         }
     }
 
     @Override
     public void addQuestion(Question question) throws SQLException {
-        Connection con = dbSource.getConnection();
-        PreparedStatement stm = con.prepareStatement("insert into questions (quizId, type, questionJson, answerJson, orderNum, score) values (?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
-        stm.setInt(1,question.getQuizId());
-        stm.setString(2,question.getType());
-        stm.setString(3,question.getQuestionJson());
-        stm.setString(4,question.getAnswerJson());
-        stm.setInt(5,question.getOrderNum());
-        stm.setDouble(6,question.getScore());
-        int rowsAffected = stm.executeUpdate();
-        if(rowsAffected==0){
-            throw new SQLException();
-        }
-        ResultSet set = stm.getGeneratedKeys();
-        if(set.next()){
-            question.setQuestionId(set.getInt(1));
+        try(Connection con = dbSource.getConnection()){
+            PreparedStatement stm = con.prepareStatement("insert into questions (quizId, type, questionJson, answerJson, orderNum, score) values (?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            stm.setInt(1,question.getQuizId());
+            stm.setString(2,question.getType());
+            stm.setString(3,question.getQuestionJson());
+            stm.setString(4,question.getAnswerJson());
+            stm.setInt(5,question.getOrderNum());
+            stm.setDouble(6,question.getScore());
+            int rowsAffected = stm.executeUpdate();
+            if(rowsAffected==0){
+                throw new SQLException();
+            }
+            try(ResultSet set = stm.getGeneratedKeys()){
+                if(set.next()){
+                    question.setQuestionId(set.getInt(1));
+                }
+            }
+
         }
 
-        question.printObj();
 
     }
 
     @Override
     public boolean quizExists(int id) throws SQLException {
-        Connection con = dbSource.getConnection();
-        PreparedStatement stm = con.prepareStatement("select * from quizzes where quizId=?");
-        stm.setInt(1,id);
-        ResultSet set = stm.executeQuery();
-        return set.next();
+        try(Connection con = dbSource.getConnection()){
+            PreparedStatement stm = con.prepareStatement("select * from quizzes where quizId=?");
+            stm.setInt(1,id);
+            try(ResultSet set = stm.executeQuery()){
+                return set.next();
+            }
+        }
     }
 
     @Override
     public List<Question> getQuestionsByQuizId(int quizId) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        Connection con = dbSource.getConnection();
-        PreparedStatement stm = con.prepareStatement("select * from questions where quizId=? order by orderNum");
-        stm.setInt(1,quizId);
-        ResultSet set = stm.executeQuery();
-        List<Question> questions = new ArrayList<>();
+        try(Connection con = dbSource.getConnection()){
+            PreparedStatement stm = con.prepareStatement("select * from questions where quizId=? order by orderNum");
+            stm.setInt(1,quizId);
+            try(ResultSet set = stm.executeQuery()){
+                List<Question> questions = new ArrayList<>();
 
-        while (set.next()){
-            int questionId = set.getInt("questionId");
-            String type = set.getString("type");
-            String questionJson = set.getString("questionJson");
-            String answerJson = set.getString("answerJson");
-            int orderNum = set.getInt("orderNum");
-            double score = set.getDouble("score");
-            Class<?> questionClass = Question.getClass(type);
-            Question question = (Question) questionClass.getConstructor(int.class,int.class,String.class,String.class,String.class,int.class,double.class)
-                    .newInstance(questionId,quizId,type,questionJson,answerJson,orderNum,score);
-            questions.add(question);
+                while (set.next()){
+                    int questionId = set.getInt("questionId");
+                    String type = set.getString("type");
+                    String questionJson = set.getString("questionJson");
+                    String answerJson = set.getString("answerJson");
+                    int orderNum = set.getInt("orderNum");
+                    double score = set.getDouble("score");
+                    Class<?> questionClass = Question.getClass(type);
+                    Question question = (Question) questionClass.getConstructor(int.class,int.class,String.class,String.class,String.class,int.class,double.class)
+                            .newInstance(questionId,quizId,type,questionJson,answerJson,orderNum,score);
+                    questions.add(question);
+                }
+
+                return questions;
+            }
         }
 
-        return questions;
     }
 
-    public void updateQuiz(Quiz quiz){
+    public void updateQuiz(Quiz quiz) throws SQLException {
+        try(Connection connection = dbSource.getConnection()){
+            PreparedStatement stm  = connection.prepareStatement("update quizzes set name=?, description=?,areQuestionsRandom=?,immediateCorrection=?,isPracticable=?,quizTime=? where quizId=?");
+            stm.setString(1,quiz.getName());
+            stm.setString(2,quiz.getDescription());
+            stm.setBoolean(3,quiz.isQuestionSecRand());
+            stm.setBoolean(4,quiz.isImmediateCorrection());
+            stm.setBoolean(5,quiz.isPracticable());
+            stm.setDouble(6,quiz.getDuration());
+            stm.setInt(7,quiz.getId());
+            stm.executeUpdate();
+        }
+    }
+
+    public void deleteQuestions(int quizId) throws SQLException {
+        try(Connection connection = dbSource.getConnection()){
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM questions WHERE questions.quizId = ?");
+            statement.setInt(1, quizId);
+            statement.executeUpdate();
+        }
     }
 
 }

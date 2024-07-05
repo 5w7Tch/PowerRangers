@@ -19,7 +19,12 @@
 
 <div id="main-box">
   <div class="container" id="desc-box">
-    <h2>Create a New Quiz</h2>
+    <%
+      if(request.getParameter("quizId")!=null){ %>
+          <h2>Edit Quiz</h2>
+    <% } else { %>
+        <h2>Create New Quiz</h2>
+    <%}%>
     <div>
       <div class="form-group">
         <label for="quizTitle">Quiz Title</label>

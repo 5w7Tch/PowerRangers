@@ -38,7 +38,6 @@ public class editQuiz extends HttpServlet {
             // todo: erase 500 error
             return;
         }
-        System.out.println(request.getParameter("quizId"));
         request.setAttribute("quizId",request.getParameter("quizId"));
         request.getRequestDispatcher("/createQuiz.jsp").forward(request,response);
     }
@@ -51,18 +50,15 @@ public class editQuiz extends HttpServlet {
         Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
         try {
             Quiz quiz = db.getQuiz(""+quizId);
-            JsonArray questions = getQuestions(quiz.getId(),db);
+            JsonArray questions =  getQuestions(quiz.getId(),db);
             JsonObject quizObject = quiz.getJson();
             quizObject.add("questions",questions);
             sendResponse(response,quizObject);
-
         } catch (SQLException | NoSuchMethodException | InstantiationException | InvocationTargetException |
-                 IllegalAccessException e) {
+                IllegalAccessException e) {
             // todo: erase 500 error
             throw new RuntimeException(e);
         }
-
-
     }
 
     private JsonArray getQuestions(int quizId,Dao db) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {

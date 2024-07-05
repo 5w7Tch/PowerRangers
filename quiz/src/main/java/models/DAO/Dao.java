@@ -31,5 +31,7 @@ public interface Dao {
 
     List<Question> getQuestionsByQuizId(int quizId) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException;
 
-    void updateQuiz(Quiz quiz);
+    void updateQuiz(Quiz quiz) throws SQLException;
+
+    void deleteQuestions(int quizId) throws SQLException;
 }
