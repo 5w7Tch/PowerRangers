@@ -48,11 +48,13 @@ public class WritenQuiz {
     public int getQuizId() {
         return quizId;
     }
+
     public String getWriterName() {return writerName;}
 
     public int getUserId() {
         return userId;
     }
+
     public static String getAvgScore(ArrayList<WritenQuiz> writtenQuizList){
         Double res = new Double(0);
         for(WritenQuiz w: writtenQuizList){

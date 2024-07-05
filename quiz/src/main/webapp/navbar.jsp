@@ -1,9 +1,10 @@
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/navbarStyles.css">
 <nav class = "navbar">
+    <link rel="icon" href="<%=request.getContextPath()%>/static/icons/logo.png" type="image/png">
     <div class = "navDiv">
         <div>
             <a href="/"><p class = "quizName">QuizTime</p></a>
         </div>
-
         <ul>
             <li><a href = "/">Home</a></li>
         </ul>

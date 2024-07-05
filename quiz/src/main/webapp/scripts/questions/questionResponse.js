@@ -17,6 +17,7 @@ export class questionResponse{
         this.question=question;
         this.answer=answer;
         this.score=score;
+
     }
 
     readInfo(){

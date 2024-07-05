@@ -27,7 +27,7 @@ public class Quiz {
         this.immediateCorrection=immediateCorrection;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
