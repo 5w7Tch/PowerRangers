@@ -8,8 +8,7 @@ public class Friend implements IFriend
     private int userOneId;
     private int userTwoId;
 
-    public Friend(int id, int userOneId, int userTwoId)
-    {
+    public Friend(int id, int userOneId, int userTwoId) {
         this.id = id;
         this.userOneId = userOneId;
         this.userTwoId = userTwoId;

@@ -9,6 +9,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class mySqlDb implements Dao {
@@ -94,7 +95,7 @@ public class mySqlDb implements Dao {
     public Quiz getQuiz(String quizId) throws SQLException {
         String query = "SELECT * FROM quizzes WHERE quizId = ?";
         try (Connection connection = dbSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, quizId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -308,6 +309,85 @@ public class mySqlDb implements Dao {
             statement.setInt(1, quizId);
             statement.executeUpdate();
         }
+    }
+
+    @Override
+    public ArrayList<Question> getQuizQuestions(String quizId) throws SQLException {
+        ArrayList<Question> res = new ArrayList<>();
+
+        return res;
+    }
+
+    @Override
+    public void insertIntoQuizHistory(String quizId, String userId, java.sql.Date start, java.sql.Date end, Double score) throws SQLException {
+        String query = "insert into quizHistory (quizId, userId, startTime, endTime, score) values (?, ?, ?, ?, ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, quizId);
+            statement.setString(2,userId);
+            statement.setDate(3,start);
+            statement.setDate(4,end);
+            statement.setDouble(5,score);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    @Override
+    public ArrayList<WritenQuiz> getFriendHistory(Integer quizId, Integer userId) throws SQLException {
+
+        HashSet<Integer> friends = getFriends(userId);
+        ArrayList<WritenQuiz> writenQuizzes = new ArrayList<>();
+
+        String query = "SELECT quizHistory.score, quizHistory.startTime, " +
+                "TIMESTAMPDIFF(MINUTE, quizHistory.startTime, quizHistory.endTime) AS timeSpent, " +
+                "quizHistory.userId FROM quizHistory WHERE quizHistory.quizId = ? " +
+                "ORDER BY quizHistory.score DESC, timeSpent ASC";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, quizId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    double score = resultSet.getDouble("score");
+                    Date startTime = resultSet.getDate("startTime");
+                    double timeSpent = resultSet.getDouble("timeSpent");
+                    Integer user_Id = resultSet.getInt("userId");
+                    String writerName = getUserById(userId).getUsername();
+                    if(friends.contains(user_Id)){
+                        WritenQuiz writenQuiz = new WritenQuiz(score, startTime, timeSpent, quizId, user_Id, writerName);
+                        writenQuizzes.add(writenQuiz);
+                    }
+                }
+            }
+        }
+        return writenQuizzes;
+    }
+
+    @Override
+    public HashSet<Integer> getFriends(Integer userId) throws SQLException {
+        String query1 = "SELECT friends.user1Id, friends.user2Id FROM friends  WHERE friends.user1Id = ? or friends.user2Id = ?";
+
+        HashSet<Integer> friends = new HashSet<>();
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query1)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    Integer user1Id = resultSet.getInt("user1Id");
+                    Integer user2Id = resultSet.getInt("user2Id");
+                    if(user2Id.equals(userId)){
+                        friends.add(user1Id);
+                    }else if(user1Id.equals(userId)){
+                        friends.add(user2Id);
+                    }
+                }
+            }
+        }
+        return friends;
     }
 
 }
