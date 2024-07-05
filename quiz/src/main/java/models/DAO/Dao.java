@@ -3,6 +3,10 @@ package models.DAO;
 import models.USER.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
+import models.friend.abstractions.IFriendRequest;
+import models.notification.abstractions.IChallenge;
+import models.notification.abstractions.INote;
+import models.notification.abstractions.INotification;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.sql.SQLException;
@@ -21,4 +25,9 @@ public interface Dao {
     ArrayList<WritenQuiz> getQuizHistory(Integer quizId) throws SQLException;
     void eraseQuiz(String quizId) throws SQLException;
     void clearQuizHistory(String quizId) throws SQLException;
+    ArrayList<INotification> getUserNotifications(int userId) throws SQLException;
+    ArrayList<INote> getUserNotes(int userId) throws SQLException;
+    ArrayList<IChallenge> getUserChallenges(int userId) throws SQLException;
+    ArrayList<IFriendRequest> getUserFriendRequests(int userId) throws SQLException;
+    boolean acceptFriendRequest(int fromUserId, int toUserId) throws SQLException;
 }

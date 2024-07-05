@@ -3,10 +3,19 @@ package models.DAO;
 import models.USER.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
+import models.friend.FriendRequest;
+import models.friend.abstractions.IFriendRequest;
+import models.notification.Challenge;
+import models.notification.Note;
+import models.notification.abstractions.IChallenge;
+import models.notification.abstractions.INote;
+import models.notification.abstractions.INotification;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class mySqlDb implements Dao {
     private final BasicDataSource dbSource;
@@ -199,6 +208,103 @@ public class mySqlDb implements Dao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public ArrayList<INotification> getUserNotifications(int userId) throws SQLException
+    {
+        User user = getUserById(userId);
+        if(user == null)
+            throw new RuntimeException("User can't be null");
+        ArrayList<INotification> notifications = new ArrayList<>();
+        ArrayList<INote> notes = getUserNotes(userId);
+        ArrayList<IChallenge> challenges = getUserChallenges(userId);
+        ArrayList<IFriendRequest> friendRequests = getUserFriendRequests(userId);
+        notifications.addAll(notes);
+        notifications.addAll(challenges);
+        notifications.addAll(friendRequests);
+
+        notifications.sort((n1, n2) -> n2.getSendTime().compareTo(n1.getSendTime()));
+
+        return notifications;
+    }
+
+    @Override
+    public ArrayList<INote> getUserNotes(int userId) throws SQLException
+    {
+        String query = "SELECT * FROM notes WHERE notes.toId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<INote> notes = new ArrayList<>();
+                while (resultSet.next()) {
+                    int noteId = resultSet.getInt("noteId");
+                    int fromId = resultSet.getInt("fromId");
+                    int toId = resultSet.getInt("toId");
+                    String text = resultSet.getString("text");
+                    Date sendTime = resultSet.getDate("sendTime");
+                    INote note = new Note(noteId, fromId, toId, text, sendTime);
+                    notes.add(note);
+                }
+                return notes;
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<IChallenge> getUserChallenges(int userId) throws SQLException
+    {
+        String query = "SELECT * FROM challenges WHERE challenges.toId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IChallenge> challenges = new ArrayList<>();
+                while (resultSet.next()) {
+                    int challengeId = resultSet.getInt("challengeId");
+                    int fromId = resultSet.getInt("fromId");
+                    int toId = resultSet.getInt("toId");
+                    int quizId = resultSet.getInt("quizId");
+                    Date sendTime = resultSet.getDate("sendTime");
+                    IChallenge challenge = new Challenge(challengeId, fromId, toId, quizId, sendTime);
+                    challenges.add(challenge);
+                }
+                return challenges;
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<IFriendRequest> getUserFriendRequests(int userId) throws SQLException
+    {
+        String query = "SELECT * FROM friendRequests WHERE friendRequests.toUserId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IFriendRequest> friendRequests = new ArrayList<>();
+                while (resultSet.next()) {
+                    int requestId = resultSet.getInt("requestId");
+                    int fromUserId = resultSet.getInt("fromUserId");
+                    int toUserId = resultSet.getInt("toUserId");
+                    Date sendTime = resultSet.getDate("sendTime");
+                    IFriendRequest friendRequest = new FriendRequest(requestId, fromUserId, toUserId, sendTime);
+                    friendRequests.add(friendRequest);
+                }
+                return friendRequests;
+            }
+        }
+    }
+
+    @Override
+    public boolean acceptFriendRequest(int fromUserId, int toUserId) {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 
 }
