@@ -47,6 +47,10 @@ export class fillInBlank{
         $('#score').val(this.score);
     }
 
+    setValues(){
+
+    }
+
     generateJson(){
 
     }

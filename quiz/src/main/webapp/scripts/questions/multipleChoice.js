@@ -64,6 +64,13 @@ export class multipleChoice{
         });
     }
 
+    setValues(question , answers , correctAnswer , score){
+        this.question = question;
+        this.answers = answers;
+        this.correctAnswer = correctAnswer;
+        this.score = score;
+    }
+
     generateJson() {
         return{
             'type': this.getType(),

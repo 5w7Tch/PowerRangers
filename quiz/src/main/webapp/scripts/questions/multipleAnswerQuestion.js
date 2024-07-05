@@ -59,6 +59,13 @@ export class multipleAnswerQuestion{
         });
     }
 
+    setValues(question , answers , score , orderMatters){
+        this.question = question;
+        this.answers = answers;
+        this.score = score;
+        this.orderMatters = orderMatters;
+    }
+
     generateJson() {
         return {
             'question': this.question,

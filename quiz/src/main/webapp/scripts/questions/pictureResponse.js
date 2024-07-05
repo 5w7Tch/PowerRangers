@@ -55,10 +55,17 @@ export class pictureResponse{
         });
     }
 
+    setValues(question , answers , score){
+        this.question = question;
+        this.answers = answers;
+        this.score = score;
+    }
+
+
     generateJson() {
         return {
-            'question': this.question,
             'type': this.getType(),
+            'question': this.question,
             'answers': this.answers,
             'score': this.score
         };

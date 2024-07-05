@@ -66,10 +66,17 @@ export class multipleAnswerChoice{
         });
     }
 
+    setValues(question , correctAnswers , wrongAnswers , score){
+        this.question = question;
+        this.correctAnswers = correctAnswers;
+        this.wrongAnswers = wrongAnswers;
+        this.score = score;
+    }
+
     generateJson() {
         return {
-            'question': this.question,
             'type': this.getType(),
+            'question': this.question,
             'correctAnswers': this.correctAnswers,
             'wrongAnswers': this.wrongAnswers,
             'score': this.score

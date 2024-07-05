@@ -41,6 +41,11 @@ export class matching{
         });
     }
 
+    setValues(matches , score){
+        this.matches = matches;
+        this.score = score;
+    }
+
     generateJson() {
         return {
             'type': this.getType(),
