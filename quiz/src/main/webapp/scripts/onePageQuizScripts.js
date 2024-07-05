@@ -68,6 +68,7 @@ function updateCountdown() {
 // Function to show timeout message
 function showTimeoutMessage() {
     clearInterval(countdownInterval);
+    sessionStorage.clear();
     window.location.replace('/timeOut');
 }
 
@@ -89,8 +90,10 @@ function finish() {
         })
         .then(function(data) {
             if(data.bad == 1){
+                sessionStorage.clear();
                 window.location.replace('/timeOut');
             }else{
+                sessionStorage.clear();
                 window.location.replace('/success');
             }
         })

@@ -78,12 +78,14 @@ function updateCountdown() {
 // Function to show timeout message
 function showTimeoutMessage() {
     clearInterval(countdownInterval);
+    sessionStorage.clear();
     window.location.replace('/timeOut');
 }
 
 
 
 function finish() {
+
     fetch('/finished', {
         method: 'POST',
         headers: {
@@ -101,8 +103,10 @@ function finish() {
         })
         .then(function(data) {
             if(data.bad == 1){
+                sessionStorage.clear();
                 window.location.replace('/timeOut');
             }else{
+                sessionStorage.clear();
                 window.location.replace('/success');
             }
         })
@@ -159,7 +163,11 @@ function parseJson(arr){
         res+= id + ':'+ arr[arrKey]+',';
         i++;
     }
-    res = res.substring(0, res.length-1);
+    if(res.length !== 1){
+        res = res.substring(0, res.length-1);
+    }else{
+        res+=''+currentQuestionIndex+':';
+    }
     res+='}';
     return res;
 }
@@ -248,11 +256,9 @@ function radioChange(thisObj, name) {
     for (let i = 0; i < radios.length; i++) {
         if (radios[i].style.backgroundColor === 'yellow') {
             answers[name] = [radios[i].innerText];
-            break;
+            return;
         }
     }
-
-    console.log(answers);
 }
 
 function answerChange(thisObj, name) {

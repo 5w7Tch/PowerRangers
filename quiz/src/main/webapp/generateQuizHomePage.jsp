@@ -137,12 +137,14 @@
             <% if(quiz.isPracticable()) {%>
                 <h4 style="color: #007bff">Practise: </h4>
                 <div class="radio-buttons">
-                    <label><input type="radio" onchange="update()" name="practise" value="on">ON</label>
-                    <label><input type="radio" onchange="update()" name="practise" value="off">OFF</label>
+                    <label><input type="radio"  name="practise" value="on">ON</label>
+                    <label><input type="radio"  name="practise" value="off">OFF</label>
                 </div>
             <%}%>
             <%if(!quiz.isImmediateCorrection()){%>
                 <button class="button" id="startSinglePage" name="<%=quiz.getId()%>">Start Single Page</button>
+            <%}else{%>
+                <button class="button" id="startSinglePage" name="<%=quiz.getId()%>" STYLE="display: none">Start Single Page</button>
             <%}%>
             <button class="button" id="startMultiPage" name="<%=quiz.getId()%>">Start Multi Page</button>
 

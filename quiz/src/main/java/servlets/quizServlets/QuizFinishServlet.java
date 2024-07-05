@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.Iterator;
@@ -28,9 +31,21 @@ public class QuizFinishServlet extends HttpServlet {
         Date startDate = (Date) request.getSession(false).getAttribute("startTime");
         long time1 = finishDate.getTime();
         long time2 = startDate.getTime();
+
+
+        Timestamp timestamp = new Timestamp(startDate.getTime());
+        Timestamp timestamp2 = new Timestamp(finishDate.getTime());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println(dateFormat.format(timestamp));
+        System.out.println(dateFormat.format(timestamp2));
+
+
         double differenceInMinutes = Math.abs((time1-time2)/(1000.0 * 60.0));
         JSONObject json = new JSONObject();
-        String practise = request.getParameter("practise");
+        String practise = (String)request.getSession().getAttribute("practise");
+        DecimalFormat df = new DecimalFormat("#.00");
+        request.getSession().setAttribute("timeSpent", df.format(differenceInMinutes));
+        request.getSession().setAttribute("startTime", null);
         if(differenceInMinutes>((Quiz)request.getSession(false).getAttribute("quiz")).getDuration()+1){
             json.put("bad", 1);
             response.setContentType("application/json");
@@ -40,12 +55,17 @@ public class QuizFinishServlet extends HttpServlet {
             ArrayList<Double> results = checkAnswers(request);
             json.put("bad", 0);
             request.getSession().setAttribute("results", results);
+            Double score = new Double(0);
+            for (int i = 0; i < results.size(); i++) {
+                score += results.get(i);
+            }
+            request.getSession().setAttribute("score", score);
             if(practise.equals("on")){
-                try {
-                    remember(results, startDate, finishDate, request);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+//                try {
+//                    remember(score, results, startDate, finishDate, request);
+//                } catch (SQLException e) {
+//                    throw new RuntimeException(e);
+//                }
             }
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
@@ -53,11 +73,7 @@ public class QuizFinishServlet extends HttpServlet {
         }
     }
 
-    private void remember(ArrayList<Double> results, Date startDate, Date finishDate, HttpServletRequest request) throws SQLException {
-        Double score = new Double(0);
-        for (int i = 0; i < results.size(); i++) {
-            score += results.get(i);
-        }
+    private void remember(Double score, ArrayList<Double> results, Date startDate, Date finishDate, HttpServletRequest request) throws SQLException {
         Dao dao = (Dao)request.getServletContext().getAttribute(Dao.DBID);
         Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
         User user = (User)request.getSession().getAttribute("user");
@@ -67,7 +83,7 @@ public class QuizFinishServlet extends HttpServlet {
     private ArrayList<Double> checkAnswers(HttpServletRequest request) throws IOException {
         ArrayList<Question> quests = (ArrayList<Question>) request.getSession().getAttribute("questions");
         ArrayList<Double> results = new ArrayList<>(quests.size());
-
+        Double totalScore = 0.0;
         BufferedReader reader = request.getReader();
         StringBuilder sb = new StringBuilder();
         String line;
@@ -89,7 +105,9 @@ public class QuizFinishServlet extends HttpServlet {
             }
 //            Double score = quests.get(Integer.parseInt(fieldName)).checkAnswer(parts);
 //            results.set(Integer.parseInt(fieldName), score);
+//            totalScore += quests.get(Integer.parseInt(fieldName)).getScore();
         }
+        request.getSession().setAttribute("realScore", totalScore);
         return results;
     }
 

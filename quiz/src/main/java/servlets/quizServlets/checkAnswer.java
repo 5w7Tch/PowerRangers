@@ -25,21 +25,28 @@ public class checkAnswer extends HttpServlet {
         }
         String string = sb.toString();
         System.out.println(string);
-        string = string.substring(1, string.length() - 1);
+        string = string.substring(2, string.length() - 2);
         String[] ans = string.trim().split(",");
+
         int questNum = Integer.parseInt(ans[0].trim().split(":")[0]);
+
         for(int i = 0; i < ans.length; i++) {
-            ans[i] = ans[i].trim().split(":")[1];
+            String[] sp = ans[i].trim().split(":");
+            if(sp.length >1){
+                ans[i] =sp[1];
+            }else{
+                ans[i] = "";
+            }
         }
         JSONObject json = new JSONObject();
-        Double score = quests.get(questNum).checkAnswer(ans);
-        if(score.equals(quests.get(questNum).getScore())) {
-            json.put("res",2);
-        }else if (score == 0.0) {
-            json.put("res",0);
-        }else {
-            json.put("res",1);
-        }
+//        Double score = quests.get(questNum).checkAnswer(ans);
+//        if(score.equals(quests.get(questNum).getScore())) {
+//            json.put("res",2);
+//        }else if (score == 0.0) {
+//            json.put("res",0);
+//        }else {
+//            json.put("res",1);
+//        }
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json.toString());
