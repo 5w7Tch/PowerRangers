@@ -5,8 +5,10 @@ import models.USER.User;
 import models.USER.WritenQuiz;
 import models.quizes.questions.Question;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface Dao {
     String DBID = "db";
@@ -23,5 +25,13 @@ public interface Dao {
     void clearQuizHistory(String quizId) throws SQLException;
     void addQuiz(Quiz quiz) throws SQLException;
 
-    void addQuestion(Question question);
+    void addQuestion(Question question) throws SQLException;
+
+    boolean quizExists(int id) throws SQLException;
+
+    List<Question> getQuestionsByQuizId(int quizId) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException;
+
+    void updateQuiz(Quiz quiz) throws SQLException;
+
+    void deleteQuestions(int quizId) throws SQLException;
 }

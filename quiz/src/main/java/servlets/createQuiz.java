@@ -20,7 +20,6 @@ public class createQuiz extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO : if user is not logged in, then redirect to login page
         if(request.getSession().getAttribute("user")==null){
             response.sendRedirect("/");
             return;
@@ -30,7 +29,7 @@ public class createQuiz extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        JsonObject quizObj = (JsonObject) readObj(request);
+        JsonObject quizObj = (JsonObject) servletGeneralFunctions.readObj(request);
 
         JsonArray questionArr = quizObj.get("questions").getAsJsonArray();
         int quizId = 0;
@@ -45,7 +44,33 @@ public class createQuiz extends HttpServlet {
         sendResponse(response);
     }
 
+    public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("got1");
+        JsonObject quizObj = (JsonObject) servletGeneralFunctions.readObj(request);
+        Quiz quiz = readQuizInfo(quizObj,request);
+        quiz.setId(Integer.parseInt(request.getParameter("quizId")));
+        Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
+        System.out.println("got2");
+        try {
+            db.updateQuiz(quiz);
+            db.deleteQuestions(quiz.getId());
+            JsonArray questionArr = quizObj.get("questions").getAsJsonArray();
+            uploadQuestionsToDB(questionArr,quiz.getId());
+        } catch (SQLException e) {
+            // todo: erise 500 error
+            throw new RuntimeException(e);
+        }
+        sendResponse(response);
+    }
+
     private int uploadQuizInfo(JsonObject quizObj,HttpServletRequest request) throws SQLException {
+        Quiz quiz = readQuizInfo(quizObj,request);
+        Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
+        db.addQuiz(quiz);
+        return quiz.getId();
+    }
+
+    private Quiz readQuizInfo(JsonObject quizObj,HttpServletRequest request){
         int id = -1;
         int authorId = ((User) request.getSession().getAttribute("user")).getId();
         Date creationDate = new Date(System.currentTimeMillis());
@@ -54,13 +79,9 @@ public class createQuiz extends HttpServlet {
         boolean isRandom = quizObj.get("isRandom").getAsBoolean();
         boolean immediateCorrection = quizObj.get("immediateCorrection").getAsBoolean();
         boolean practiceMode = quizObj.get("practiceMode").getAsBoolean();
-        double duration = quizObj.get("duration").getAsInt();
+        double duration = quizObj.get("duration").getAsDouble();
 
-        Quiz quiz = new Quiz(-1,authorId,title,creationDate,description,practiceMode,isRandom,duration,immediateCorrection);
-        // TODO: save info to DB
-        Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
-        db.addQuiz(quiz);
-        return quiz.getId();
+        return new Quiz(-1,authorId,title,creationDate,description,practiceMode,isRandom,duration,immediateCorrection);
     }
 
     private void uploadQuestionsToDB(JsonArray questionArr,int quizId){
@@ -70,12 +91,9 @@ public class createQuiz extends HttpServlet {
             Class<?> obj = Question.getClass(type);
             try {
                 Question question = (Question) obj.getConstructor(JsonObject.class,int.class,int.class,int.class).newInstance(jsonObject,-1,quizId,i);
-                System.out.println(question.getType()+" "+question.getScore()+" "+question.getQuizId()+" "+question.getOrderNum());
-                //TODO: save question to DB;
                 Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
                 db.addQuestion(question);
-
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | SQLException |
                      NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
@@ -88,20 +106,5 @@ public class createQuiz extends HttpServlet {
         object.addProperty("status","Its OK");
         response.getWriter().write(object.toString());
         response.getWriter().flush();
-    }
-
-
-    private JsonElement readObj(HttpServletRequest request){
-        StringBuilder data = new StringBuilder();
-        try(BufferedReader reader = request.getReader()){
-            String line;
-            while ((line= reader.readLine())!=null){
-                data.append(line);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return JsonParser.parseString(data.toString());
     }
 }

@@ -1,5 +1,7 @@
 package models.quizes;
 
+import com.google.gson.JsonObject;
+
 import java.sql.Date;
 
 public class Quiz {
@@ -63,5 +65,20 @@ public class Quiz {
 
     public boolean isImmediateCorrection() {
         return immediateCorrection;
+    }
+
+    public JsonObject getJson(){
+        JsonObject obj = new JsonObject();
+        obj.addProperty("quizId",id);
+        obj.addProperty("author",author);
+        obj.addProperty("title",name);
+        obj.addProperty("creationDate",creationDate.toString());
+        obj.addProperty("description",description);
+        obj.addProperty("isPracticable",isPracticable);
+        obj.addProperty("randomSeq",isRandomQuestionSec);
+        obj.addProperty("duration",duration);
+        obj.addProperty("immediateCorrection",immediateCorrection);
+
+        return obj;
     }
 }
