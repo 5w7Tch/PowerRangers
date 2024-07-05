@@ -1,4 +1,4 @@
-package servlets;
+package servlets.quizServlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.USER.WritenQuiz;

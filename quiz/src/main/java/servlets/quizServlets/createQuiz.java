@@ -1,4 +1,4 @@
-package servlets;
+package servlets.quizServlets;
 
 import com.google.gson.*;
 import models.DAO.Dao;
