@@ -3,7 +3,7 @@ package servlets.quizServlets;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.DAO.Dao;
-import models.USER.Quiz;
+import models.quizes.Quiz;
 import models.USER.User;
 import models.questions.Question;
 import org.json.simple.JSONObject;

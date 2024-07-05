@@ -149,7 +149,7 @@
             <button class="button" id="startMultiPage" name="<%=quiz.getId()%>">Start Multi Page</button>
 
             <% if(quiz.getAuthor() == ((User)session.getAttribute("user")).getId()) {%>
-                <input class="button" type="submit" id="edit" value="Edit" style="background-color: gray">
+                <a href="editQuiz?quizId=<%=quiz.getId()%>"><button class="button" style="background-color: gray"> Edit</button></a>
             <%}%>
             <% if(((User)session.getAttribute("user")).isAdmin()) {%>
             <form id="deleteForm" action="deleteQuiz?quizId=<%=quiz.getId()%>" method="post">

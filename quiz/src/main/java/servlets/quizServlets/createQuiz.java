@@ -5,6 +5,7 @@ import models.DAO.Dao;
 import models.USER.User;
 import models.quizes.Quiz;
 import models.quizes.questions.Question;
+import servlets.servletGeneralFunctions;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

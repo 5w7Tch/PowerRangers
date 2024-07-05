@@ -2,7 +2,7 @@ package models.DAO;
 import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
-import models.questions.Question;
+import models.quizes.questions.Question;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -31,6 +31,7 @@ public interface Dao {
     void addQuiz(Quiz quiz) throws SQLException;
 
     void addQuestion(Question question) throws SQLException;
+
 
     boolean quizExists(int id) throws SQLException;
 

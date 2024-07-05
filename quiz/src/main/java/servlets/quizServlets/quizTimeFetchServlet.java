@@ -1,6 +1,6 @@
 package servlets.quizServlets;
 
-import models.USER.Quiz;
+import models.quizes.Quiz;
 import org.json.simple.JSONObject;
 
 import javax.servlet.ServletException;

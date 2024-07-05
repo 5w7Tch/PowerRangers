@@ -7,7 +7,6 @@ import models.quizes.questions.Question;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.lang.reflect.InvocationTargetException;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
