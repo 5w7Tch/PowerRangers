@@ -3,6 +3,9 @@ package models.DAO;
 import models.USER.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
+import models.achievement.Achievement;
+import models.achievement.abstractions.IAchievement;
+import models.enums.AchievementType;
 import models.announcement.Announcement;
 import models.friend.FriendRequest;
 import models.friend.abstractions.IFriendRequest;
@@ -421,5 +424,26 @@ public class mySqlDb implements Dao {
         }
     }
 
+
+    public ArrayList<IAchievement> getUserAchievements(int userId) throws SQLException {
+        String query = "SELECT * FROM achievements a WHERE a.achievementId in (" +
+                "select ua.achievementId from userAchievements ua where ua.userId = ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IAchievement> achievements = new ArrayList<>();
+                while (resultSet.next()) {
+                    int achievementId = resultSet.getInt("achievementId");
+                    String icon = resultSet.getString("icon");
+                    AchievementType type = AchievementType.fromOrdinal(resultSet.getInt("type"));
+                    String description = resultSet.getString("description");
+                    IAchievement achievement = new Achievement(achievementId, icon, type, description);
+                    achievements.add(achievement);
+                }
+                return achievements;
+            }
+        }
+    }
 
 }

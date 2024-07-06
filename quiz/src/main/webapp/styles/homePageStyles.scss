@@ -1,47 +1,71 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
-.container-fluid .row .col-3 .user .col-3 {
-    position: relative;
+.container-fluid .row .col-3 {
 
-    .notifications-list {
-        position: absolute;
-        display: none;
-        height: 600px;
-        width: 400px;
-        overflow: auto;
-        top: 40px;
-        left: -25px;
+    .user .col-3 {
+        position: relative;
 
-        .list-group {
-            margin-bottom: 0;
+        .notifications-list {
+            position: absolute;
+            display: none;
+            height: 600px;
+            width: 400px;
+            overflow: auto;
+            top: 45px;
+            left: -25px;
 
-            .notification-wrapper {
-                padding: 10px;
-                --bs-bg-opacity: .1;
-                --bs-border-opacity: .5;
+            .list-group {
+                margin-bottom: 0;
 
-                .note-info {
-                    overflow: auto;
-                    height: 48px;
-                    padding: 4px;
+                .notification-wrapper {
+                    padding: 10px;
+                    --bs-bg-opacity: .1;
+                    --bs-border-opacity: .5;
 
-                    p {
-                        margin-bottom: 0;
+                    .note-info {
+                        overflow: auto;
+                        height: 48px;
+                        padding: 4px;
+
+                        p {
+                            margin-bottom: 0;
+                        }
+                    }
+
+                    .challenge-info {
+
+                        button {
+                            --bs-bg-opacity: .1;
+                        }
+                    }
+
+                    .friend-request-info {
+
+                        .spinner-border {
+                            display: none;
+                        }
                     }
                 }
+            }
+        }
+    }
 
-                .challenge-info {
+    .achievements {
 
-                    button {
-                        --bs-bg-opacity: .1;
-                    }
-                }
+        .achievement-container-wrapper {
+            width: 100%;
+            height: 100%;
+            --bs-bg-opacity: .1;
 
-                .friend-request-info {
+            .achievement-container {
+                white-space: nowrap;
 
-                    .spinner-border {
-                        display: none;
-                    }
+                .achievement-icon {
+                    cursor: pointer;
+                    flex: 0 0 auto;
+                    width: 100px;
+                    height: 100px;
+                    margin: 10px;
                 }
             }
         }

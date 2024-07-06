@@ -4,6 +4,7 @@ import models.USER.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
 import models.announcement.Announcement;
+import models.achievement.abstractions.IAchievement;
 import models.friend.abstractions.IFriendRequest;
 import models.notification.Challenge;
 import models.notification.Note;
@@ -41,4 +42,5 @@ public interface Dao {
     boolean sendChallenge(Challenge challenge) throws SQLException;
     boolean rememberNote(Note note) throws SQLException;
     boolean rememberAnnouncement(Announcement announcement) throws SQLException;
+    ArrayList<IAchievement> getUserAchievements(int userId) throws SQLException;
 }

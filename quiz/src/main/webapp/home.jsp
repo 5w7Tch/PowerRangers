@@ -11,6 +11,7 @@
 <%@ page import="models.friend.abstractions.IFriendRequest" %>
 <%@ page import="models.friend.FriendRequest" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="models.achievement.abstractions.IAchievement" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -24,6 +25,7 @@
         Dao myDb = (Dao)application.getAttribute(Dao.DBID);
         User user = (User) request.getSession().getAttribute("user");
         ArrayList<INotification> notifications = myDb.getUserNotifications(user.getId());
+        ArrayList<IAchievement> achievements = myDb.getUserAchievements(user.getId());
     %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -63,10 +65,10 @@
         <div class="row bg-secondary h-75">
             <div class="col-3 bg-success h-75">
                 <div class="row user bg-warning h-25">
-                    <div class="col-9 bg-light h-75">
+                    <div class="col-9 align-content-center">
                         <h1><%=user.getUsername() %></h1>
                     </div>
-                    <div class="col-3 d-flex justify-content-center align-items-center bg-dark h-75">
+                    <div class="col-3 d-flex justify-content-center align-items-center">
                         <button type="button" id="notificationsButton" class="btn btn-secondary">
                             <i class="bi bi-bell"></i>
                         </button>
@@ -125,7 +127,47 @@
                         </div>
                     </div>
                 </div>
-                <div class="row achievements bg-info h-25"></div>
+                <div class="row achievements bg-info h-25">
+                    <div class="col-12 p-0 card rounded-0">
+                        <div class="card-header">
+                            Achievements
+                        </div>
+                        <div class="achievement-container-wrapper bg-info">
+                            <div class="card-body p-0 m-2 d-flex overflow-auto achievement-container">
+                                <%
+                                    for(i = 0; i < achievements.size(); i++) {
+                                %>
+                                <div class="achievement-icon text-white d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#achievementModal<%=i%>">
+                                    <img src="<%=request.getContextPath()%><%=achievements.get(i).getIcon()%>" class="img-thumbnail" alt="<%=achievements.get(i).getType().getDisplayName()%>>" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<%=achievements.get(i).getType().getDisplayName()%>">
+                                </div>
+                                <div class="modal" id="achievementModal<%=i%>" tabindex="-1" aria-labelledby="Achievement Description" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel"><%=achievements.get(i).getType().getDisplayName()%></h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body d-grid justify-content-center">
+                                                <div class="card" style="width: 18rem;">
+                                                    <img src="<%=request.getContextPath()%><%=achievements.get(i).getIcon()%>" class="img-thumbnail card-img-top" alt="<%=achievements.get(i).getType().getDisplayName()%>>">
+                                                    <div class="card-body">
+                                                        <p class="card-text"><%=achievements.get(i).getDescription()%></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%
+                                    }
+                                %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row quizActivities bg-warning h-25"></div>
                 <div class="row createdQuizzes bg-info h-25"></div>
             </div>
