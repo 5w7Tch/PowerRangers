@@ -15,20 +15,26 @@ public class multipleAnswerQuestion extends Question{
 
     public multipleAnswerQuestion(JsonObject jsonObject, int questionId, int authorId, int orderNum){
         super(jsonObject.get("question").getAsJsonObject() , jsonObject.get("answer").getAsJsonObject(),  questionId,authorId,orderNum , "multipleAnswerQuestion" ,  jsonObject.get("score").getAsDouble());
+        initAnswersList();
+    }
+
+    public multipleAnswerQuestion(int questionId,int quizId,String type,String questionJson,String answerJson,int orderNum,double score){
+        super((JsonObject)JsonParser.parseString(questionJson) , (JsonObject)JsonParser.parseString(answerJson) ,questionId,quizId,orderNum , type , score);
+        initAnswersList();
+    }
+
+    private void initAnswersList(){
         this.answers = new ArrayList<>();
 
-        JsonArray array = answerJson.get("answers").getAsJsonArray();
+        JsonArray array = this.answerJson.get("answers").getAsJsonArray();
         answers = new ArrayList<>();
         for (JsonElement obj : array){
             answers.add(obj.getAsString());
         }
 
-        this.orderMatters = questionJson.get("orderMatters").getAsBoolean();
+        this.orderMatters = this.questionJson.get("orderMatters").getAsBoolean();
     }
 
-    public multipleAnswerQuestion(int questionId,int quizId,String type,String questionJson,String answerJson,int orderNum,double score){
-        super((JsonObject)JsonParser.parseString(questionJson) , (JsonObject)JsonParser.parseString(answerJson) ,questionId,quizId,orderNum , type , score);
-    }
 
     @Override
     public String getQuestion(int orderNum) {

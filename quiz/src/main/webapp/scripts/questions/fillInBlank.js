@@ -11,7 +11,6 @@ export class fillInBlank{
                 <div id="answers" >
      
                 </div>
-                <button class="btn btn-success" id="add-field">Add blanck</button>
                 <label style="color: red;font-weight: bold;"> Score:</label>     
                 <input type="number" id="score" style="width: 80px" value="1">
             </div>
@@ -42,13 +41,22 @@ export class fillInBlank{
     }
 
     setValues(answer,question,score){
-        this.question=question;
-        this.answer=answer;
-        this.score=score;
+        this.question = question.question;
+        this.answers = answer.answers;
+        this.score = score;
     }
 
     generateJson(){
-
+        return {
+            'type': this.getType(),
+            'question' : {
+                'question' : this.question
+            },
+            'answer' : {
+                'answers' : this.answers
+            },
+            'score' : this.score
+        }
     }
 
     isValid(){
