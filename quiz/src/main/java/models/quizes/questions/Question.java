@@ -13,6 +13,7 @@ public abstract class Question {
 
     public static void registerTypes(){
         questions.put("questionResponse", questionResponse.class);
+        questions.put("fillInBlank", fillInBlank.class);
     }
 
     public static Class<?> getClass(String type){
@@ -53,9 +54,14 @@ public abstract class Question {
     public int getQuestionId(){
         return questionId;
     }
+
     public void setQuestionId(int id){
         questionId=id;
     }
 
     public abstract JsonObject generateJson();
+
+    public abstract String getQuestion(int orderNum);
+
+    public abstract Double checkAnswer(String[] answer);
 }

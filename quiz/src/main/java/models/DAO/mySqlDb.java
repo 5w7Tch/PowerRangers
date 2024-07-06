@@ -312,13 +312,6 @@ public class mySqlDb implements Dao {
     }
 
     @Override
-    public ArrayList<Question> getQuizQuestions(String quizId) throws SQLException {
-        ArrayList<Question> res = new ArrayList<>();
-
-        return res;
-    }
-
-    @Override
     public void insertIntoQuizHistory(String quizId, String userId, java.sql.Date start, java.sql.Date end, Double score) throws SQLException {
         String query = "insert into quizHistory (quizId, userId, startTime, endTime, score) values (?, ?, ?, ?, ?)";
         try (Connection connection = dbSource.getConnection();

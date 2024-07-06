@@ -1,10 +1,4 @@
 export class fillInBlank{
-
-    constructor() {
-        this.score = 0;
-        this.answers = [];
-    }
-
     getCreateHtml(type){
         return `
             <p id="type" style="display: none">${type}</p>
@@ -47,8 +41,10 @@ export class fillInBlank{
         $('#score').val(this.score);
     }
 
-    setValues(){
-
+    setValues(answer,question,score){
+        this.question=question;
+        this.answer=answer;
+        this.score=score;
     }
 
     generateJson(){
