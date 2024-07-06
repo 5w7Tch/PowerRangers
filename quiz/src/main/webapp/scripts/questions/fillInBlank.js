@@ -5,12 +5,13 @@ export class fillInBlank{
             <div class="form-group">
                 <label for="question">Question</label>
                 <textarea class="form-control" id="question" rows="3"></textarea>
+                <button class="btn btn-success" id="add-answer">Add blanck</button>
                 <hr>
                 <h3 style="border: none" class="form-control">Answers</h3>
                 <div id="answers" >
-                    
+     
                 </div>
-                <button id="add-answer" class="btn btn-success">add Answer</button> 
+                <button class="btn btn-success" id="add-field">Add blanck</button>
                 <label style="color: red;font-weight: bold;"> Score:</label>     
                 <input type="number" id="score" style="width: 80px" value="1">
             </div>
@@ -34,7 +35,6 @@ export class fillInBlank{
         for (let i = 0; i < answers.length; i++) {
             addAnswerHtml();
         }
-
         $('.fillInBlank-answer').each(function (index){
             $(this).text(answers[index]);
         })
@@ -52,16 +52,30 @@ export class fillInBlank{
     }
 
     isValid(){
-        return true;
+        let quest = $('#question').val();
+        let startCount = quest.split('★').length - 1;
+        let fieldsCount = 0;
+        $('.fillInBlank-answer').each(function (index){
+            fieldsCount++;
+        });
+        return startCount === fieldsCount;
     }
 
     getType(){
         return 'fillInBlank';
     }
+    allertMsg(){
+        return 'Fields and empty space count Differ';
+    }
 }
+
 
 $(document).ready(function (){
     $('body').on('click','#add-answer',function (){
+        insertSymbol();
+        addAnswerHtml();
+    })
+    $('body').on('click','#add-field',function (){
         addAnswerHtml();
     })
 
@@ -78,4 +92,16 @@ function addAnswerHtml(){
             </div>
         `
     $('#answers').append(elem);
+}
+function insertSymbol() {
+    const textarea = document.getElementById('question');
+    const symbol = ' ★ '; // The symbol to insert
+    const cursorPosition = textarea.selectionStart;
+    const textBefore = textarea.value.substring(0, cursorPosition);
+    const textAfter = textarea.value.substring(cursorPosition);
+    textarea.value = textBefore + symbol + textAfter;
+
+    textarea.selectionStart = textarea.selectionEnd = cursorPosition + symbol.length;
+    textarea.focus();
+
 }
