@@ -42,6 +42,7 @@ public class QuizFinishServlet extends HttpServlet {
         DecimalFormat df = new DecimalFormat("#.00");
         request.getSession().setAttribute("timeSpent", df.format(differenceInMinutes));
         request.getSession().setAttribute("startTime", null);
+
         if(differenceInMinutes>((Quiz)request.getSession(false).getAttribute("quiz")).getDuration()+1){
             json.put("bad", 1);
             response.setContentType("application/json");
