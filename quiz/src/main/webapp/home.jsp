@@ -135,6 +135,13 @@
                         <div class="achievement-container-wrapper bg-info">
                             <div class="card-body p-0 m-2 d-flex overflow-auto achievement-container">
                                 <%
+                                if(achievements.isEmpty()) {
+                                %>
+                                <p>You have no achievements :(</p>
+                                <%
+                                }
+                                %>
+                                <%
                                     for(i = 0; i < achievements.size(); i++) {
                                 %>
                                 <div class="achievement-icon text-white d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#achievementModal<%=i%>">
