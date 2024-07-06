@@ -6,6 +6,7 @@
         position: relative;
 
         .notifications-list {
+            z-index: 999;
             position: absolute;
             display: none;
             height: 600px;
