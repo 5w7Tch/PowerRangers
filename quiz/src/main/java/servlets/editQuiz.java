@@ -17,11 +17,6 @@ import java.util.List;
 
 public class editQuiz extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getSession().getAttribute("user")==null){
-            response.sendRedirect("/");
-            return;
-        }
-
         try{
             String quizId = request.getParameter("quizId");
             int id = Integer.parseInt(quizId);

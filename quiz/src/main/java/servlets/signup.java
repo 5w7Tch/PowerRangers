@@ -18,14 +18,7 @@ public class signup extends HttpServlet {
     private static final String CHARS = "abcdefghijklmnopqrstuvwxyz0123456789.,-!";
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getSession().getAttribute("user")==null){
-            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-            response.setHeader("Pragma", "no-cache");
-            response.setHeader("Expires", "0");
-            request.getRequestDispatcher("login_signup.jsp").forward(request,response);
-        }else{
-            response.sendRedirect("/");
-        }
+        request.getRequestDispatcher("login_signup.jsp").forward(request,response);
     }
 
     private boolean passwordIsValid(String password){
