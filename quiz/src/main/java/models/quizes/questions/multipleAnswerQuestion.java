@@ -16,7 +16,7 @@ public class multipleAnswerQuestion extends Question{
     private boolean orderMatters;
 
     public multipleAnswerQuestion(JsonObject jsonObject, int questionId, int authorId, int orderNum){
-        super(jsonObject.get("question").getAsJsonObject() , jsonObject.get("answer").getAsJsonObject(),  questionId,authorId,orderNum , "multipleAnswerQuestion" ,  jsonObject.get("score").getAsDouble());
+        super(jsonObject.get("question").getAsJsonObject() , jsonObject.get("answer").getAsJsonObject(),  questionId,authorId,orderNum , jsonObject.get("type").getAsString() ,  jsonObject.get("score").getAsDouble());
         initAnswersList();
     }
 

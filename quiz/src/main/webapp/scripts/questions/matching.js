@@ -41,15 +41,33 @@ export class matching{
         });
     }
 
-    setValues(matches , score){
-        this.matches = matches;
+    setValues(answer, question ,score){
+        this.matches = [];
+        for(let i=0;i<answer.left.length;i++){
+            this.matches.push([answer.left[i],answer.right[i]]);
+        }
+
+
         this.score = score;
     }
 
     generateJson() {
+        let left = [];
+        let right = [];
+
+        for(let i=0;i<this.matches.length;i++){
+            left.push(this.matches[i][0])
+            right.push(this.matches[i][1])
+        }
+
+
         return {
             'type': this.getType(),
-            'matches': this.matches,
+            'question':{},
+            'answer': {
+                'left' : left,
+                'right' : right
+            },
             'score': this.score
         }
     }

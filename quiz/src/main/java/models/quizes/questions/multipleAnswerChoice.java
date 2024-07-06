@@ -12,7 +12,7 @@ import java.util.Iterator;
 public class multipleAnswerChoice extends Question{
     private ArrayList<String> answers;
     public multipleAnswerChoice(JsonObject jsonObject, int questionId, int authorId, int orderNum){
-        super(jsonObject.get("question").getAsJsonObject(), jsonObject.get("answer").getAsJsonObject(), questionId,authorId,orderNum , "multipleAnswerChoice" ,jsonObject.get("score").getAsDouble());
+        super(jsonObject.get("question").getAsJsonObject(), jsonObject.get("answer").getAsJsonObject(), questionId,authorId,orderNum , jsonObject.get("type").getAsString() ,jsonObject.get("score").getAsDouble());
         initAnswersList();
     }
 

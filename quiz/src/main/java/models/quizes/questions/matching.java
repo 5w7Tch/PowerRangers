@@ -1,14 +1,12 @@
 package models.quizes.questions;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 
 public class matching extends Question{
     public matching(JsonObject jsonObject, int questionId, int authorId, int orderNum){
-        super(jsonObject.get("question").getAsJsonObject(), jsonObject.get("answer").getAsJsonObject(), questionId,authorId,orderNum , "multipleAnswerChoice" ,jsonObject.get("score").getAsDouble());
+        super(jsonObject.get("question").getAsJsonObject(), jsonObject.get("answer").getAsJsonObject(), questionId,authorId,orderNum , jsonObject.get("type").getAsString() ,jsonObject.get("score").getAsDouble());
         initAnswersList();
     }
 

@@ -122,15 +122,9 @@ insert into users values (1,'nika','nika@', '34bff7be484da58a7c244a79ef278630f33
 
 insert into users values (2,'lasha','lasha@', 'ee5d0f40184e345d01bf17e5a8a8dab7bcf0c4c8',  true);
 
-<<<<<<< HEAD
 insert into quizzes values (1,1,'ito arabets rostevan', sysdate(), 'it was created to ftest something', true, true,false, 30);
 
 insert into quizzes values (2,2,'lashqar mravali kmiani', sysdate(), 'it was created to ftest somethingoooooooooooooooooooooooooooooooooo ooooooooooooooooooooooooooo ooooooooooooooooooooooooooooooooooooooooo oooooooooooooooooooooooooooooooooooooooooooooooooooooo ooooooooooooooooooooooooooooooooo', true, false,false, 30);
-=======
-insert into quizzes values (1,1,'ito arabets rostevan', sysdate(), 'it was created to ftest something', true, true, false, 30);
-
-insert into quizzes values (2,2,'lashqar mravali kmiani', sysdate(), 'it was created to ftest something', true, true, false, 30);
->>>>>>> origin/questionClasses
 
 insert into quizHistory values (1,1,1,DATE_SUB(NOW(), INTERVAL 10 MINUTE) ,sysdate() , 30);
 
