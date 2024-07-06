@@ -66,19 +66,24 @@ export class multipleAnswerChoice{
         });
     }
 
-    setValues(question , correctAnswers , wrongAnswers , score){
-        this.question = question;
-        this.correctAnswers = correctAnswers;
-        this.wrongAnswers = wrongAnswers;
+    setValues(answer , question , score){
+        this.question = question.description;
+        this.correctAnswers = question.correctAnswers;
+        this.wrongAnswers = question.wrongAnswers;
         this.score = score;
     }
 
     generateJson() {
         return {
             'type': this.getType(),
-            'question': this.question,
-            'correctAnswers': this.correctAnswers,
-            'wrongAnswers': this.wrongAnswers,
+            'question': {
+                'description': this.question,
+                'correctAnswers': this.correctAnswers,
+                'wrongAnswers': this.wrongAnswers
+            },
+            'answer': {
+                'answers': this.correctAnswers
+            },
             'score': this.score
         };
     }
