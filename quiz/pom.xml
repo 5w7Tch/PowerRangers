@@ -68,6 +68,11 @@
       <artifactId>json-simple</artifactId>
       <version>1.1.1</version> <!-- or the latest version -->
     </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20210307</version>
+    </dependency>
   </dependencies>
 
   <build>
