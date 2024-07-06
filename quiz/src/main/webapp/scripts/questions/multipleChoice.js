@@ -64,19 +64,24 @@ export class multipleChoice{
         });
     }
 
-    setValues(question , answers , correctAnswer , score){
-        this.question = question;
-        this.answers = answers;
-        this.correctAnswer = correctAnswer;
+    setValues(answer , question  , score){
+        this.question = question.description;
+        this.correctAnswer = question.correctAnswer;
+        this.answers = question.wrongAnswers;
         this.score = score;
     }
 
     generateJson() {
         return{
             'type': this.getType(),
-            'question': this.question,
-            'answers': this.answers,
-            'correctAnswer': this.correctAnswer,
+            'question': {
+                'description' : this.question,
+                'wrongAnswers' : this.answers,
+                'correctAnswer' : this.correctAnswer
+            },
+            'answer': {
+                'answer': this.correctAnswer
+            },
             'score': this.score
         }
     }

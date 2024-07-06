@@ -10,20 +10,28 @@ public abstract class Question {
     protected int quizId;
     protected int orderNum;
     protected int questionId;
+    protected JsonObject questionJson;
+    protected JsonObject answerJson;
+    protected String type;
+    protected double score;
 
     public static void registerTypes(){
         questions.put("questionResponse", questionResponse.class);
-        questions.put("fillInBlank", fillInBlank.class);
+        questions.put("multipleChoice",multipleChoice.class);
     }
 
     public static Class<?> getClass(String type){
         return questions.get(type);
     }
 
-    public Question(int questionId,int quizId,int orderNum){
+    public Question(JsonObject questionJson,JsonObject answerJson,int questionId,int quizId,int orderNum,String type,double score){
         this.questionId = questionId;
         this.quizId = quizId;
         this.orderNum = orderNum;
+        this.questionJson = questionJson;
+        this.answerJson = answerJson;
+        this.type = type;
+        this.score = score;
     }
     
     public void printObj(){
@@ -36,12 +44,21 @@ public abstract class Question {
         System.out.println(getQuizId());
     }
 
-    public abstract String getQuestionJson();
-    public abstract String getAnswerJson();
+    public String getQuestionJson(){
+        return questionJson.toString();
+    }
 
-    public abstract String getType();
+    public String getAnswerJson(){
+        return answerJson.toString();
+    }
 
-    public abstract double getScore();
+    public String getType(){
+        return this.type;
+    }
+
+    public double getScore(){
+        return this.score;
+    }
 
     public int getQuizId(){
         return quizId;
@@ -59,7 +76,14 @@ public abstract class Question {
         questionId=id;
     }
 
-    public abstract JsonObject generateJson();
+    public JsonObject generateJson(){
+        JsonObject object = new JsonObject();
+        object.addProperty("type",this.type);
+        object.add("question",this.questionJson);
+        object.add("answer",this.answerJson);
+        object.addProperty("score",this.score);
+        return object;
+    }
 
     public abstract String getQuestion(int orderNum);
 

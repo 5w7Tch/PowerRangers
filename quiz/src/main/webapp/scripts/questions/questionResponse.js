@@ -14,8 +14,8 @@ export class questionResponse{
     }
 
     setValues(answer,question,score){
-        this.question=question;
-        this.answer=answer;
+        this.question=question.description;
+        this.answer=answer.description;
         this.score=score;
 
     }
@@ -35,8 +35,12 @@ export class questionResponse{
     generateJson(){
         return {
             'type' : this.getType(),
-            'question' : this.question,
-            'answer' : this.answer,
+            'question' : {
+                'description' : this.question
+            },
+            'answer' : {
+                'description' : this.answer
+            },
             'score' : this.score
         }
     }
