@@ -31,7 +31,7 @@ public interface Dao {
     ArrayList<WritenQuiz> getQuizHistory(Integer quizId) throws SQLException;
     void eraseQuiz(String quizId) throws SQLException;
     void clearQuizHistory(String quizId) throws SQLException;
-    void insertIntoQuizHistory(String quizId, String userId, java.sql.Date start, java.sql.Date end, Double score) throws SQLException;
+    void insertIntoQuizHistory(String quizId, String userId, java.sql.Date start, Double time, Double score) throws SQLException;
     ArrayList<WritenQuiz> getFriendHistory(Integer quizId, Integer userId) throws SQLException;
     HashSet<Integer> getFriends(Integer userId) throws SQLException;
 

@@ -6,9 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.json.simple.JSONArray;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.*;
 
 public class multipleAnswerQuestion extends Question{
 
@@ -59,23 +57,40 @@ public class multipleAnswerQuestion extends Question{
 
     @Override
     public Double checkAnswer(String[] answer) {
-        int correctAns = 0;
+        double correctAns = 0.0;
         if (this.orderMatters){
             for (int i = 0; i < this.answers.size(); i++){
                 if (this.answers.get(i).equals(answer[i]))
                     correctAns++;
             }
         }else{
-            ArrayList<Boolean> used = new ArrayList<>(Collections.nCopies(this.answers.size(), false));
+            HashSet<String> hisAnswers = new HashSet<>(List.of(answer));
             for (int i = 0; i < this.answers.size(); i++){
-                for (int j = 0; j < this.answers.size(); j++){
-                    if (!used.get(j) && this.answers.get(i).equals(answer[j])){
-                        correctAns++;
-                        used.set(j, true);
-                    }
+                if (hisAnswers.contains(this.answers.get(i))){
+                    correctAns++;
+                    hisAnswers.remove(this.answers.get(i));
                 }
             }
         }
-        return (double)(correctAns / this.answers.size()) * this.score;
+        return (correctAns/this.answers.size()) * this.score;
+    }
+
+    @Override
+    public String getAnsweredQuestion(String[] answer) {
+        String html = "<div class=\"question-box\">\n" +
+                "        <div class=\"question-text\">"+questionJson.get("description").getAsString()+"</div>\n" +
+                "        <ul class=\"answers\">\n";
+        Iterator<JsonElement> it = answerJson.get("answers").getAsJsonArray().iterator();
+        int i = 0;
+        while (it.hasNext()){
+            it.next();
+            html += "<div class=\"answer_response\" contenteditable=\"true\"name=\"0\">"+answer[i]+"</div>\n";
+            i++;
+        }
+        String end ="        </ul>\n" +
+                "    </div>";
+
+
+        return html+end;
     }
 }

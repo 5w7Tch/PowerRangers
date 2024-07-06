@@ -22,7 +22,7 @@
         ArrayList<Question> quests = (ArrayList<Question>) session.getAttribute("questions");
         Dao myDb = (Dao)application.getAttribute(Dao.DBID);
         ArrayList<WritenQuiz> friendHistory = myDb.getFriendHistory(quiz.getId(), user.getId());
-
+        ArrayList<String[]> answerCollections = (ArrayList<String[]>)session.getAttribute("answerCollection");
     %>
     <title>Quiz result</title>
 </head>
@@ -35,7 +35,7 @@
                 <div class="questResult">
                     <%=results.get(i)%>/<%=quests.get(i).getScore()%>
                         <div style="display: flex; align-items: center; justify-content: space-between" >
-                            <%=quests.get(i).getQuestion(i)%>
+                            <%=quests.get(i).getAnsweredQuestion(answerCollections.get(i))%>
 
                             <%if(!results.get(i).equals(quests.get(i).getScore()) && results.get(i).equals(0.0)){%>
                                 <img class="icon" src="<%=request.getContextPath()%>/static/icons/wrong.png" alt="bla">

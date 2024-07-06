@@ -44,4 +44,30 @@ public class  multipleChoice extends Question{
     public Double checkAnswer(String[] answer) {
         return answer[0].equals(questionJson.get("correctAnswer").getAsString()) ? this.score : 0;
     }
+
+    @Override
+    public String getAnsweredQuestion(String[] answer) {
+        String html = "<div class=\"question-box\">\n" +
+                "        <div class=\"question-text\">"+questionJson.get("description").getAsString()+"</div>\n" +
+                "        <ul class=\"answers\">\n";
+        ArrayList<String> answers = new ArrayList<>();
+        String correctAnswer =answerJson.get("answer").getAsString();
+        answers.add(correctAnswer);
+        Iterator<JsonElement> it = questionJson.get("wrongAnswers").getAsJsonArray().iterator();
+        while (it.hasNext()){
+            answers.add(it.next().getAsString());
+        }
+        Collections.shuffle(answers);
+        for (int i = 0; i < answers.size(); i++) {
+            if(answers.get(i).equals(answer[0])){
+                html += "<div class=\"answer_radio\" onclick=\"radioChange(this, 0)\" name=\"0\" style=\"background-color: orange;\">"+answers.get(i)+"</div>\n";
+            }else{
+                html += "<div class=\"answer_radio\" onclick=\"radioChange(this, 0)\" name=\"0\">"+answers.get(i)+"</div>\n";
+            }
+        }
+        String end = "        </ul>\n" +
+                "    </div>";
+
+        return html+end;
+    }
 }

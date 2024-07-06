@@ -52,14 +52,14 @@ public class QuizFinishServlet extends HttpServlet {
             ArrayList<Double> results = checkAnswers(request);
             json.put("bad", 0);
             request.getSession().setAttribute("results", results);
-            Double score = new Double(0);
+            Double score = 0.0;
             for (int i = 0; i < results.size(); i++) {
                 score += results.get(i);
             }
             request.getSession().setAttribute("score", score);
             if(!practise.equals("on")){
                 try {
-                    remember(score, results, startDate, finishDate, request);
+                    remember(score, results, startDate, differenceInMinutes, request);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -70,11 +70,11 @@ public class QuizFinishServlet extends HttpServlet {
         }
     }
 
-    private void remember(Double score, ArrayList<Double> results, Date startDate, Date finishDate, HttpServletRequest request) throws SQLException {
+    private void remember(Double score, ArrayList<Double> results, Date startDate, Double time, HttpServletRequest request) throws SQLException {
         Dao dao = (Dao)request.getServletContext().getAttribute(Dao.DBID);
         Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
         User user = (User)request.getSession().getAttribute("user");
-        dao.insertIntoQuizHistory(quiz.getId().toString(), user.getId().toString(), startDate,finishDate, score);
+        dao.insertIntoQuizHistory(quiz.getId().toString(), user.getId().toString(), startDate, time, score);
 
     }
     private ArrayList<Double> checkAnswers(HttpServletRequest request) throws IOException {
@@ -91,6 +91,7 @@ public class QuizFinishServlet extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonObject = mapper.readTree(jsonString);
         Iterator<String> fieldNames = jsonObject.fieldNames();
+        ArrayList<String[]> answerCollections = new ArrayList<>();
         while (fieldNames.hasNext()) {
             String fieldName = fieldNames.next();
             String answers = jsonObject.get(fieldName).toString();
@@ -99,12 +100,15 @@ public class QuizFinishServlet extends HttpServlet {
             for (int i = 0; i < parts.length; i++) {
                 parts[i] = parts[i].trim().replaceAll("^\"|\"$", "");
             }
+            answerCollections.add(parts);
             Double score = quests.get(Integer.parseInt(fieldName)).checkAnswer(parts);
-
             results.set(Integer.parseInt(fieldName), score);
             totalScore += quests.get(Integer.parseInt(fieldName)).getScore();
         }
+
         request.getSession().setAttribute("realScore", totalScore);
+        request.getSession().setAttribute("answerCollection", answerCollections);
+
         return results;
     }
 

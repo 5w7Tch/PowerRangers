@@ -26,7 +26,7 @@ public class WritenQuiz {
         this.scoreString = score.toString();
         this.date = date;
         this.time = time;
-        this.timeString = time.toString();
+        this.timeString = df.format(time);
         this.dateString = date.toString();
         this.quizId = quizId;
         this.userId = userId;
@@ -56,7 +56,7 @@ public class WritenQuiz {
     }
 
     public static String getAvgScore(ArrayList<WritenQuiz> writtenQuizList){
-        Double res = new Double(0);
+        Double res = 0.0;
         for(WritenQuiz w: writtenQuizList){
             res += w.getScore();
         }
@@ -71,14 +71,14 @@ public class WritenQuiz {
     }
 
     public static String getAvgTime(ArrayList<WritenQuiz> writtenQuizList){
-        Double res = new Double(0);
+        Double res = 0.0;
         for(WritenQuiz w: writtenQuizList){res += w.getTime();}
         return df.format(res/writtenQuizList.size());
     }
 
     public static ConnectionUrlParser.Pair<Integer, String> getTopScorer(ArrayList<WritenQuiz> writtenQuizList){
         ConnectionUrlParser.Pair<Integer, String> res = new ConnectionUrlParser.Pair<>(1, "1");
-        Double Score = new Double(0);
+        Double Score = 0.0;
         for(WritenQuiz w: writtenQuizList){
             if(Double.compare(Score, w.getScore())<0){
                 res = new ConnectionUrlParser.Pair<>( w.getUserId(), w.getWriterName());

@@ -48,4 +48,17 @@ public class pictureResponse extends Question{
     public Double checkAnswer(String[] answer) {
         return possibleAnswers.contains(answer[0]) ? score : 0;
     }
+
+    @Override
+    public String getAnsweredQuestion(String[] answer) {
+        String image = "<img src=\""+questionJson.get("pictureUrl").getAsString()+"\" alt=\"Image not Found\">";
+        String html = "<div class=\"question-box\">\n" +
+                "        <div class=\"question-text\">describe!</div>\n" +
+                image+
+                "        <ul class=\"answers\">\n" +
+                "            <div class=\"answer_response\" contenteditable=\"true\"name=\"\" >"+ answer[0]+"</div>\n" +
+                "        </ul>\n" +
+                "    </div>";
+        return html;
+    }
 }

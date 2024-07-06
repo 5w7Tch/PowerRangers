@@ -33,6 +33,8 @@ export class multipleAnswerChoice{
     }
 
     readInfo(){
+        this.wrongAnswers = [];
+        this.correctAnswers = [];
         this.score = $('#score').val();
         this.question = $('#question').val();
 

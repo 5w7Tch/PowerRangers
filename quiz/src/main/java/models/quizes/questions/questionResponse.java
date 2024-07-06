@@ -29,6 +29,18 @@ public class questionResponse extends Question{
     }
 
     @Override
+    public String getAnsweredQuestion(String[] answer) {
+        String question = "<div class=\"question-box\">\n" +
+                "        <div class=\"question-text\">"+questionJson.get("description").getAsString()+"</div>\n" +
+                "        <ul class=\"answers\">\n" +
+                "            <div class=\"answer_response\" contenteditable=\"true\"name=\"0\">"+answer[0]+"</div>\n" +
+                "        </ul>\n" +
+                "    </div>";
+
+        return question;
+    }
+
+    @Override
     public String getQuestion(int orderNumber) {
         String question = "<div class=\"question-box\">\n" +
                 "        <div class=\"question-text\">"+questionJson.get("description").getAsString()+"</div>\n" +

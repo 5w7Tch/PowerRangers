@@ -91,4 +91,5 @@ public abstract class Question {
     public abstract String getQuestion(int orderNum);
 
     public abstract Double checkAnswer(String[] answer);
+    public abstract String getAnsweredQuestion(String[] answer);
 }
