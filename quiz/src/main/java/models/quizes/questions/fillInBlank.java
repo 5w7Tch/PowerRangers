@@ -39,4 +39,14 @@ public class fillInBlank extends Question{
     public JsonObject generateJson() {
         return null;
     }
+
+    @Override
+    public String getQuestion(int orderNum) {
+        return "";
+    }
+
+    @Override
+    public Double checkAnswer(String[] answer) {
+        return 0.0;
+    }
 }
