@@ -7,6 +7,8 @@ import com.google.gson.JsonParser;
 import org.json.simple.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 
 public class multipleAnswerQuestion extends Question{
 
@@ -38,7 +40,20 @@ public class multipleAnswerQuestion extends Question{
 
     @Override
     public String getQuestion(int orderNum) {
-        return null;
+        String html = "<div class=\"question-box\">\n" +
+                "        <div class=\"question-text\">"+questionJson.get("description").getAsString()+"</div>\n" +
+                "        <ul class=\"answers\">\n";
+        Iterator<JsonElement> it = answerJson.get("answers").getAsJsonArray().iterator();
+
+        while (it.hasNext()){
+            it.next();
+            html += "<div class=\"answer_response\" contenteditable=\"true\"name=\""+orderNum+"\"></div>\n";
+        }
+        String end ="        </ul>\n" +
+                    "    </div>";
+
+
+        return html+end;
     }
 
     @Override
@@ -50,12 +65,12 @@ public class multipleAnswerQuestion extends Question{
                     correctAns++;
             }
         }else{
-            Boolean [] used = new Boolean[this.answers.size()];
+            ArrayList<Boolean> used = new ArrayList<>(Collections.nCopies(this.answers.size(), false));
             for (int i = 0; i < this.answers.size(); i++){
                 for (int j = 0; j < this.answers.size(); j++){
-                    if (!used[j] && this.answers.get(i).equals(answer[j])){
+                    if (!used.get(j) && this.answers.get(i).equals(answer[j])){
                         correctAns++;
-                        used[j] = true;
+                        used.set(j, true);
                     }
                 }
             }

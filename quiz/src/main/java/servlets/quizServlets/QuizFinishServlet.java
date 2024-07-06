@@ -35,11 +35,11 @@ public class QuizFinishServlet extends HttpServlet {
         long time2 = startDate.getTime();
 
 
-
         double differenceInMinutes = Math.abs((time1-time2)/(1000.0 * 60.0));
         JSONObject json = new JSONObject();
         String practise = (String)request.getSession().getAttribute("practise");
         DecimalFormat df = new DecimalFormat("#.00");
+
         request.getSession().setAttribute("timeSpent", df.format(differenceInMinutes));
         request.getSession().setAttribute("startTime", null);
 
@@ -57,12 +57,12 @@ public class QuizFinishServlet extends HttpServlet {
                 score += results.get(i);
             }
             request.getSession().setAttribute("score", score);
-            if(practise.equals("on")){
-//                try {
-//                    remember(score, results, startDate, finishDate, request);
-//                } catch (SQLException e) {
-//                    throw new RuntimeException(e);
-//                }
+            if(!practise.equals("on")){
+                try {
+                    remember(score, results, startDate, finishDate, request);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");

@@ -131,18 +131,17 @@ function radioChange(thisObj, name) {
     const radios = document.getElementsByName(name);
 
     for (let i = 0; i < radios.length; i++) {
-        radios[i].style.backgroundColor = '#f9f9f9';
+        radios[i].style.backgroundColor = 'white';
     }
-    thisObj.style.backgroundColor = 'yellow';
+    thisObj.style.backgroundColor = 'orange';
 
     for (let i = 0; i < radios.length; i++) {
-        if (radios[i].style.backgroundColor === 'yellow') {
+        if (radios[i].style.backgroundColor === 'orange') {
             answers[name] = [radios[i].innerText];
             break;
         }
     }
 
-    console.log(answers);
 }
 
 function answerChange(thisObj, name) {
@@ -153,4 +152,24 @@ function answerChange(thisObj, name) {
         arr[i] = fillers[i].innerText;
     }
     answers[name] = arr;
+}
+
+function radioChangeMultiple(thisObj, name) {
+    if(thisObj.style.backgroundColor.toString() === 'orange'){
+        thisObj.style.backgroundColor = 'white'
+    }else{
+        thisObj.style.backgroundColor = 'orange'
+    }
+    const radios = document.getElementsByName(name);
+
+    let arr = new Array(radios.length);
+    for (let i = 0; i < radios.length; i++) {
+        if (radios[i].style.backgroundColor === 'orange') {
+            arr[i] = [radios[i].innerText];
+        }else{
+            arr[i] = [""];
+        }
+    }
+    answers[name] = arr;
+
 }

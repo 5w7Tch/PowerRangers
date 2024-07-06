@@ -1,9 +1,14 @@
 package models.quizes.questions;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class multipleChoice extends Question{
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+
+public class  multipleChoice extends Question{
 
     public multipleChoice(JsonObject jsonObject,int questionId,int authorId,int orderNum){
         super(jsonObject.get("question").getAsJsonObject(),jsonObject.get("answer").getAsJsonObject(),questionId,authorId,orderNum,jsonObject.get("type").getAsString(),jsonObject.get("score").getAsDouble()); ;
@@ -15,7 +20,24 @@ public class multipleChoice extends Question{
 
     @Override
     public String getQuestion(int orderNum) {
-        return "";
+        String html = "<div class=\"question-box\">\n" +
+                "        <div class=\"question-text\">"+questionJson.get("description").getAsString()+"</div>\n" +
+                "        <ul class=\"answers\">\n";
+        ArrayList<String> answers = new ArrayList<>();
+        String answer =answerJson.get("answer").getAsString();
+        answers.add(answer);
+        Iterator<JsonElement> it = questionJson.get("wrongAnswers").getAsJsonArray().iterator();
+        while (it.hasNext()){
+            answers.add(it.next().getAsString());
+        }
+        Collections.shuffle(answers);
+        for (int i = 0; i < answers.size(); i++) {
+            html += "<div class=\"answer_radio\" onclick=\"radioChange(this, "+orderNum+")\" name=\""+orderNum+"\">"+answers.get(i)+"</div>\n";
+        }
+        String end = "        </ul>\n" +
+                "    </div>";
+
+        return html+end;
     }
 
     @Override

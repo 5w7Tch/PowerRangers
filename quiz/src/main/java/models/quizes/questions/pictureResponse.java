@@ -31,7 +31,15 @@ public class pictureResponse extends Question{
 
     @Override
     public String getQuestion(int orderNum) {
-        return null;
+        String image = "<img src=\""+questionJson.get("pictureUrl").getAsString()+"\" alt=\"Image not Found\">";
+        String html = "<div class=\"question-box\">\n" +
+                "        <div class=\"question-text\">describe!</div>\n" +
+                image+
+                "        <ul class=\"answers\">\n" +
+                "            <div class=\"answer_response\" contenteditable=\"true\"name=\""+orderNum+"\" ></div>\n" +
+                "        </ul>\n" +
+                "    </div>";
+        return html;
     }
 
     @Override
