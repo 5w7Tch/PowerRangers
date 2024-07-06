@@ -16,11 +16,12 @@ public abstract class Question {
     protected String type;
 
     public static void registerTypes(){
-//        questions.put("questionResponse", questionResponse.class);
+        questions.put("questionResponse", questionResponse.class);
 //        questions.put("fillInBlank", fillInBlank.class);
         questions.put("multipleAnswerQuestion" , multipleAnswerQuestion.class);
         questions.put("multipleAnswerChoice" , multipleAnswerChoice.class);
         questions.put("pictureResponse" , pictureResponse.class);
+        questions.put("multipleChoice" , multipleChoice.class);
     }
 
     public static Class<?> getClass(String type){
