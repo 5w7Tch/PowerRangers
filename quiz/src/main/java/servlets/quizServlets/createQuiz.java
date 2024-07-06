@@ -25,6 +25,7 @@ public class createQuiz extends HttpServlet {
             response.sendRedirect("/");
             return;
         }
+
         request.getRequestDispatcher("createQuiz.jsp").forward(request, response);
     }
 

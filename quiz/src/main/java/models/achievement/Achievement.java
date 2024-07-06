@@ -8,15 +8,13 @@ import java.util.Date;
 public class Achievement implements IAchievement
 {
     private int achievementId;
-    private String name;
     private String icon;
     private AchievementType type;
     private String description;
 
-    public Achievement(int id, String name, String icon, AchievementType type, String description)
+    public Achievement(int id, String icon, AchievementType type, String description)
     {
         this.achievementId = id;
-        this.name = name;
         this.icon = icon;
         this.type = type;
         this.description = description;
@@ -28,14 +26,6 @@ public class Achievement implements IAchievement
 
     public void setAchievementId(int achievementId) {
         this.achievementId = achievementId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getIcon() {
@@ -66,7 +56,6 @@ public class Achievement implements IAchievement
     public String toString() {
         return "Achievement{" +
                 "achievementId=" + achievementId +
-                ", name='" + name + '\'' +
                 ", icon='" + icon + '\'' +
                 ", type=" + type.getDisplayName() +
                 ", description='" + description + '\'' +

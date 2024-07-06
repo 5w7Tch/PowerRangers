@@ -4,7 +4,18 @@ let questions = [];
 let man = new manager();
 let isEditPage = false;
 
+
+function clearPage(){
+    $('#quizTitle').val('');
+    $('#quizDescription').val('');
+    $('#submit-btn').attr("disabled",false)
+    $('#showAddForm').attr("disabled",false)
+    $('#submit-btn').text('Submit')
+}
+
+
 $(document).ready(function (){
+    clearPage();
 
     if($('#editQuizId').length > 0){
         isEditPage = true;
@@ -87,7 +98,7 @@ $(document).ready(function (){
             },
             success: function (result,status,xhr){
                 // todo: redirect ot quiz home page
-                window.location.href = "/";
+                window.location.href= '/';
                 console.log(result.status)
             },
             error: function (xhr,status,error){

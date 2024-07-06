@@ -3,6 +3,14 @@ import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
 import models.quizes.questions.Question;
+import models.announcement.Announcement;
+import models.achievement.abstractions.IAchievement;
+import models.friend.abstractions.IFriendRequest;
+import models.notification.Challenge;
+import models.notification.Note;
+import models.notification.abstractions.IChallenge;
+import models.notification.abstractions.INote;
+import models.notification.abstractions.INotification;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -39,4 +47,18 @@ public interface Dao {
     void updateQuiz(Quiz quiz) throws SQLException;
 
     void deleteQuestions(int quizId) throws SQLException;
+    ArrayList<INotification> getUserNotifications(int userId) throws SQLException;
+    ArrayList<INote> getUserNotes(int userId) throws SQLException;
+    ArrayList<IChallenge> getUserChallenges(int userId) throws SQLException;
+    ArrayList<IFriendRequest> getUserFriendRequests(int userId) throws SQLException;
+    IFriendRequest getFriendRequestById(int friendRequestId) throws SQLException;
+    boolean addFriend(IFriendRequest friendRequest) throws SQLException;
+    boolean acceptFriendRequest(IFriendRequest friendRequest) throws SQLException;
+    boolean removeFriendRequest(IFriendRequest friendRequest) throws SQLException;
+    boolean addFriendRequest(IFriendRequest friendRequest) throws SQLException;
+    boolean friendConnectionExists(Integer user1, Integer user2) throws SQLException;
+    boolean sendChallenge(Challenge challenge) throws SQLException;
+    boolean rememberNote(Note note) throws SQLException;
+    boolean rememberAnnouncement(Announcement announcement) throws SQLException;
+    ArrayList<IAchievement> getUserAchievements(int userId) throws SQLException;
 }

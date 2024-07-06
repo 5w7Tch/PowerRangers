@@ -65,18 +65,14 @@ public class WritenQuiz {
     public static Date getLastWritenDate(ArrayList<WritenQuiz> writtenQuizList){
         Date res = new Date(0);
         for(WritenQuiz w: writtenQuizList){
-            if(res.getTime() < w.getDate().getTime()){
-                res = w.getDate();
-            }
+            if(res.getTime() < w.getDate().getTime()){res = w.getDate();}
         }
         return res;
     }
 
     public static String getAvgTime(ArrayList<WritenQuiz> writtenQuizList){
         Double res = new Double(0);
-        for(WritenQuiz w: writtenQuizList){
-            res += w.getTime();
-        }
+        for(WritenQuiz w: writtenQuizList){res += w.getTime();}
         return df.format(res/writtenQuizList.size());
     }
 
