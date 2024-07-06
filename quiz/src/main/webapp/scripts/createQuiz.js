@@ -51,6 +51,7 @@ $(document).ready(function (){
     $('#showAddForm').click(function (){
         $('#delete-quest').remove();
         let type = $('#question-types').val();
+        $('#questionTitle').text(type)
         $('#addQuestBody').html(man.generateInstance(type).getCreateHtml(type));
     })
 
@@ -58,6 +59,7 @@ $(document).ready(function (){
         $('#delete-quest').remove();
         let id = $(this).text();
         let instance = questions[id-1];
+        $('#questionTitle').text(instance.getType())
         $('#addQuestBody').html(instance.getCreateHtml(id));
         $('#footer').prepend(`<button type="button" id="delete-quest" class="btn btn-danger">delete</button>`)
         instance.setPreview();

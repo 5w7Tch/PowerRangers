@@ -12,19 +12,17 @@ public class pictureResponse extends Question{
     private ArrayList<String> possibleAnswers;
 
     public pictureResponse(JsonObject jsonObject, int questionId, int authorId, int orderNum){
-        super(jsonObject.get("question").getAsJsonObject(), jsonObject.get("answer").getAsJsonObject(), questionId,authorId,orderNum , "pictureResponse" ,jsonObject.get("score").getAsDouble());
-
-        JsonArray array = answerJson.get("possibleAnswers").getAsJsonArray();
-        possibleAnswers = new ArrayList<>();
-        for (JsonElement obj : array){
-            possibleAnswers.add(obj.getAsString());
-        }
-
+        super(jsonObject.get("question").getAsJsonObject(), jsonObject.get("answer").getAsJsonObject(), questionId,authorId,orderNum , jsonObject.get("type").getAsString() ,jsonObject.get("score").getAsDouble());
+        initAnswersList();
     }
 
     public pictureResponse(int questionId,int quizId,String type,String questionJson,String answerJson,int orderNum,double score){
         super((JsonObject) JsonParser.parseString(questionJson) , (JsonObject)JsonParser.parseString(answerJson) ,questionId,quizId,orderNum , type , score);
-        JsonArray array = this.answerJson.get("possibleAnswers").getAsJsonArray();
+        initAnswersList();
+    }
+
+    private void initAnswersList(){
+        JsonArray array = answerJson.get("possibleAnswers").getAsJsonArray();
         possibleAnswers = new ArrayList<>();
         for (JsonElement obj : array){
             possibleAnswers.add(obj.getAsString());

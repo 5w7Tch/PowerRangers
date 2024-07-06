@@ -90,7 +90,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">New Question</h5>
+        <h5 id="questionTitle" class="modal-title">New Question</h5>
       </div>
       <div id="addQuestBody" class="modal-body">
 

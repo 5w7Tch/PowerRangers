@@ -14,20 +14,18 @@ public class multipleAnswerQuestion extends Question{
     private boolean orderMatters;
 
     public multipleAnswerQuestion(JsonObject jsonObject, int questionId, int authorId, int orderNum){
-        super(jsonObject.get("question").getAsJsonObject() , jsonObject.get("answer").getAsJsonObject(),  questionId,authorId,orderNum , "multipleAnswerQuestion" ,  jsonObject.get("score").getAsDouble());
-        this.answers = new ArrayList<>();
-        JsonArray array = answerJson.get("answers").getAsJsonArray();
-        answers = new ArrayList<>();
-        for (JsonElement obj : array){
-            answers.add(obj.getAsString());
-        }
-
-        this.orderMatters = questionJson.get("orderMatters").getAsBoolean();
+        super(jsonObject.get("question").getAsJsonObject() , jsonObject.get("answer").getAsJsonObject(),  questionId,authorId,orderNum , jsonObject.get("type").getAsString() ,  jsonObject.get("score").getAsDouble());
+        initAnswersList();
     }
 
     public multipleAnswerQuestion(int questionId,int quizId,String type,String questionJson,String answerJson,int orderNum,double score){
         super((JsonObject)JsonParser.parseString(questionJson) , (JsonObject)JsonParser.parseString(answerJson) ,questionId,quizId,orderNum , type , score);
+        initAnswersList();
+    }
+
+    private void initAnswersList(){
         this.answers = new ArrayList<>();
+
         JsonArray array = this.answerJson.get("answers").getAsJsonArray();
         answers = new ArrayList<>();
         for (JsonElement obj : array){
@@ -36,6 +34,7 @@ public class multipleAnswerQuestion extends Question{
 
         this.orderMatters = this.questionJson.get("orderMatters").getAsBoolean();
     }
+
 
     @Override
     public String getQuestion(int orderNum) {
