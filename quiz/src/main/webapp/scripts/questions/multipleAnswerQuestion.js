@@ -59,20 +59,24 @@ export class multipleAnswerQuestion{
         });
     }
 
-    setValues(question , answers , score , orderMatters){
-        this.question = question;
-        this.answers = answers;
+    setValues(answers , question , score){
+        this.question = question.description;
+        this.answers = answers.answers;
         this.score = score;
-        this.orderMatters = orderMatters;
+        this.orderMatters = question.orderMatters;
     }
 
     generateJson() {
         return {
-            'question': this.question,
+            'question': {
+              'description': this.question,
+              'orderMatters':this.orderMatters
+            },
+            'answer': {
+                'answers': this.answers
+            },
             'type': this.getType(),
-            'answers': this.answers,
             'score': this.score,
-            'orderMatters': this.orderMatters
         };
     }
 

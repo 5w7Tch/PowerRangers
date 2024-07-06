@@ -55,9 +55,9 @@ export class pictureResponse{
         });
     }
 
-    setValues(question , answers , score){
-        this.question = question;
-        this.answers = answers;
+    setValues(answer , question , score){
+        this.question = question.pictureUrl;
+        this.answers = answer.possibleAnswers;
         this.score = score;
     }
 
@@ -65,8 +65,12 @@ export class pictureResponse{
     generateJson() {
         return {
             'type': this.getType(),
-            'question': this.question,
-            'answers': this.answers,
+            'question': {
+                'pictureUrl': this.question
+            },
+            'answer': {
+                'possibleAnswers': this.answers
+            },
             'score': this.score
         };
     }
