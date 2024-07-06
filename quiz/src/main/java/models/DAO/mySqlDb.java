@@ -3,6 +3,7 @@ package models.DAO;
 import models.USER.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
+import models.announcement.Announcement;
 import models.friend.FriendRequest;
 import models.friend.abstractions.IFriendRequest;
 import models.notification.Challenge;
@@ -346,5 +347,79 @@ public class mySqlDb implements Dao {
             return rowDeleted;
         }
     }
+
+    @Override
+    public boolean addFriendRequest(IFriendRequest friendRequest) throws SQLException {
+        String query = "INSERT INTO friendRequests (fromUserId, toUserId, sendTime) VALUES (?, ?, ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, friendRequest.getFromId());
+            statement.setInt(2, friendRequest.getToId());
+            statement.setDate(3, (java.sql.Date)friendRequest.getSendTime());
+            boolean rowInserted = statement.executeUpdate() > 0;
+            statement.close();
+            return rowInserted;
+        }
+    }
+
+    @Override
+    public boolean friendConnectionExists(Integer user1, Integer user2) throws SQLException {
+        String query = "SELECT * FROM friends WHERE (user1Id = ? and user2Id = ?) or (user1Id = ? and user2Id = ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, user1);
+            statement.setInt(2, user2);
+            statement.setInt(3, user2);
+            statement.setInt(4, user1);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return resultSet.next();
+            }
+        }
+    }
+
+    @Override
+    public boolean sendChallenge(Challenge challenge) throws SQLException {
+        String query = "INSERT INTO challenges (fromId, told, quizId, sendTime) VALUES (?, ?, ?, ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, challenge.getFromId());
+            statement.setInt(2, challenge.getToId());
+            statement.setInt(3, challenge.getQuizId());
+            statement.setDate(4, (java.sql.Date)challenge.getSendTime());
+            boolean rowInserted = statement.executeUpdate() > 0;
+            statement.close();
+            return rowInserted;
+        }
+    }
+
+    @Override
+    public boolean rememberNote(Note note) throws SQLException {
+        String query = "INSERT INTO notes (fromId, told, text, sendTime) VALUES (?, ?, ?, ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, note.getFromId());
+            statement.setInt(2, note.getToId());
+            statement.setString(3, note.getText());
+            statement.setDate(4, (java.sql.Date)note.getSendTime());
+            boolean rowInserted = statement.executeUpdate() > 0;
+            statement.close();
+            return rowInserted;
+        }
+    }
+
+    @Override
+    public boolean rememberAnnouncement(Announcement announcement) throws SQLException {
+        String query = "INSERT INTO announcements (userId,text, sendTime) VALUES (?, ?, ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, announcement.getUserId());
+            statement.setString(2, announcement.getText());
+            statement.setDate(3, (java.sql.Date)announcement.getTimeStamp());
+            boolean rowInserted = statement.executeUpdate() > 0;
+            statement.close();
+            return rowInserted;
+        }
+    }
+
 
 }

@@ -3,7 +3,10 @@ package models.DAO;
 import models.USER.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
+import models.announcement.Announcement;
 import models.friend.abstractions.IFriendRequest;
+import models.notification.Challenge;
+import models.notification.Note;
 import models.notification.abstractions.IChallenge;
 import models.notification.abstractions.INote;
 import models.notification.abstractions.INotification;
@@ -33,4 +36,9 @@ public interface Dao {
     boolean addFriend(IFriendRequest friendRequest) throws SQLException;
     boolean acceptFriendRequest(IFriendRequest friendRequest) throws SQLException;
     boolean removeFriendRequest(IFriendRequest friendRequest) throws SQLException;
+    boolean addFriendRequest(IFriendRequest friendRequest) throws SQLException;
+    boolean friendConnectionExists(Integer user1, Integer user2) throws SQLException;
+    boolean sendChallenge(Challenge challenge) throws SQLException;
+    boolean rememberNote(Note note) throws SQLException;
+    boolean rememberAnnouncement(Announcement announcement) throws SQLException;
 }
