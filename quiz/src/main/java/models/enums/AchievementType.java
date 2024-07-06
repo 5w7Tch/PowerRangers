@@ -15,6 +15,14 @@ public enum AchievementType
         this.displayName = displayName;
     }
 
+    public static AchievementType fromOrdinal(int ordinal) {
+        AchievementType[] types = AchievementType.values();
+        if (ordinal < 0 || ordinal >= types.length) {
+            throw new IllegalArgumentException("Invalid ordinal " + ordinal);
+        }
+        return types[ordinal];
+    }
+
     public String getDisplayName() {
         return displayName;
     }

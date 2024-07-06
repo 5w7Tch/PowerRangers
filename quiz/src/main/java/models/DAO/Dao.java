@@ -3,6 +3,7 @@ package models.DAO;
 import models.USER.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
+import models.achievement.abstractions.IAchievement;
 import models.friend.abstractions.IFriendRequest;
 import models.notification.abstractions.IChallenge;
 import models.notification.abstractions.INote;
@@ -33,4 +34,5 @@ public interface Dao {
     boolean addFriend(IFriendRequest friendRequest) throws SQLException;
     boolean acceptFriendRequest(IFriendRequest friendRequest) throws SQLException;
     boolean removeFriendRequest(IFriendRequest friendRequest) throws SQLException;
+    ArrayList<IAchievement> getUserAchievements(int userId) throws SQLException;
 }
