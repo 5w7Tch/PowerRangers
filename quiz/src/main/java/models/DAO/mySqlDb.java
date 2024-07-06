@@ -4,6 +4,17 @@ import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
 import models.quizes.questions.Question;
+import models.achievement.Achievement;
+import models.achievement.abstractions.IAchievement;
+import models.enums.AchievementType;
+import models.announcement.Announcement;
+import models.friend.FriendRequest;
+import models.friend.abstractions.IFriendRequest;
+import models.notification.Challenge;
+import models.notification.Note;
+import models.notification.abstractions.IChallenge;
+import models.notification.abstractions.INote;
+import models.notification.abstractions.INotification;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.lang.reflect.InvocationTargetException;
@@ -11,6 +22,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class mySqlDb implements Dao {
     private final BasicDataSource dbSource;
@@ -381,6 +394,238 @@ public class mySqlDb implements Dao {
             }
         }
         return friends;
+    }
+
+    @Override
+    public ArrayList<INotification> getUserNotifications(int userId) throws SQLException
+    {
+        User user = getUserById(userId);
+        if(user == null)
+            throw new RuntimeException("User can't be null");
+        ArrayList<INotification> notifications = new ArrayList<>();
+        ArrayList<INote> notes = getUserNotes(userId);
+        ArrayList<IChallenge> challenges = getUserChallenges(userId);
+        ArrayList<IFriendRequest> friendRequests = getUserFriendRequests(userId);
+        notifications.addAll(notes);
+        notifications.addAll(challenges);
+        notifications.addAll(friendRequests);
+
+        notifications.sort((n1, n2) -> n2.getSendTime().compareTo(n1.getSendTime()));
+
+        return notifications;
+    }
+
+    @Override
+    public ArrayList<INote> getUserNotes(int userId) throws SQLException
+    {
+        String query = "SELECT * FROM notes WHERE notes.toId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<INote> notes = new ArrayList<>();
+                while (resultSet.next()) {
+                    int noteId = resultSet.getInt("noteId");
+                    int fromId = resultSet.getInt("fromId");
+                    int toId = resultSet.getInt("toId");
+                    String text = resultSet.getString("text");
+                    Date sendTime = resultSet.getDate("sendTime");
+                    INote note = new Note(noteId, fromId, toId, text, sendTime);
+                    notes.add(note);
+                }
+                return notes;
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<IChallenge> getUserChallenges(int userId) throws SQLException
+    {
+        String query = "SELECT * FROM challenges WHERE challenges.toId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IChallenge> challenges = new ArrayList<>();
+                while (resultSet.next()) {
+                    int challengeId = resultSet.getInt("challengeId");
+                    int fromId = resultSet.getInt("fromId");
+                    int toId = resultSet.getInt("toId");
+                    int quizId = resultSet.getInt("quizId");
+                    Date sendTime = resultSet.getDate("sendTime");
+                    IChallenge challenge = new Challenge(challengeId, fromId, toId, quizId, sendTime);
+                    challenges.add(challenge);
+                }
+                return challenges;
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<IFriendRequest> getUserFriendRequests(int userId) throws SQLException
+    {
+        String query = "SELECT * FROM friendRequests WHERE friendRequests.toUserId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IFriendRequest> friendRequests = new ArrayList<>();
+                while (resultSet.next()) {
+                    int requestId = resultSet.getInt("requestId");
+                    int fromUserId = resultSet.getInt("fromUserId");
+                    int toUserId = resultSet.getInt("toUserId");
+                    Date sendTime = resultSet.getDate("sendTime");
+                    IFriendRequest friendRequest = new FriendRequest(requestId, fromUserId, toUserId, sendTime);
+                    friendRequests.add(friendRequest);
+                }
+                return friendRequests;
+            }
+        }
+    }
+
+    @Override
+    public IFriendRequest getFriendRequestById(int friendRequestId) throws SQLException{
+        String query = "SELECT * FROM friendRequests WHERE friendRequests.requestId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, friendRequestId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int requestId = resultSet.getInt("requestId");
+                    int fromUserId = resultSet.getInt("fromUserId");
+                    int toUserId = resultSet.getInt("toUserId");
+                    Date sendTime = resultSet.getDate("sendTime");
+                    return new FriendRequest(requestId, fromUserId, toUserId, sendTime);
+                } else {
+                    return null;
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean addFriend(IFriendRequest friendRequest) throws SQLException {
+        String query = "INSERT INTO friends (user1Id, user2Id) VALUES (?, ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, friendRequest.getFromId());
+            statement.setInt(2, friendRequest.getToId());
+            boolean rowInserted = statement.executeUpdate() > 0;
+            statement.close();
+            return rowInserted;
+        }
+    }
+
+    @Override
+    public boolean acceptFriendRequest(IFriendRequest friendRequest) throws SQLException{
+        return addFriend(friendRequest) && removeFriendRequest(friendRequest);
+    }
+
+    @Override
+    public boolean removeFriendRequest(IFriendRequest friendRequest) throws SQLException{
+        String query = "DELETE FROM friendRequests WHERE requestId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, friendRequest.getId());
+            boolean rowDeleted = statement.executeUpdate() > 0;
+            statement.close();
+            return rowDeleted;
+        }
+    }
+
+    @Override
+    public boolean addFriendRequest(IFriendRequest friendRequest) throws SQLException {
+        String query = "INSERT INTO friendRequests (fromUserId, toUserId, sendTime) VALUES (?, ?, ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, friendRequest.getFromId());
+            statement.setInt(2, friendRequest.getToId());
+            statement.setDate(3, (java.sql.Date)friendRequest.getSendTime());
+            boolean rowInserted = statement.executeUpdate() > 0;
+            statement.close();
+            return rowInserted;
+        }
+    }
+
+    @Override
+    public boolean friendConnectionExists(Integer user1, Integer user2) throws SQLException {
+        String query = "SELECT * FROM friends WHERE (user1Id = ? and user2Id = ?) or (user1Id = ? and user2Id = ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, user1);
+            statement.setInt(2, user2);
+            statement.setInt(3, user2);
+            statement.setInt(4, user1);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return resultSet.next();
+            }
+        }
+    }
+
+    @Override
+    public boolean sendChallenge(Challenge challenge) throws SQLException {
+        String query = "INSERT INTO challenges (fromId, told, quizId, sendTime) VALUES (?, ?, ?, ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, challenge.getFromId());
+            statement.setInt(2, challenge.getToId());
+            statement.setInt(3, challenge.getQuizId());
+            statement.setDate(4, (java.sql.Date)challenge.getSendTime());
+            boolean rowInserted = statement.executeUpdate() > 0;
+            statement.close();
+            return rowInserted;
+        }
+    }
+
+    @Override
+    public boolean rememberNote(Note note) throws SQLException {
+        String query = "INSERT INTO notes (fromId, told, text, sendTime) VALUES (?, ?, ?, ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, note.getFromId());
+            statement.setInt(2, note.getToId());
+            statement.setString(3, note.getText());
+            statement.setDate(4, (java.sql.Date)note.getSendTime());
+            boolean rowInserted = statement.executeUpdate() > 0;
+            statement.close();
+            return rowInserted;
+        }
+    }
+
+    @Override
+    public boolean rememberAnnouncement(Announcement announcement) throws SQLException {
+        String query = "INSERT INTO announcements (userId,text, sendTime) VALUES (?, ?, ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setInt(1, announcement.getUserId());
+            statement.setString(2, announcement.getText());
+            statement.setDate(3, (java.sql.Date)announcement.getTimeStamp());
+            boolean rowInserted = statement.executeUpdate() > 0;
+            statement.close();
+            return rowInserted;
+        }
+    }
+
+
+    public ArrayList<IAchievement> getUserAchievements(int userId) throws SQLException {
+        String query = "SELECT * FROM achievements a WHERE a.achievementId in (" +
+                "select ua.achievementId from userAchievements ua where ua.userId = ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IAchievement> achievements = new ArrayList<>();
+                while (resultSet.next()) {
+                    int achievementId = resultSet.getInt("achievementId");
+                    String icon = resultSet.getString("icon");
+                    AchievementType type = AchievementType.fromOrdinal(resultSet.getInt("type"));
+                    String description = resultSet.getString("description");
+                    IAchievement achievement = new Achievement(achievementId, icon, type, description);
+                    achievements.add(achievement);
+                }
+                return achievements;
+            }
+        }
     }
 
 }
