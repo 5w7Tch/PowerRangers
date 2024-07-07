@@ -382,7 +382,7 @@ public class mySqlDb implements Dao {
 
     @Override
     public boolean sendChallenge(Challenge challenge) throws SQLException {
-        String query = "INSERT INTO challenges (fromId, told, quizId, sendTime) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO challenges (fromId, toId, quizId, sendTime) VALUES (?, ?, ?, ?)";
         try (Connection connection = dbSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, challenge.getFromId());
@@ -397,7 +397,7 @@ public class mySqlDb implements Dao {
 
     @Override
     public boolean rememberNote(Note note) throws SQLException {
-        String query = "INSERT INTO notes (fromId, told, text, sendTime) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO notes (fromId, toId, text, sendTime) VALUES (?, ?, ?, ?)";
         try (Connection connection = dbSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, note.getFromId());
@@ -412,7 +412,7 @@ public class mySqlDb implements Dao {
 
     @Override
     public boolean rememberAnnouncement(Announcement announcement) throws SQLException {
-        String query = "INSERT INTO announcements (userId,text, sendTime) VALUES (?, ?, ?)";
+        String query = "INSERT INTO announcements (userId, text, timeStamp) VALUES (?, ?, ?)";
         try (Connection connection = dbSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, announcement.getUserId());
@@ -444,6 +444,10 @@ public class mySqlDb implements Dao {
                 return achievements;
             }
         }
+    }
+
+    public ArrayList<WritenQuiz> getUserQuizActivity(int userId) throws SQLException {
+        return null;
     }
 
 }
