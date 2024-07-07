@@ -17,7 +17,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.sql.Date;
 
-
 public class createQuiz extends HttpServlet {
 
     @Override
@@ -70,7 +69,7 @@ public class createQuiz extends HttpServlet {
         Quiz quiz = readQuizInfo(quizObj,request);
         Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
         db.addQuiz(quiz);
-        checkAndAddAchievement(quiz, db);
+        createQuizzesAchievements(quiz, db);
         return quiz.getId();
     }
 
@@ -113,7 +112,7 @@ public class createQuiz extends HttpServlet {
         response.getWriter().flush();
     }
 
-    private void checkAndAddAchievement(Quiz quiz, Dao db) throws SQLException {
+    private void createQuizzesAchievements(Quiz quiz, Dao db) throws SQLException {
         int userId = quiz.getAuthor();
         Date currentTimestamp = new Date(System.currentTimeMillis());
         int createQuizzesQuantity = db.getUserCreatedQuizzes(userId).size();
