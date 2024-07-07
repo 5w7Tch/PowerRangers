@@ -1,4 +1,5 @@
 package models.DAO;
+import models.achievement.UserAchievement;
 import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
