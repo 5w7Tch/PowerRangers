@@ -180,7 +180,7 @@ function parseJson(arr){
     return res;
 }
 
-function ckeckout() {
+function ckeckout(index) {
     let result;
 
     fetch('/checkAnswer', {
@@ -198,6 +198,13 @@ function ckeckout() {
         })
         .then(function(data) {
             result = data.res
+            if (result == 0) {
+                questions[index].style.backgroundColor = 'red';
+            } else if(result == 2){
+                questions[index].style.backgroundColor = 'green';
+            }else{
+                questions[index].style.backgroundColor = 'yellow';
+            }
         })
         .catch((error) => {
             console.error('There was a problem with fetch operation:', error.message);
@@ -206,21 +213,14 @@ function ckeckout() {
     return result;
 }
 
-function check(index) {
-    let correct = ckeckout();
-    if (correct == 0) {
-        questions[index].style.backgroundColor = 'red';
-    } else if(correct == 2){
-        questions[index].style.backgroundColor = 'green';
-    }else{
-        questions[index].style.backgroundColor = 'yellow';
-    }
-}
+
 
 document.getElementById('next').addEventListener('click', function() {
-    check(currentQuestionIndex);
+    ckeckout(currentQuestionIndex);
     if (currentQuestionIndex < questions.length - 1) {
-        showQuestion(currentQuestionIndex + 1);
+        setTimeout(() => {
+            showQuestion(currentQuestionIndex + 1);
+        }, 500);
     } else {
         setTimeout(() => {
             finish();
