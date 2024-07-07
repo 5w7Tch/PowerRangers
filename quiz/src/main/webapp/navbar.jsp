@@ -12,13 +12,13 @@
 
         <div class = "userInfoContainer">
             <%if(request.getSession().getAttribute("user")==null){ %>
-            <button class = "loginBtn"><a href = "/login" class = "login">Log In</a></button>
+            <a href="${pageContext.request.contextPath}/login" class="login"><button class = "loginBtn">Log In</button></a>
             <% }else{ %>
             <%
-                String user = ((User) request.getSession().getAttribute("user")).getUsername();
-                out.print("<p class = \"userName\">" + user + "</p>");
+                String username = ((User) request.getSession().getAttribute("user")).getUsername();
+                out.print("<p class = \"userName\">" + username + "</p>");
             %>
-            <button class = "loginBtn"><a href = "/logout" class = "logout">Log Out</a></button>
+            <a href = "${pageContext.request.contextPath}/logout" class="logout"><button class = "loginBtn">Log Out</button></a>
             <%}%>
         </div>
 
