@@ -40,6 +40,9 @@ public class checkAnswer extends HttpServlet {
         }
         JSONObject json = new JSONObject();
         Double score = quests.get(questNum).checkAnswer(ans);
+        System.out.println(score);
+        System.out.println(quests.get(questNum).getScore());
+
         if(score.equals(quests.get(questNum).getScore())) {
             json.put("res",2);
         }else if (score == 0.0) {

@@ -1,15 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;700&display=swap');
-*{
+html , body{
+    all: unset;
+}
+
+* {
     text-decoration: none;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
-a{
-    display: contents;
+a {
+    text-decoration: none;
+    color: inherit;
+    outline: none;
 }
 
-.navbar{
+.quizNameClass a , .quizNameClass p{
+    outline: none;
+    inline-size: 0;
+    text-decoration: none;
+}
+
+.topNavbar {
+    all: unset;
+    display: block;
     background: #ff4200;
     font-family: Calibri, serif;
     width: 100%;
@@ -17,48 +31,99 @@ a{
     height: 50px;
 }
 
-.navDiv{
+.topNavbar .navDiv {
+    all: unset;
     display: flex;
     padding-top: 5px;
     align-items: center;
     justify-content: space-around;
 }
 
-.quizName{
+.topNavbar .quizName {
+    all: unset;
     font-size: 28px;
     font-weight: bold;
     font-family: 'Lobster', cursive;
     color: white;
 }
 
-ul{
+.topNavbar .userInfoContainer {
+    all: unset;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: space-around;
+    flex-direction: row;
 }
 
-li{
-    list-style: none;
-    display: inline-block;
+.topNavbar .userName {
+    all: unset;
+    font-size: 23px;
+    color: azure;
+    margin-right: 10px;
 }
 
-li a{
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
-    margin-right: 25px;
-}
-
-.navDiv button{
+.userInfoContainer .loginBtn {
+    all: unset;
     background-color: white;
     margin-left: 10px;
     border-radius: 10px;
     padding: 10px;
     border: none;
+    cursor: pointer;
+    text-decoration: none;
 }
 
-button a.logout{
-    color: black;
+.userInfoContainer .loginBtn a {
+    all: unset;
+    color: #ff4200;
     font-weight: bold;
     font-size: 15px;
+}
+
+.searchForm .searchInput{
+    all: unset;
+    background-color: white;
+    border: none;
+    outline: none;
+    margin-right: 5px;
+    border-radius: 5px;
+    padding: 5px;
+    padding-left: 9px;
+}
+
+.searchForm .userSearchButton {
+    all: unset;
+    background-color: white;
+    border-radius: 4px;
+    padding: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.searchForm{
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.userInfoContainer button{
+    all: unset;
+    outline: none;
+    inline-size: 0;
+    text-decoration: none;
+}
+
+.userInfoContainer a{
+    text-decoration: none;
+    outline: none;
+}
+
+.topNavbar .userSearchButton:hover,
+.topNavbar .loginBtn:hover {
+    background-color: #d9d9d9;
+    outline: none;
+    text-decoration: none;
+    color: #ff4200;
 }
