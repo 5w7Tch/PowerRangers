@@ -61,7 +61,7 @@ export class fillInBlank{
 
     isValid(){
         let quest = $('#question').val();
-        let startCount = quest.split('★').length - 1;
+        let startCount = quest.split('<>').length - 1;
         let fieldsCount = 0;
         $('.fillInBlank-answer').each(function (index){
             fieldsCount++;
@@ -103,7 +103,7 @@ function addAnswerHtml(){
 }
 function insertSymbol() {
     const textarea = document.getElementById('question');
-    const symbol = ' ★ ';
+    const symbol = ' <> ';
     const cursorPosition = textarea.selectionStart;
     const textBefore = textarea.value.substring(0, cursorPosition);
     const textAfter = textarea.value.substring(cursorPosition);

@@ -36,8 +36,9 @@ public class fillInBlank extends Question{
         String field = "<div class=\"answer_response\" contenteditable=\"true\" name=\""+orderNum+"\" style=\"width: 60px\"></div>\n";
         String quest = questionJson.get("question").getAsString();
         for (int i = 0; i < quest.length(); i++) {
-            if(quest.charAt(i) == '★'){
+            if(quest.startsWith("<>", i)){
                 html+= field;
+                i++;
             }else{
                 html+= quest.charAt(i);
             }
@@ -70,10 +71,12 @@ public class fillInBlank extends Question{
 
         String quest = questionJson.get("question").getAsString();
         int idx = 0;
+        System.out.println(quest);
         for (int i = 0; i < quest.length(); i++) {
-            if(quest.charAt(i) == '★'){
+            if(quest.startsWith("<>", i)){
                 html+= "<div class=\"answer_response\" name=\"0\" style=\"width: 60px\">"+answer[idx]+"</div>\n";
                 idx++;
+                i++;
             }else{
                 html+= quest.charAt(i);
             }
