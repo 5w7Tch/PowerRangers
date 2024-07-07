@@ -1,6 +1,5 @@
 package models.DAO;
 import models.achievement.UserAchievement;
-
 import models.announcement.abstractions.IAnnouncement;
 import models.quizes.Quiz;
 import models.USER.User;
