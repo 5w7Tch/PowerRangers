@@ -15,7 +15,7 @@
 <%@ page import="models.USER.WritenQuiz" %>
 <%@ page import="static java.lang.Math.max" %>
 <%@ page import="static java.lang.Math.min" %>
-<%@ page import="models.USER.Quiz" %>
+<%@ page import="models.quizes.Quiz" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
