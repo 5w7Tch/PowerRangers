@@ -13,9 +13,9 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="models.achievement.abstractions.IAchievement" %>
 <%@ page import="models.USER.WritenQuiz" %>
-<%@ page import="static java.lang.Math.max" %>
 <%@ page import="static java.lang.Math.min" %>
 <%@ page import="models.quizes.Quiz" %>
+<%@ page import="models.announcement.abstractions.IAnnouncement" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -32,6 +32,9 @@
         ArrayList<IAchievement> achievements = myDb.getUserAchievements(user.getId());
         ArrayList<WritenQuiz> userQuizActivity = myDb.getUserQuizActivity(user.getId());
         ArrayList<Quiz> userCreatedQuizzes = myDb.getUserCreatedQuizzes(user.getId());
+        ArrayList<Quiz> popularQuizzes = myDb.getPopularQuizzes();
+        ArrayList<Quiz> recentQuizzes = myDb.getRecentQuizzes();
+        ArrayList<IAnnouncement> announcements = myDb.getAnnouncements();
     %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -67,9 +70,10 @@
     </script>
 </head>
 <body>
-    <div class="container-fluid bg-primary h-50">
-        <div class="row bg-secondary h-75">
-            <div class="col-3">
+    <%@ include file="navbar.jsp" %>
+    <div class="container-fluid">
+        <div class="row" style="min-height: 100vh;">
+            <div class="col-3 page-columns bg-info bg-opacity-25">
                 <div class="row user bg-info">
                     <div class="col-9 align-content-center">
                         <h1><%=user.getUsername() %></h1>
@@ -94,37 +98,37 @@
                                         <h6 class="mb-1">From <%=fromUser.getUsername()%>: <mark><%=notification.getType().getDisplayName()%></mark></h6>
                                         <p  class="mb-1"><%=dayName%>, <%=time%></p>
                                     </div>
-                                <%
+                                    <%
                                         if (notification.getType() == NotificationType.NOTE) {
                                             assert notification instanceof Note;
                                             INote note = (Note) notification;
-                                %>
+                                    %>
                                     <div class="note-info shadow-sm">
                                         <p><%=note.getText()%></p>
                                     </div>
-                                <%
+                                    <%
                                         }
                                         if (notification.getType() == NotificationType.CHALLENGE) {
                                             assert notification instanceof Challenge;
                                             IChallenge challenge = (Challenge) notification;
-                                %>
+                                    %>
                                     <div class="challenge-info d-flex justify-content-center">
                                         <button onclick="acceptChallenge(<%=challenge.getQuizId()%>)" class="btn btn-outline-primary rounded-0 mx-auto mt-2">Accept Challenge</button>
                                     </div>
-                                <%
+                                    <%
                                         }
                                         if (notification.getType() == NotificationType.FRIEND_REQUEST) {
                                             assert notification instanceof FriendRequest;
                                             IFriendRequest friendRequest = (FriendRequest) notification;
-                                %>
+                                    %>
                                     <div class="friend-request-info d-flex justify-content-between">
                                         <button onclick="handleFriendRequest('Accept', <%=friendRequest.getId()%>, <%=i%>)" class="btn btn-outline-primary px-4 rounded-0 mx-auto mt-2">Accept</button>
                                         <button onclick="handleFriendRequest('Reject', <%=friendRequest.getId()%>, <%=i%>)" class="btn btn-outline-secondary px-4 rounded-0 mx-auto mt-2">Reject</button>
                                     </div>
-                                <%
-                                        i++;
+                                    <%
+                                            i++;
                                         }
-                                %>
+                                    %>
                                 </div>
                                 <%
                                     }
@@ -141,11 +145,11 @@
                         <div class="achievement-container-wrapper bg-info">
                             <div class="card-body p-0 m-2 d-flex overflow-auto achievement-container">
                                 <%
-                                if(achievements.isEmpty()) {
+                                    if(achievements.isEmpty()) {
                                 %>
                                 <p>You have no achievements :(</p>
                                 <%
-                                }
+                                    }
                                 %>
                                 <%
                                     for(i = 0; i < achievements.size(); i++) {
@@ -222,7 +226,7 @@
                                                 <h1 class="modal-title fs-5" id="quizActivityModalLabel">Your Quiz Activity</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <div class="bg-secondary modal-body d-grid justify-content-center">
+                                            <div class="bg-secondary modal-body d-grid">
                                                 <table class="table table-info table-striped table-hover">
                                                     <thead>
                                                     <tr>
@@ -291,7 +295,10 @@
                                     <%}%>
                                     </tbody>
                                 </table>
-                                <button class="btn btn-link align-self-end" data-bs-toggle="modal" data-bs-target="#createdQuizzesModal">see more</button>
+                                <div class="createdQuizzes-buttons d-flex justify-content-between">
+                                    <button id="createQuizBtn" class="btn btn-outline-primary">create new</button>
+                                    <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#createdQuizzesModal">see more</button>
+                                </div>
                                 <div class="modal" id="createdQuizzesModal" tabindex="-1" aria-labelledby="Created Quizzes Description" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -299,7 +306,7 @@
                                                 <h1 class="modal-title fs-5" id="createdQuizzesModalLabel">Your Created Quizzes</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <div class="bg-secondary modal-body d-grid justify-content-center">
+                                            <div class="bg-secondary modal-body d-grid">
                                                 <table class="table table-info table-striped table-hover">
                                                     <thead>
                                                     <tr>
@@ -320,7 +327,7 @@
                                                         <td style="min-width: 180px" ><%= userCreatedQuizzes.get(i).getName() %></td>
                                                         <td><%= userCreatedQuizzes.get(i).getDuration() %></td>
                                                         <td style="min-width: 110px" ><%= userCreatedQuizzes.get(i).getCreationDate() %></td>
-                                                        <td><%= userCreatedQuizzes.get(i).getDescription() %></td>
+                                                        <td style="word-break: break-word;"><%= userCreatedQuizzes.get(i).getDescription() %></td>
                                                     </tr>
                                                     <%}%>
                                                     </tbody>
@@ -338,13 +345,206 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6 bg-danger h-75">
+            <div class="col-6 bg-danger" style="height: 2000px;">
 
             </div>
-            <div class="col-3 bg-success h-75">
-                <div class="row popularQuizzes bg-warning h-25"></div>
-                <div class="row recentQuizzes bg-info h-25"></div>
-                <div class="row announcements bg-warning h-50"></div>
+            <div class="col-3 page-columns bg-info bg-opacity-25">
+                <div class="row popularQuizzes mb-3">
+                    <div class="col-12 p-0 card rounded-0">
+                        <div class="card-header">
+                            Popular Quizzes
+                        </div>
+                        <div class="popularQuizzes-container-wrapper bg-info">
+                            <div class="card-body p-0 m-2 d-flex flex-column popularQuizzes-container">
+                                <%if(popularQuizzes == null || popularQuizzes.isEmpty()){%>
+                                <p>There is no popular quiz :O</p>
+                                <%}else{%>
+                                <table class="table table-info table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Quiz</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Duration</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <%
+                                        for (i = 0; i < min(popularQuizzes.size(), 5); i++) {%>
+                                    <tr>
+                                        <td><%=i + 1%></td>
+                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= popularQuizzes.get(i).getId() %>`">open</a></td>
+                                        <td><%= popularQuizzes.get(i).getName() %></td>
+                                        <td><%= popularQuizzes.get(i).getDuration() %></td>
+                                    </tr>
+                                    <%}%>
+                                    </tbody>
+                                </table>
+                                <button class="btn btn-link align-self-end" data-bs-toggle="modal" data-bs-target="#popularQuizzesModal">see more</button>
+                                <div class="modal" id="popularQuizzesModal" tabindex="-1" aria-labelledby="Popular Quizzes Description" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="popularQuizzesModalLabel">Popular Quizzes</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="bg-secondary modal-body d-grid">
+                                                <table class="table table-info table-striped table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Quiz</th>
+                                                        <th scope="col" style="min-width: 180px" >Name</th>
+                                                        <th scope="col">Duration</th>
+                                                        <th scope="col" style="min-width: 110px" >Created At</th>
+                                                        <th scope="col">Description</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <%
+                                                        for (i = 0; i < popularQuizzes.size(); i++) {%>
+                                                    <tr>
+                                                        <td><%=i + 1%></td>
+                                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= popularQuizzes.get(i).getId() %>`">open</a></td>
+                                                        <td style="min-width: 180px" ><%= popularQuizzes.get(i).getName() %></td>
+                                                        <td><%= popularQuizzes.get(i).getDuration() %></td>
+                                                        <td style="min-width: 110px" ><%= popularQuizzes.get(i).getCreationDate() %></td>
+                                                        <td style="word-break: break-word;"><%= popularQuizzes.get(i).getDescription() %></td>
+                                                    </tr>
+                                                    <%}%>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%}%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row recentQuizzes mb-3">
+                    <div class="col-12 p-0 card rounded-0">
+                        <div class="card-header">
+                            Recent Quizzes
+                        </div>
+                        <div class="recentQuizzes-container-wrapper bg-info">
+                            <div class="card-body p-0 m-2 d-flex flex-column recentQuizzes-container">
+                                <%if(recentQuizzes == null || recentQuizzes.isEmpty()){%>
+                                <p>There is no recent quiz :O</p>
+                                <%}else{%>
+                                <table class="table table-info table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Quiz</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Duration</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <%
+                                        for (i = 0; i < min(recentQuizzes.size(), 5); i++) {%>
+                                    <tr>
+                                        <td><%=i + 1%></td>
+                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= recentQuizzes.get(i).getId() %>`">open</a></td>
+                                        <td><%= recentQuizzes.get(i).getName() %></td>
+                                        <td><%= recentQuizzes.get(i).getDuration() %></td>
+                                    </tr>
+                                    <%}%>
+                                    </tbody>
+                                </table>
+                                <button class="btn btn-link align-self-end" data-bs-toggle="modal" data-bs-target="#recentQuizzesModal">see more</button>
+                                <div class="modal" id="recentQuizzesModal" tabindex="-1" aria-labelledby="Recent Quizzes Description" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="recentQuizzesModalLabel">Recent Quizzes</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="bg-secondary modal-body d-grid">
+                                                <table class="table table-info table-striped table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Quiz</th>
+                                                        <th scope="col" style="min-width: 180px" >Name</th>
+                                                        <th scope="col">Duration</th>
+                                                        <th scope="col" style="min-width: 110px" >Created At</th>
+                                                        <th scope="col">Description</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <%
+                                                        for (i = 0; i < recentQuizzes.size(); i++) {%>
+                                                    <tr>
+                                                        <td><%=i + 1%></td>
+                                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= recentQuizzes.get(i).getId() %>`">open</a></td>
+                                                        <td style="min-width: 180px" ><%= recentQuizzes.get(i).getName() %></td>
+                                                        <td><%= recentQuizzes.get(i).getDuration() %></td>
+                                                        <td style="min-width: 110px" ><%= recentQuizzes.get(i).getCreationDate() %></td>
+                                                        <td style="word-break: break-word;"><%= recentQuizzes.get(i).getDescription() %></td>
+                                                    </tr>
+                                                    <%}%>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%}%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row announcements">
+                    <div class="col-12 p-0 card rounded-0">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div style="margin: 0;">Announcements</div>
+                            <%
+                            if(user.isAdmin()) {%>
+                            <button class="btn btn-outline-secondary p-0 px-2">Announce</button>
+                            <%}
+                            %>
+                        </div>
+                        <div class="announcements-container-wrapper bg-info">
+                            <div class="card-body p-0 m-2 d-flex flex-column announcements-container">
+                                <%if(announcements == null || announcements.isEmpty()){%>
+                                <p>There are no announcements yet.</p>
+                                <%}else{%>
+                                <div id="announcementsList" class="announcements-list shadow-lg bg-body rounded" aria-labelledby="announcementsButton">
+                                    <div class="list-group announcements-list bg-info">
+                                        <%
+                                            for (IAnnouncement announcement : announcements) {
+                                                SimpleDateFormat dayFormat = new SimpleDateFormat("dd, EE"); // EEEE for full day name
+                                                String dayName = dayFormat.format(announcement.getTimeStamp());
+                                                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                                                String time = timeFormat.format(announcement.getTimeStamp());
+                                                User announcer = myDb.getUserById(announcement.getUserId());
+                                        %>
+                                        <div class="announcement-wrapper shadow-sm mb-3 bg-info border-bottom border-info border-2 rounded-top">
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="mb-1">By <mark><%=announcer.getUsername()%>:</mark></h6>
+                                                <p  class="mb-1"><%=dayName%>, <%=time%></p>
+                                            </div>
+                                            <div class="announcement-info shadow-sm">
+                                                <p><%=announcement.getText()%></p>
+                                            </div>
+                                        </div>
+                                        <%}%>
+                                    </div>
+                                </div>
+                                <%}%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

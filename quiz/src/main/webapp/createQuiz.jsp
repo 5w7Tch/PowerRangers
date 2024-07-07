@@ -8,7 +8,6 @@
   <title>Create Quiz</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/createQuizStyles.css">
-  <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/navbarStyles.css">
 <%--  <script type="text/javascript" src="<%=request.getContextPath()%>/static/scripts/questions/questionResponse.js"></script>--%>
 </head>
 <body>

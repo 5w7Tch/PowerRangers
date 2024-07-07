@@ -1,5 +1,7 @@
 package models.DAO;
 
+import models.achievement.UserAchievement;
+import models.announcement.abstractions.IAnnouncement;
 import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
@@ -677,15 +679,58 @@ public class mySqlDb implements Dao {
         }
     }
 
-    public ArrayList<Quiz> getPopularQuizes() throws SQLException{
+    public ArrayList<Quiz> getRecentQuizzes() throws SQLException {
+        String query = "SELECT * FROM quizzes order by quizzes.creationDate DESC LIMIT 10";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<Quiz> recentQuizzes = new ArrayList<>();
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("quizId");
+                    int author = resultSet.getInt("author");
+                    String name = resultSet.getString("name");
+                    Date creationDate = resultSet.getDate("creationDate");
+                    String description = resultSet.getString("description");
+                    boolean isPracticable = resultSet.getBoolean("isPracticable");
+                    boolean areQuestionsRandom = resultSet.getBoolean("areQuestionsRandom");
+                    double quizTime = resultSet.getDouble("quizTime");
+                    boolean immediateCorrection = resultSet.getBoolean("immediateCorrection");
+                    Quiz recentQuiz = new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime,immediateCorrection);
+                    recentQuizzes.add(recentQuiz);
+                }
+                return recentQuizzes;
+            }
+        }
+    }
+
+    public ArrayList<Quiz> getPopularQuizzes() throws SQLException{
         ArrayList<Quiz> quizes = new ArrayList<>();
         Connection con = dbSource.getConnection();
-        PreparedStatement stm = con.prepareStatement("select quizhistory.quizId from quizhistory group by quizId order by count(*) desc");
+        PreparedStatement stm = con.prepareStatement("select quizhistory.quizId from quizhistory group by quizId order by count(*) desc LIMIT 10");
         ResultSet set = stm.executeQuery();
         while(set.next()){
             quizes.add(getQuiz(""+set.getInt("quizId")));
         }
         return quizes;
+    }
+
+    public ArrayList<IAnnouncement> getAnnouncements() throws SQLException {
+        String query = "SELECT * FROM announcements order by announcements.timeStamp DESC";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IAnnouncement> announcements = new ArrayList<>();
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("announcementId");
+                    int userId = resultSet.getInt("userId");
+                    String text = resultSet.getString("text");
+                    Date timeStamp = resultSet.getDate("timeStamp");
+                    IAnnouncement announcement = new Announcement(id, userId, text, timeStamp);
+                    announcements.add(announcement);
+                }
+                return announcements;
+            }
+        }
     }
 
     @Override
