@@ -630,9 +630,9 @@ public class mySqlDb implements Dao {
 
     public ArrayList<WritenQuiz> getUserQuizActivity(int userId) throws SQLException {
         String query = "SELECT quizHistory.score, quizHistory.startTime, " +
-                "TIMESTAMPDIFF(MINUTE, quizHistory.startTime, quizHistory.endTime) AS timeSpent, " +
-                "quizHistory.quizId FROM quizHistory WHERE quizHistory.userId = ? " +
-                "ORDER BY quizHistory.score DESC, timeSpent";
+                "quizHistory.spentTime, " +
+                "quizHistory.userId FROM quizHistory WHERE quizHistory.userId = ? " +
+                "ORDER BY quizHistory.score DESC, quizHistory.spentTime";
         try (Connection connection = dbSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, userId);
@@ -668,7 +668,8 @@ public class mySqlDb implements Dao {
                     boolean isPracticable = resultSet.getBoolean("isPracticable");
                     boolean areQuestionsRandom = resultSet.getBoolean("areQuestionsRandom");
                     double quizTime = resultSet.getDouble("quizTime");
-                    Quiz createdQuiz = new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime);
+                    boolean immediateCorrection = resultSet.getBoolean("immediateCorrection");
+                    Quiz createdQuiz = new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime,immediateCorrection);
                     createdQuizzes.add(createdQuiz);
                 }
                 return createdQuizzes;
