@@ -1,6 +1,6 @@
 <%@ page import="models.USER.User" %>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/navbarStyles.css">
-<nav class = "navbar">
+<nav class = "topNavbar">
     <link rel="icon" href="<%=request.getContextPath()%>/static/icons/logo.png" type="image/png">
     <div class = "navDiv">
         <div>
