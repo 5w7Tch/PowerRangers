@@ -97,10 +97,8 @@ public class QuizFinishServlet extends HttpServlet {
             String answers = jsonObject.get(fieldName).toString();
             String stringWithoutBrackets = answers.substring(1, answers.length() - 1);
             String[] parts = stringWithoutBrackets.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-            System.out.println(fieldName);
             for (int i = 0; i < parts.length; i++) {
                 parts[i] = parts[i].trim().replaceAll("^\"|\"$", "");
-                System.out.println(parts[i]);
             }
             answerCollections.add(parts);
             Double score = quests.get(Integer.parseInt(fieldName)).checkAnswer(parts);

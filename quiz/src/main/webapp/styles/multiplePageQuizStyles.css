@@ -73,6 +73,8 @@ body {
 .question-text {
     font-size: 18px;
     margin-bottom: 10px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 .answers {
     list-style-type: none;
@@ -99,6 +101,10 @@ body {
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 10px;
+    display: inline-block;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    vertical-align: middle;
 }
 
 .match_option {
