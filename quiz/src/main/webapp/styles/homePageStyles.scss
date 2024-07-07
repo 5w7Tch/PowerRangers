@@ -262,6 +262,29 @@
             .announcements-container {
                 overflow: auto;
 
+                .announcements-list {
+
+                    .list-group {
+                        --bs-bg-opacity: .1;
+                        margin-bottom: 0;
+
+                        .announcement-wrapper {
+                            padding: 10px;
+                            --bs-bg-opacity: .1;
+                            --bs-border-opacity: .5;
+
+                            .announcement-info {
+                                overflow: auto;
+                                height: 100px;
+                                padding: 4px;
+
+                                p {
+                                    margin-bottom: 0;
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
