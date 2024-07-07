@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/searchAccount")
@@ -18,6 +19,18 @@ public class searchAccount extends HttpServlet {
         String userName = request.getParameter("query");
 
         Dao db = (Dao)request.getServletContext().getAttribute(Dao.DBID);
-        
+
+        try {
+            int userId = db.getUserByName(userName);
+            if (userId != -1) {
+                request.setAttribute("Id", userId);
+                request.getRequestDispatcher("/account?id=" + userId).forward(request, response);
+            } else {
+                request.setAttribute("errorMessage", "No users found with name: " + userName);
+                request.getRequestDispatcher("/searchResults.jsp").forward(request, response);
+            }
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
     }
 }
