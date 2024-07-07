@@ -677,4 +677,15 @@ public class mySqlDb implements Dao {
         }
     }
 
+    public ArrayList<Quiz> getPopularQuizes() throws SQLException{
+        ArrayList<Quiz> quizes = new ArrayList<>();
+        Connection con = dbSource.getConnection();
+        PreparedStatement stm = con.prepareStatement("select quizhistory.quizId from quizhistory group by quizId order by count(*) desc");
+        ResultSet set = stm.executeQuery();
+        while(set.next()){
+            quizes.add(getQuiz(""+set.getInt("quizId")));
+        }
+        return quizes;
+    }
+
 }
