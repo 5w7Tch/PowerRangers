@@ -1,11 +1,12 @@
 <%@ page import="models.USER.User" %>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/navbarStyles.css">
 <nav class = "topNavbar">
     <div class = "navDiv ">
         <div class="quizNameClass">
             <a href="/"><p class = "quizName">QuizTime</p></a>
         </div>
 
-        <form action="/search" method="get" class="searchForm">
+        <form action="${pageContext.request.contextPath}/searchAccount" method="get" class="searchForm">
             <input type="text" name="query" placeholder="Search users..." class = "searchInput">
             <button type="submit" class="userSearchButton">Search</button>
         </form>
@@ -21,7 +22,5 @@
             <a href = "${pageContext.request.contextPath}/logout" class="logout"><button class = "loginBtn">Log Out</button></a>
             <%}%>
         </div>
-
-
     </div>
 </nav>
