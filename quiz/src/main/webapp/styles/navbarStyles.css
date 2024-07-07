@@ -49,7 +49,7 @@ li a{
     margin-right: 25px;
 }
 
-.navDiv button{
+.loginBtn{
     background-color: white;
     margin-left: 10px;
     border-radius: 10px;
@@ -57,8 +57,52 @@ li a{
     border: none;
 }
 
-button a.logout{
-    color: black;
+.userInfoContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.userName{
+    font-size: 23px;
+    color: azure;
+}
+
+.searchInput{
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding-left: 3px;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.searchForm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginBtn a{
+    color: #ff4200;
     font-weight: bold;
     font-size: 15px;
+}
+
+.userSearchButton{
+    background-color: white;
+    margin-right: 5px;
+    border-radius: 4px;
+    padding: 5px;
+    border: none;
+    outline: none;
+}
+
+.userSearchButton:hover{
+    background-color: #d9d9d9;
+}
+
+.loginBtn:hover{
+    background-color: #d9d9d9;
 }
