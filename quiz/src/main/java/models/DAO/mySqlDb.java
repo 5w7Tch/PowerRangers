@@ -690,10 +690,22 @@ public class mySqlDb implements Dao {
     }
 
     public boolean putUserAchievements(UserAchievement achievement) throws SQLException {
-        String query = "INSERT INTO userAchievements ( userId, achievementId, timeStamp) VALUES (?, ?, ?)";
+        String selectQuery = "SELECT * FROM userAchievements where userId = ? AND achievementId = ?";
 
         try (Connection connection = dbSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(selectQuery)) {
+            statement.setInt(1, achievement.getUserId());
+            statement.setInt(2, achievement.getAchievementId());
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if(resultSet.next()) return false;
+            }
+        }
+
+        String insertQuery = "INSERT INTO userAchievements ( userId, achievementId, timeStamp) VALUES (?, ?, ?)";
+
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(insertQuery)) {
             statement.setInt(2, achievement.getUserId());
             statement.setInt(3, achievement.getAchievementId());
             statement.setDate(4, (java.sql.Date)achievement.getTimeStamp());
