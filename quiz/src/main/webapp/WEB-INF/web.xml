@@ -6,14 +6,24 @@
   <display-name>Archetype Created Web Application</display-name>
   
   <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>models.Filters.encodingFilter</filter-class>
+  </filter>
+  
+  <filter>
     <filter-name>authFilter</filter-name>
     <filter-class>models.Filters.authFilter</filter-class>
   </filter>
-  
+
   <filter>
     <filter-name>cacheFilter</filter-name>
     <filter-class>models.Filters.cacheFilter</filter-class>
   </filter>
+
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
 
   <filter-mapping>
     <filter-name>authFilter</filter-name>
