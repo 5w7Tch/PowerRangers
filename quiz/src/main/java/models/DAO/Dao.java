@@ -1,5 +1,6 @@
 package models.DAO;
 import models.achievement.UserAchievement;
+import models.announcement.abstractions.IAnnouncement;
 import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
@@ -67,4 +68,5 @@ public interface Dao {
     boolean putUserAchievements(UserAchievement achievement) throws SQLException;
     ArrayList<Quiz> getPopularQuizzes() throws SQLException;
     ArrayList<Quiz> getRecentQuizzes() throws SQLException;
+    ArrayList<IAnnouncement> getAnnouncements() throws SQLException;
 }

@@ -1,5 +1,7 @@
 package models.DAO;
 
+import models.achievement.UserAchievement;
+import models.announcement.abstractions.IAnnouncement;
 import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
@@ -710,6 +712,25 @@ public class mySqlDb implements Dao {
             quizes.add(getQuiz(""+set.getInt("quizId")));
         }
         return quizes;
+    }
+
+    public ArrayList<IAnnouncement> getAnnouncements() throws SQLException {
+        String query = "SELECT * FROM announcements order by announcements.timeStamp DESC";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IAnnouncement> announcements = new ArrayList<>();
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("announcementId");
+                    int userId = resultSet.getInt("userId");
+                    String text = resultSet.getString("text");
+                    Date timeStamp = resultSet.getDate("timeStamp");
+                    IAnnouncement announcement = new Announcement(id, userId, text, timeStamp);
+                    announcements.add(announcement);
+                }
+                return announcements;
+            }
+        }
     }
 
 }
