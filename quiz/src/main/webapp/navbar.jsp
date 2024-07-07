@@ -20,7 +20,7 @@
                 String username = ((User) request.getSession().getAttribute("user")).getUsername();
                 out.print("<p class = \"userName\">" + username + "</p>");
             %>
-            <a href = "${pageContext.request.contextPath}/logout" class="logout"><button class = "loginBtn">Log Out</button></a>
+            <a href = "/logout" class="logout"><button class = "loginBtn">Log Out</button></a>
             <%}%>
         </div>
     </div>
