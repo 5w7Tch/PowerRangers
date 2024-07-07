@@ -509,7 +509,29 @@
                             <div style="margin: 0;">Announcements</div>
                             <%
                             if(user.isAdmin()) {%>
-                            <button class="btn btn-outline-secondary p-0 px-2">Announce</button>
+                            <button class="btn btn-outline-secondary p-0 px-2" data-bs-toggle="modal" data-bs-target="#announceModal">Announce</button>
+                            <div class="modal fade" id="announceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="announceModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="announceModalLabel">Announce</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form>
+                                                <div class="mb-3">
+                                                    <label for="announcementText" class="form-label">Enter Text</label>
+                                                    <textarea class="form-control" id="announcementText" rows="3"></textarea>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" id="announceCloseBtn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" id="announceBtn" class="btn btn-primary">Announce</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <%}
                             %>
                         </div>
