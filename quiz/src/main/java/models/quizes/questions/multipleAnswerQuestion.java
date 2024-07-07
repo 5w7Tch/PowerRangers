@@ -83,7 +83,7 @@ public class multipleAnswerQuestion extends Question{
         int i = 0;
         while (it.hasNext()){
             it.next();
-            html += "<div class=\"answer_response\" contenteditable=\"true\"name=\"0\">"+answer[i]+"</div>\n";
+            html += "<div class=\"answer_response\" name=\"0\">"+answer[i]+"</div>\n";
             i++;
         }
         String end ="        </ul>\n" +

@@ -101,6 +101,7 @@ public class QuizFinishServlet extends HttpServlet {
                 parts[i] = parts[i].trim().replaceAll("^\"|\"$", "");
             }
             answerCollections.add(parts);
+            System.out.println(fieldName);
             Double score = quests.get(Integer.parseInt(fieldName)).checkAnswer(parts);
             results.set(Integer.parseInt(fieldName), score);
             totalScore += quests.get(Integer.parseInt(fieldName)).getScore();

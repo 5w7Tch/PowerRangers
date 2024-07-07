@@ -114,18 +114,42 @@ window.addEventListener('beforeunload', function() {
     }
 });
 
+function detectDivsCallingSpecificMethod() {
+    const divs = document.querySelectorAll('.answer_radio');
+    let used = new Map();
+    divs.forEach(div => {
+        const onclickAttr = div.getAttribute('onclick');
+        if (onclickAttr && onclickAttr.includes('radioChange')) {
+            answers[div.getAttribute('name')] = [""];
+        }
+        if (onclickAttr && onclickAttr.includes('radioChangeMultiple')) {
+            const radios = document.getElementsByName(div.getAttribute('name'));
+            let arr = new Array(radios.length);
+            for (let i = 0; i < radios.length; i++) {
+                if (radios[i].style.backgroundColor === 'orange') {
+                    arr[i] = radios[i].innerText;
+                }else{
+                    arr[i] = "";
+                }
+            }
+            answers[div.getAttribute('name')] = arr;
+        }
+    });
+}
 
 function answerListeners() {
     const answerResponseDivs = document.querySelectorAll('.answer_response');
-
     answerResponseDivs.forEach(div => {
         div.addEventListener('input', function() {
             answerChange(this, this.getAttribute('name'));
         });
         answerChange(div, div.getAttribute('name'));
+        console.log(div.getAttribute('name'));
     });
+    detectDivsCallingSpecificMethod();
 
 }
+
 
 function radioChange(thisObj, name) {
     const radios = document.getElementsByName(name);
@@ -141,7 +165,6 @@ function radioChange(thisObj, name) {
             break;
         }
     }
-
 }
 
 function answerChange(thisObj, name) {

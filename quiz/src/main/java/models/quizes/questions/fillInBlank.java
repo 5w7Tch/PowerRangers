@@ -29,7 +29,23 @@ public class fillInBlank extends Question{
 
     @Override
     public String getQuestion(int orderNum) {
-        return "";
+        String html = "<div class=\"question-box\">\n" +
+                "        <div class=\"question-text\">Fill in!</div>\n" +
+                "        <div class=\"question-text\">\n";
+
+        String field = "<div class=\"answer_response\" contenteditable=\"true\" name=\""+orderNum+"\" style=\"width: 60px\"></div>\n";
+        String quest = questionJson.get("question").getAsString();
+        for (int i = 0; i < quest.length(); i++) {
+            if(quest.charAt(i) == '★'){
+                html+= field;
+            }else{
+                html+= quest.charAt(i);
+            }
+        }
+
+        String end ="        </div>\n" +
+                "    </div>";
+        return html+end;
     }
 
     @Override
@@ -44,5 +60,26 @@ public class fillInBlank extends Question{
         double score = this.score * ((double)correctAnswers/answer.length);
 
         return Math.round(score * 100.0)/100.0;
+    }
+
+    @Override
+    public String getAnsweredQuestion(String[] answer) {
+        String html = "<div class=\"question-box\">\n" +
+                "        <div class=\"question-text\">Fill in!</div>\n" +
+                "        <div class=\"question-text\">\n";
+
+        String quest = questionJson.get("question").getAsString();
+        int idx = 0;
+        for (int i = 0; i < quest.length(); i++) {
+            if(quest.charAt(i) == '★'){
+                html+= "<div class=\"answer_response\" name=\"0\" style=\"width: 60px\">"+answer[idx]+"</div>\n";
+                idx++;
+            }else{
+                html+= quest.charAt(i);
+            }
+        }
+        String end ="        </div>\n" +
+                "    </div>";
+        return html+end;
     }
 }

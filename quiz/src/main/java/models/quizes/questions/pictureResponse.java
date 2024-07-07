@@ -54,7 +54,7 @@ public class pictureResponse extends Question{
                 "        <div class=\"question-text\">describe!</div>\n" +
                 image+
                 "        <ul class=\"answers\">\n" +
-                "            <div class=\"answer_response\" contenteditable=\"true\"name=\"\" >"+ answer[0]+"</div>\n" +
+                "            <div class=\"answer_response\" name=\"\" >"+ answer[0]+"</div>\n" +
                 "        </ul>\n" +
                 "    </div>";
         return html;

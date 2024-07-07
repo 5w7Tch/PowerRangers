@@ -33,7 +33,7 @@ public class questionResponse extends Question{
         String question = "<div class=\"question-box\">\n" +
                 "        <div class=\"question-text\">"+questionJson.get("description").getAsString()+"</div>\n" +
                 "        <ul class=\"answers\">\n" +
-                "            <div class=\"answer_response\" contenteditable=\"true\"name=\"0\">"+answer[0]+"</div>\n" +
+                "            <div class=\"answer_response\"name=\"0\">"+answer[0]+"</div>\n" +
                 "        </ul>\n" +
                 "    </div>";
 
