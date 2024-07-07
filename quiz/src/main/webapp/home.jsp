@@ -70,6 +70,7 @@
     </script>
 </head>
 <body>
+    <%@ include file="navbar.jsp" %>
     <div class="container-fluid">
         <div class="row" style="min-height: 100vh;">
             <div class="col-3 page-columns bg-info bg-opacity-25">
@@ -504,16 +505,21 @@
                 </div>
                 <div class="row announcements">
                     <div class="col-12 p-0 card rounded-0">
-                        <div class="card-header">
-                            Announcements
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div style="margin: 0;">Announcements</div>
+                            <%
+                            if(user.isAdmin()) {%>
+                            <button class="btn btn-outline-secondary p-0 px-2">Announce</button>
+                            <%}
+                            %>
                         </div>
                         <div class="announcements-container-wrapper bg-info">
                             <div class="card-body p-0 m-2 d-flex flex-column announcements-container">
-                                <%if(recentQuizzes == null || recentQuizzes.isEmpty()){%>
-                                <p>There is no announcement yet.</p>
+                                <%if(announcements == null || announcements.isEmpty()){%>
+                                <p>There are no announcements yet.</p>
                                 <%}else{%>
-                                <div id="announcementsList" class="announcements-list shadow-lg p-3 bg-body rounded" aria-labelledby="announcementsButton">
-                                    <div class="list-group announcements-list">
+                                <div id="announcementsList" class="announcements-list shadow-lg bg-body rounded" aria-labelledby="announcementsButton">
+                                    <div class="list-group announcements-list bg-info">
                                         <%
                                             for (IAnnouncement announcement : announcements) {
                                                 SimpleDateFormat dayFormat = new SimpleDateFormat("dd, EE"); // EEEE for full day name
@@ -522,12 +528,12 @@
                                                 String time = timeFormat.format(announcement.getTimeStamp());
                                                 User announcer = myDb.getUserById(announcement.getUserId());
                                         %>
-                                        <div class="announcement-wrapper mb-1 bg-info border-bottom border-info border-2 rounded-top">
+                                        <div class="announcement-wrapper shadow-sm mb-3 bg-info border-bottom border-info border-2 rounded-top">
                                             <div class="d-flex justify-content-between">
-                                                <h6 class="mb-1">From <%=announcer.getUsername()%>: <mark>Announcement</mark></h6>
+                                                <h6 class="mb-1">By <mark><%=announcer.getUsername()%>:</mark></h6>
                                                 <p  class="mb-1"><%=dayName%>, <%=time%></p>
                                             </div>
-                                            <div class="note-info shadow-sm">
+                                            <div class="announcement-info shadow-sm">
                                                 <p><%=announcement.getText()%></p>
                                             </div>
                                         </div>

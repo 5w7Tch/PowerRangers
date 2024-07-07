@@ -17,8 +17,8 @@
             <button class = "loginBtn"><a href = "/login" class = "login">Log In</a></button>
             <% }else{ %>
             <%
-                String user = ((User) request.getSession().getAttribute("user")).getUsername();
-                out.print("<p class = \"userName\">" + user + "</p>");
+                String username = ((User) request.getSession().getAttribute("user")).getUsername();
+                out.print("<p class = \"userName\">" + username + "</p>");
             %>
             <button class = "loginBtn"><a href = "/logout" class = "logout">Log Out</a></button>
             <%}%>

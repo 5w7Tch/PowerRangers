@@ -65,7 +65,6 @@ public interface Dao {
     ArrayList<IAchievement> getUserAchievements(int userId) throws SQLException;
     ArrayList<WritenQuiz> getUserQuizActivity(int userId) throws SQLException;
     ArrayList<Quiz> getUserCreatedQuizzes(int userId) throws SQLException;
-    boolean putUserAchievements(UserAchievement achievement) throws SQLException;
     ArrayList<Quiz> getPopularQuizzes() throws SQLException;
     ArrayList<Quiz> getRecentQuizzes() throws SQLException;
     ArrayList<IAnnouncement> getAnnouncements() throws SQLException;
