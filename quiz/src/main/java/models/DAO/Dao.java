@@ -64,4 +64,5 @@ public interface Dao {
     ArrayList<WritenQuiz> getUserQuizActivity(int userId) throws SQLException;
     ArrayList<Quiz> getUserCreatedQuizzes(int userId) throws SQLException;
     ArrayList<Quiz> getPopularQuizes() throws SQLException;
+    Integer getUserByName(String userName) throws SQLException;
 }

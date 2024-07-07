@@ -10,7 +10,6 @@
 <head>
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/errorPage.css">
-    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/navbarStyles.css">
     <link rel="icon" href="<%=request.getContextPath()%>/static/icons/logo.png" type="image/png">
 </head>
 <body>

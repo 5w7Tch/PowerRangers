@@ -688,4 +688,19 @@ public class mySqlDb implements Dao {
         return quizes;
     }
 
+    @Override
+    public Integer getUserByName(String userName) throws SQLException {
+        String query = "SELECT * FROM users WHERE firstName = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, userName);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if(resultSet.next()){
+                    return  resultSet.getInt("userId");
+                }
+            }
+        }
+        return -1;
+    }
+
 }
