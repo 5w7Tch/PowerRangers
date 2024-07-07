@@ -49,7 +49,7 @@ public class QuizFinishServlet extends HttpServlet {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(json.toString());
-        }else{
+        } else {
             ArrayList<Double> results = checkAnswers(request);
             json.put("bad", 0);
             request.getSession().setAttribute("results", results);
@@ -58,13 +58,17 @@ public class QuizFinishServlet extends HttpServlet {
                 score += results.get(i);
             }
             request.getSession().setAttribute("score", score);
-            if(!practise.equals("on")){
-                try {
+
+            try {
+                if(!practise.equals("on")) {
                     remember(score, results, startDate, differenceInMinutes, request);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                } else {
+                    practiceQuizAchievement(request);
                 }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
+
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(json.toString());
@@ -125,6 +129,16 @@ public class QuizFinishServlet extends HttpServlet {
             UserAchievement userAchievement = new UserAchievement(0, userId, achievementId, currentTimestamp);
             db.putUserAchievements(userAchievement);
         }
+    }
+
+    private void practiceQuizAchievement(HttpServletRequest request) throws SQLException {
+        Dao db = (Dao)request.getServletContext().getAttribute(Dao.DBID);
+        User user = (User)request.getSession().getAttribute("user");
+        int userId = user.getId();
+        Date currentTimestamp = new Date(System.currentTimeMillis());
+        int achievementId = db.getAchievementIdFromType(5);
+        UserAchievement userAchievement = new UserAchievement(0, userId, achievementId, currentTimestamp);
+        db.putUserAchievements(userAchievement);
     }
 
 }
