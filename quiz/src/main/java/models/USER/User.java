@@ -3,7 +3,7 @@ package models.USER;
 public class User {
     private int id;
     private final String username;
-    private final String passwordHash;
+    private String passwordHash;
     private final String email;
     private final boolean isAdmin;
 
@@ -13,6 +13,10 @@ public class User {
         this.passwordHash = Hasher.getPasswordHash(password);
         this.email = email;
         this.isAdmin = isAdmin;
+    }
+
+    public void setHash(String passwordHash){
+        this.passwordHash=passwordHash;
     }
 
     public void setId(int id){
@@ -37,5 +41,17 @@ public class User {
 
     public boolean isAdmin() {
         return isAdmin;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(!(obj instanceof User)) return false;
+        User user = (User) obj;
+        return user.id==this.id && user.getUsername().equals(this.username) && user.getEmail().equals(this.email) && user.getPasswordHash().equals(this.passwordHash) && this.isAdmin==user.isAdmin;
+    }
+
+    @Override
+    public String toString(){
+        String.join(" ", this.id, this.username, this.email, this.passwordHash, this.isAdmin);
     }
 }
