@@ -74,7 +74,6 @@ public class fillInBlank extends Question{
 
         String quest = questionJson.get("question").getAsString();
         int idx = 0;
-        System.out.println(quest);
         for (int i = 0; i < quest.length(); i++) {
             if(quest.startsWith("<>", i)){
                 if(isCorrect(answer[idx], idx)){
