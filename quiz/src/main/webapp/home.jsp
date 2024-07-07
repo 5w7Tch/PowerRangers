@@ -12,6 +12,10 @@
 <%@ page import="models.friend.FriendRequest" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="models.achievement.abstractions.IAchievement" %>
+<%@ page import="models.USER.WritenQuiz" %>
+<%@ page import="static java.lang.Math.max" %>
+<%@ page import="static java.lang.Math.min" %>
+<%@ page import="models.USER.Quiz" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -26,6 +30,8 @@
         User user = (User) request.getSession().getAttribute("user");
         ArrayList<INotification> notifications = myDb.getUserNotifications(user.getId());
         ArrayList<IAchievement> achievements = myDb.getUserAchievements(user.getId());
+        ArrayList<WritenQuiz> userQuizActivity = myDb.getUserQuizActivity(user.getId());
+        ArrayList<Quiz> userCreatedQuizzes = myDb.getUserCreatedQuizzes(user.getId());
     %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -127,7 +133,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row achievements bg-info mb-3">
+                <div class="row achievements mb-3">
                     <div class="col-12 p-0 card rounded-0">
                         <div class="card-header">
                             Achievements
@@ -151,7 +157,7 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel"><%=achievements.get(i).getType().getDisplayName()%></h1>
+                                                <h1 class="modal-title fs-5" id="achievementModalLabel"><%=achievements.get(i).getType().getDisplayName()%></h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="bg-info modal-body d-grid justify-content-center">
@@ -175,36 +181,162 @@
                         </div>
                     </div>
                 </div>
-                <div class="row quizActivities bg-warning mb-3">
+                <div class="row quizActivities mb-3">
                     <div class="col-12 p-0 card rounded-0">
                         <div class="card-header">
-                            Your Activity
+                            Your Quiz Activity
                         </div>
                         <div class="quizActivities-container-wrapper bg-info">
-                            <div class="card-body p-0 m-2 d-flex overflow-auto quizActivities-container">
+                            <div class="card-body p-0 m-2 d-flex flex-column quizActivities-container">
+                                <%if(userQuizActivity.isEmpty()){%>
+                                <p>You have no activity :(</p>
+                                <%}else{%>
                                 <table class="table table-info table-striped table-hover">
                                     <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">First</th>
-                                            <th scope="col">Last</th>
-                                            <th scope="col">Handle</th>
-                                        </tr>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Quiz</th>
+                                        <th scope="col">Creator</th>
+                                        <th scope="col">Score</th>
+                                        <th scope="col">Spent Time</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
+                                    <%
+                                        for (i = 0; i < min(userQuizActivity.size(), 5); i++) {%>
+                                    <tr>
+                                        <td><%=i + 1%></td>
+                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userQuizActivity.get(i).getQuizId() %>`"><%= userQuizActivity.get(i).getQuizId() %></a></td>
+                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%=userQuizActivity.get(i).getUserId()%>"><%=userQuizActivity.get(i).getWriterName()%></a></td>
+                                        <td><%= userQuizActivity.get(i).getScoreString() %></td>
+                                        <td><%= userQuizActivity.get(i).getTimeString() %></td>
+                                    </tr>
+                                    <%}%>
                                     </tbody>
                                 </table>
+                                <button class="btn btn-link align-self-end" data-bs-toggle="modal" data-bs-target="#quizActivityModal">see more</button>
+                                <div class="modal" id="quizActivityModal" tabindex="-1" aria-labelledby="Quiz Activity Description" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="quizActivityModalLabel">Your Quiz Activity</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="bg-secondary modal-body d-grid justify-content-center">
+                                                <table class="table table-info table-striped table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Quiz</th>
+                                                        <th scope="col">Creator</th>
+                                                        <th scope="col">Score</th>
+                                                        <th scope="col">Spent Time</th>
+                                                        <th scope="col">Date</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <%
+                                                        for (i = 0; i < userQuizActivity.size(); i++) {%>
+                                                    <tr>
+                                                        <td><%=i + 1%></td>
+                                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userQuizActivity.get(i).getQuizId() %>`"><%= userQuizActivity.get(i).getQuizId() %></a></td>
+                                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%=userQuizActivity.get(i).getUserId()%>"><%=userQuizActivity.get(i).getWriterName()%></a></td>
+                                                        <td><%= userQuizActivity.get(i).getScoreString() %></td>
+                                                        <td><%= userQuizActivity.get(i).getTimeString() %></td>
+                                                        <td><%= userQuizActivity.get(i).getDateString() %></td>
+                                                    </tr>
+                                                    <%}%>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%}%>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row createdQuizzes bg-info h-25"></div>
+                <div class="row createdQuizzes">
+                    <div class="col-12 p-0 card rounded-0">
+                        <div class="card-header">
+                            Your Created Quizzes
+                        </div>
+                        <div class="createdQuizzes-container-wrapper bg-info">
+                            <div class="card-body p-0 m-2 d-flex flex-column createdQuizzes-container">
+                                <%if(userCreatedQuizzes.isEmpty()){%>
+                                <p>You haven't created any quiz :(</p>
+                                <%}else{%>
+                                <table class="table table-info table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Quiz</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Duration</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <%
+                                        for (i = 0; i < min(userCreatedQuizzes.size(), 5); i++) {%>
+                                    <tr>
+                                        <td><%=i + 1%></td>
+                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userCreatedQuizzes.get(i).getId() %>`">open</a></td>
+                                        <td><%= userCreatedQuizzes.get(i).getName() %></td>
+                                        <td><%= userCreatedQuizzes.get(i).getDuration() %></td>
+                                    </tr>
+                                    <%}%>
+                                    </tbody>
+                                </table>
+                                <button class="btn btn-link align-self-end" data-bs-toggle="modal" data-bs-target="#createdQuizzesModal">see more</button>
+                                <div class="modal" id="createdQuizzesModal" tabindex="-1" aria-labelledby="Created Quizzes Description" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="createdQuizzesModalLabel">Your Created Quizzes</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="bg-secondary modal-body d-grid justify-content-center">
+                                                <table class="table table-info table-striped table-hover">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">Quiz</th>
+                                                        <th scope="col" style="min-width: 180px" >Name</th>
+                                                        <th scope="col">Duration</th>
+                                                        <th scope="col" style="min-width: 110px" >Created At</th>
+                                                        <th scope="col">Description</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <%
+                                                        for (i = 0; i < userCreatedQuizzes.size(); i++) {%>
+                                                    <tr>
+                                                        <td><%=i + 1%></td>
+                                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userCreatedQuizzes.get(i).getId() %>`">open</a></td>
+                                                        <td style="min-width: 180px" ><%= userCreatedQuizzes.get(i).getName() %></td>
+                                                        <td><%= userCreatedQuizzes.get(i).getDuration() %></td>
+                                                        <td style="min-width: 110px" ><%= userCreatedQuizzes.get(i).getCreationDate() %></td>
+                                                        <td><%= userCreatedQuizzes.get(i).getDescription() %></td>
+                                                    </tr>
+                                                    <%}%>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%}%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-6 bg-danger h-75">
 
