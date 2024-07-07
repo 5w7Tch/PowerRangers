@@ -53,7 +53,7 @@ public class fillInBlank extends Question{
     public Double checkAnswer(String[] answer) {
         int correctAnswers = 0;
         for(int i=0;i<answer.length;i++){
-            if(answer[i].equals(answers.get(i))){
+            if(answer[i].trim().equalsIgnoreCase(answers.get(i).trim())){
                 correctAnswers++;
             }
         }
@@ -63,6 +63,9 @@ public class fillInBlank extends Question{
         return Math.round(score * 100.0)/100.0;
     }
 
+    private boolean isCorrect(String ans, int idx){
+        return ans.trim().equalsIgnoreCase(answers.get(idx).trim());
+    }
     @Override
     public String getAnsweredQuestion(String[] answer) {
         String html = "<div class=\"question-box\">\n" +
@@ -74,7 +77,11 @@ public class fillInBlank extends Question{
         System.out.println(quest);
         for (int i = 0; i < quest.length(); i++) {
             if(quest.startsWith("<>", i)){
-                html+= "<div class=\"answer_response\" name=\"0\" style=\"width: 60px\">"+answer[idx]+"</div>\n";
+                if(isCorrect(answer[idx], idx)){
+                    html+= "<div class=\"answer_response\" name=\"0\" style=\"width: 60px\" style=\"background-color: green;\">"+answer[idx]+"</div>\n";
+                }else{
+                    html+= "<div class=\"answer_response\" name=\"0\" style=\"width: 60px\" style=\"background-color: red;\">"+answer[idx]+"</div>\n";
+                }
                 idx++;
                 i++;
             }else{

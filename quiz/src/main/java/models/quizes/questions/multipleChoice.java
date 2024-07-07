@@ -42,7 +42,7 @@ public class  multipleChoice extends Question{
 
     @Override
     public Double checkAnswer(String[] answer) {
-        return answer[0].equals(questionJson.get("correctAnswer").getAsString()) ? this.score : 0;
+        return answer[0].equals(questionJson.get("correctAnswer").getAsString()) ? this.score : 0.0;
     }
 
     @Override
@@ -60,7 +60,11 @@ public class  multipleChoice extends Question{
         Collections.shuffle(answers);
         for (int i = 0; i < answers.size(); i++) {
             if(answers.get(i).equals(answer[0])){
-                html += "<div class=\"answer_radio\" onclick=\"radioChange(this, 0)\" name=\"0\" style=\"background-color: orange;\">"+answers.get(i)+"</div>\n";
+                if(checkAnswer(answer).equals(0.0)){
+                    html += "<div class=\"answer_radio\" onclick=\"radioChange(this, 0)\" name=\"0\" style=\"background-color: red;\">"+answers.get(i)+"</div>\n";
+                }else{
+                    html += "<div class=\"answer_radio\" onclick=\"radioChange(this, 0)\" name=\"0\" style=\"background-color: green;\">"+answers.get(i)+"</div>\n";
+                }
             }else{
                 html += "<div class=\"answer_radio\" onclick=\"radioChange(this, 0)\" name=\"0\">"+answers.get(i)+"</div>\n";
             }

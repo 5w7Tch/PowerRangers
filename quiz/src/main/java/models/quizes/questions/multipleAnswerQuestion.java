@@ -59,23 +59,41 @@ public class multipleAnswerQuestion extends Question{
         double correctAns = 0.0;
         if (this.orderMatters){
             for (int i = 0; i < this.answers.size(); i++){
-                if (this.answers.get(i).equals(answer[i]))
+                if (this.answers.get(i).trim().equalsIgnoreCase(answer[i].trim()))
                     correctAns++;
             }
         }else{
-            HashSet<String> hisAnswers = new HashSet<>(Arrays.asList(answer));
+            HashSet<String> hisAnswers = new HashSet<>();
+            for (int i = 0; i < answer.length; i++) {
+                hisAnswers.add(answer[i].trim().toLowerCase());
+            }
             for (int i = 0; i < this.answers.size(); i++){
-                if (hisAnswers.contains(this.answers.get(i))){
+                if (hisAnswers.contains(this.answers.get(i).trim().toLowerCase())){
                     correctAns++;
-                    hisAnswers.remove(this.answers.get(i));
+                    hisAnswers.remove(this.answers.get(i).trim().toLowerCase());
                 }
             }
         }
         return (correctAns/this.answers.size()) * this.score;
     }
+    ArrayList<String> realAnswers;
+    private boolean isCorrect(String answer, int idx) {
+        if (this.orderMatters){
+            return this.answers.get(idx).trim().equalsIgnoreCase(answer.trim());
+        }else{
+            if(realAnswers.contains(answer)){
+                realAnswers.remove(answer);
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public String getAnsweredQuestion(String[] answer) {
+        realAnswers = new ArrayList<>();
+        Collections.copy(realAnswers, answers);
+
         String html = "<div class=\"question-box\">\n" +
                 "        <div class=\"question-text\">"+questionJson.get("description").getAsString()+"</div>\n" +
                 "        <ul class=\"answers\">\n";
@@ -83,12 +101,15 @@ public class multipleAnswerQuestion extends Question{
         int i = 0;
         while (it.hasNext()){
             it.next();
-            html += "<div class=\"answer_response\" name=\"0\">"+answer[i]+"</div>\n";
+            if(isCorrect(answer[i], i)){
+                html += "<div class=\"answer_response\" name=\"0\" style=\"background-color: green;\">"+answer[i]+"</div>\n";
+            }else{
+                html += "<div class=\"answer_response\" name=\"0\" style=\"background-color: red;\">"+answer[i]+"</div>\n";
+            }
             i++;
         }
         String end ="        </ul>\n" +
                 "    </div>";
-
 
         return html+end;
     }

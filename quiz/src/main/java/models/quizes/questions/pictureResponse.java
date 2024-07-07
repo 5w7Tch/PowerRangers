@@ -25,7 +25,7 @@ public class pictureResponse extends Question{
         JsonArray array = answerJson.get("possibleAnswers").getAsJsonArray();
         possibleAnswers = new ArrayList<>();
         for (JsonElement obj : array){
-            possibleAnswers.add(obj.getAsString());
+            possibleAnswers.add(obj.getAsString().trim().toLowerCase());
         }
     }
 
@@ -44,7 +44,7 @@ public class pictureResponse extends Question{
 
     @Override
     public Double checkAnswer(String[] answer) {
-        return possibleAnswers.contains(answer[0]) ? score : 0;
+        return possibleAnswers.contains(answer[0].trim().toLowerCase()) ? score : 0.0;
     }
 
     @Override
@@ -54,9 +54,18 @@ public class pictureResponse extends Question{
                 "        <div class=\"question-text\">describe!</div>\n" +
                 image+
                 "        <ul class=\"answers\">\n" +
-                "            <div class=\"answer_response\" name=\"\" >"+ answer[0]+"</div>\n" +
+                "            <div class=\"answer_response\" name=\"\" style=\"background-color: red;\">"+ answer[0]+"</div>\n" +
                 "        </ul>\n" +
                 "    </div>";
-        return html;
+        if(checkAnswer(answer).equals(0.0)){
+            return html;
+        }
+        return "<div class=\"question-box\">\n" +
+                "        <div class=\"question-text\">describe!</div>\n" +
+                image+
+                "        <ul class=\"answers\">\n" +
+                "            <div class=\"answer_response\" name=\"\" style=\"background-color: green;\">"+ answer[0]+"</div>\n" +
+                "        </ul>\n" +
+                "    </div>";
     }
 }
