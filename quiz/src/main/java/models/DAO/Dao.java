@@ -23,6 +23,7 @@ public interface Dao {
 
     void closeDbConnection();
     boolean addUser(User user);
+    void deleteUser(int id) throws SQLException;
     boolean userNameExists(String userName) throws SQLException;
     boolean accountExists(String userName, String passwordHash) throws SQLException;
     User getUser(String userName, String password) throws SQLException;

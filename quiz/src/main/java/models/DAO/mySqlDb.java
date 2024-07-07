@@ -63,6 +63,53 @@ public class mySqlDb implements Dao {
         }
     }
 
+    public void deleteUser(int id) throws SQLException {
+        Connection con = dbSource.getConnection();
+        PreparedStatement friendRequest = con.prepareStatement("delete from friendrequests where fromUserId=? or toUserId=?;");
+        friendRequest.setInt(1,id);
+        friendRequest.setInt(2,id);
+        friendRequest.executeUpdate();
+
+        PreparedStatement friends = con.prepareStatement("delete from friends where user1Id=? or user2Id=?;");
+        friends.setInt(1,id);
+        friends.setInt(2,id);
+        friends.executeUpdate();
+
+        PreparedStatement quizHistory = con.prepareStatement("delete from quizhistory where userId=?");
+        quizHistory.setInt(1,id);
+        quizHistory.executeUpdate();
+
+        PreparedStatement notes = con.prepareStatement("delete from notes where fromId=? or toId=?;");
+        notes.setInt(1,id);
+        notes.setInt(2,id);
+        notes.executeUpdate();
+
+        PreparedStatement challangeUserId = con.prepareStatement("delete from challenges where fromId=? or toId=?;");
+        challangeUserId.setInt(1,id);
+        challangeUserId.setInt(2,id);
+        challangeUserId.executeUpdate();
+
+        PreparedStatement challange = con.prepareStatement("delete from challenges where quizId in (select quizzes.quizId from quizzes where quizzes.author=?)");
+        challange.setInt(1,id);
+        challange.executeUpdate();
+
+        PreparedStatement questions = con.prepareStatement("delete from questions where quizId in (select quizzes.quizId from quizzes where author=?);");
+        questions.setInt(1,id);
+        questions.executeUpdate();
+
+        PreparedStatement announcements = con.prepareStatement("delete from announcements where userId=?;");
+        announcements.setInt(1,id);
+        announcements.executeUpdate();
+
+        PreparedStatement userAcheivments = con.prepareStatement("delete from userachievements where userId=?;");
+        userAcheivments.setInt(1,id);
+        userAcheivments.executeUpdate();
+
+        PreparedStatement users = con.prepareStatement("delete from users where userId=?;");
+        users.setInt(1,id);
+        users.executeUpdate();
+    }
+
     public boolean userNameExists(String username) throws SQLException {
         String query = "SELECT 1 FROM users WHERE firstName = ?";
         try (Connection connection = dbSource.getConnection();
@@ -96,7 +143,9 @@ public class mySqlDb implements Dao {
                     int id = resultSet.getInt("userId");
                     String email = resultSet.getString("email");
                     boolean isAdmin = resultSet.getBoolean("isAdmin");
-                    return new User(id, userName, password, email, isAdmin);
+                    User u = new User(id, userName, password, email, isAdmin);
+                    u.setHash(password);
+                    return u;
                 } else {
                     return null;
                 }
@@ -141,7 +190,9 @@ public class mySqlDb implements Dao {
                     String password = resultSet.getString("passwordHash");
                     String email = resultSet.getString("email");
                     boolean isAdmin = resultSet.getBoolean("isAdmin");
-                    return new User(userId, userName, password, email, isAdmin);
+                    User u = new User(userId, userName, password, email, isAdmin);
+                    u.setHash(password);
+                    return u;
                 } else {
                     return null;
                 }
@@ -680,7 +731,7 @@ public class mySqlDb implements Dao {
     public ArrayList<Quiz> getPopularQuizes() throws SQLException{
         ArrayList<Quiz> quizes = new ArrayList<>();
         Connection con = dbSource.getConnection();
-        PreparedStatement stm = con.prepareStatement("select quizhistory.quizId from quizhistory group by quizId order by count(*) desc");
+        PreparedStatement stm = con.prepareStatement("select quizhistory.quizId from quizhistory group by quizId order by count(*) desc;");
         ResultSet set = stm.executeQuery();
         while(set.next()){
             quizes.add(getQuiz(""+set.getInt("quizId")));
