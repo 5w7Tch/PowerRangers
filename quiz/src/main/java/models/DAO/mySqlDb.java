@@ -629,7 +629,27 @@ public class mySqlDb implements Dao {
     }
 
     public ArrayList<WritenQuiz> getUserQuizActivity(int userId) throws SQLException {
-        return null;
+        String query = "SELECT quizHistory.score, quizHistory.startTime, " +
+                "TIMESTAMPDIFF(MINUTE, quizHistory.startTime, quizHistory.endTime) AS timeSpent, " +
+                "quizHistory.quizId FROM quizHistory WHERE quizHistory.userId = ? " +
+                "ORDER BY quizHistory.score DESC, timeSpent";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<WritenQuiz> writtenQuizzes = new ArrayList<>();
+                while (resultSet.next()) {
+                    double score = resultSet.getDouble("score");
+                    Date startTime = resultSet.getDate("startTime");
+                    double timeSpent = resultSet.getDouble("timeSpent");
+                    int quizId = resultSet.getInt("quizId");
+                    String writerName = getUserById(userId).getUsername();
+                    WritenQuiz writenQuiz = new WritenQuiz(score, startTime, timeSpent, quizId, userId, writerName);
+                    writtenQuizzes.add(writenQuiz);
+                }
+                return writtenQuizzes;
+            }
+        }
     }
 
 }
