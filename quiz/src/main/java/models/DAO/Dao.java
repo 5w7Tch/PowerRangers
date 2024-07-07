@@ -1,4 +1,5 @@
 package models.DAO;
+import models.achievement.UserAchievement;
 import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
@@ -64,4 +65,5 @@ public interface Dao {
     ArrayList<WritenQuiz> getUserQuizActivity(int userId) throws SQLException;
     ArrayList<Quiz> getUserCreatedQuizzes(int userId) throws SQLException;
     ArrayList<Quiz> getPopularQuizes() throws SQLException;
-}
+    public boolean putUserAchievements(UserAchievement achievement) throws SQLException;
+    }
