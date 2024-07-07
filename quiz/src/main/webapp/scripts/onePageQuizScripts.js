@@ -180,7 +180,7 @@ function answerChange(thisObj, name) {
     let arr = new Array(fillers.length);
 
     for (let i = 0; i < fillers.length; i++) {
-        arr[i] = fillers[i].innerText;
+        arr[i] = fillers[i].innerText.toString().trim();
     }
     answers[name] = arr;
 }

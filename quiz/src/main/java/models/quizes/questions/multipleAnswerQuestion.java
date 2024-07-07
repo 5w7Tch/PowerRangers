@@ -92,7 +92,7 @@ public class multipleAnswerQuestion extends Question{
     @Override
     public String getAnsweredQuestion(String[] answer) {
         realAnswers = new ArrayList<>();
-        Collections.copy(realAnswers, answers);
+        realAnswers.addAll(answers);
 
         String html = "<div class=\"question-box\">\n" +
                 "        <div class=\"question-text\">"+questionJson.get("description").getAsString()+"</div>\n" +
