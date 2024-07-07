@@ -33,6 +33,7 @@ create table if not exists friends(
       friendId int primary key auto_increment,
       user1Id int not null,
       user2Id int not null,
+      timeStamp DATE NOT NULL,
       foreign key (user1Id) references users(userId),
       foreign key (user2Id) references users(userId)
 );

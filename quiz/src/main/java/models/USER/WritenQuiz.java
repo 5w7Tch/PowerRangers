@@ -3,33 +3,33 @@ package models.USER;
 
 
 import com.mysql.cj.conf.ConnectionUrlParser;
+import models.activity.Activity;
+import models.enums.ActivityType;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class WritenQuiz {
+public class WritenQuiz extends Activity
+{
     Double score;
     String scoreString;
     Double time;
     String timeString;
     String dateString;
-    Date date;
-    int userId;
     int quizId;
     String writerName;
     static DecimalFormat df = new DecimalFormat("#.00");
 
-    public WritenQuiz(Double score, Date date, Double time, int quizId, int userId, String writerName) {
+    public WritenQuiz(int id, Double score, Date date, Double time, int quizId, int userId, String writerName) {
+        super(id, userId, date, ActivityType.WROTE_QUIZ);
         this.score = score;
         this.scoreString = score.toString();
-        this.date = date;
         this.time = time;
         this.timeString = df.format(time);
         this.dateString = date.toString();
         this.quizId = quizId;
-        this.userId = userId;
         this.writerName = writerName;
     }
 
@@ -42,7 +42,7 @@ public class WritenQuiz {
     }
 
     public Date getDate() {
-        return date;
+        return super.getSendTime();
     }
 
     public int getQuizId() {
@@ -52,7 +52,7 @@ public class WritenQuiz {
     public String getWriterName() {return writerName;}
 
     public int getUserId() {
-        return userId;
+        return super.getFromId();
     }
 
     public static String getAvgScore(ArrayList<WritenQuiz> writtenQuizList){

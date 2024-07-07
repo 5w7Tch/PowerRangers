@@ -1,6 +1,6 @@
 package models.notification;
 
-import models.enums.NotificationType;
+import models.enums.ActivityType;
 import models.notification.abstractions.INote;
 
 import java.util.Date;
@@ -10,7 +10,7 @@ public class Note extends Notification implements INote
     private String text;
 
     public Note(int noteId, int fromId, int toId, String text, Date sendTime) {
-        super(noteId, fromId, toId, sendTime, NotificationType.NOTE);
+        super(noteId, fromId, toId, sendTime, ActivityType.NOTE);
         this.text = text;
     }
 

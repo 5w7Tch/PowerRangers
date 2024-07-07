@@ -1,40 +1,31 @@
 package models.announcement;
 
+import models.activity.Activity;
 import models.announcement.abstractions.IAnnouncement;
+import models.enums.ActivityType;
 
 import java.util.Date;
 
-public class Announcement implements IAnnouncement
+public class Announcement extends Activity implements IAnnouncement
 {
-    private final int id;
-    private int userId;
     private String text;
-    private Date timeStamp;
 
     public Announcement(int id, int userId, String text, Date timeStamp)
     {
-        this.id = id;
-        this.userId = userId;
+        super(id, userId, timeStamp, ActivityType.ANNOUNCEMENT);
         this.text = text;
-        this.timeStamp = timeStamp;
-    }
-
-    @Override
-    public int getId()
-    {
-        return this.id;
     }
 
     @Override
     public int getUserId()
     {
-        return this.userId;
+        return super.getId();
     }
 
     @Override
     public void setUserId(int id)
     {
-        this.userId = id;
+        super.setFromId(id);
     }
 
     @Override
@@ -52,12 +43,12 @@ public class Announcement implements IAnnouncement
     @Override
     public Date getTimeStamp()
     {
-        return this.timeStamp;
+        return super.getSendTime();
     }
 
     @Override
     public void setTimeStamp(Date date)
     {
-        this.timeStamp = date;
+        super.setSendTime(date);
     }
 }

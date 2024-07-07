@@ -3,7 +3,7 @@
 <%@ page import="models.DAO.Dao" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="models.notification.abstractions.INotification" %>
-<%@ page import="models.enums.NotificationType" %>
+<%@ page import="models.enums.ActivityType" %>
 <%@ page import="models.notification.abstractions.INote" %>
 <%@ page import="models.notification.Note" %>
 <%@ page import="models.notification.abstractions.IChallenge" %>
@@ -16,6 +16,7 @@
 <%@ page import="static java.lang.Math.min" %>
 <%@ page import="models.quizes.Quiz" %>
 <%@ page import="models.announcement.abstractions.IAnnouncement" %>
+<%@ page import="models.activity.abstractions.IActivity" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -35,6 +36,7 @@
         ArrayList<Quiz> popularQuizzes = myDb.getPopularQuizzes();
         ArrayList<Quiz> recentQuizzes = myDb.getRecentQuizzes();
         ArrayList<IAnnouncement> announcements = myDb.getAnnouncements();
+        ArrayList<IActivity> activities = myDb.getFriendsActivity(user.getId());
     %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -99,7 +101,7 @@
                                         <p  class="mb-1"><%=dayName%>, <%=time%></p>
                                     </div>
                                     <%
-                                        if (notification.getType() == NotificationType.NOTE) {
+                                        if (notification.getType() == ActivityType.NOTE) {
                                             assert notification instanceof Note;
                                             INote note = (Note) notification;
                                     %>
@@ -108,7 +110,7 @@
                                     </div>
                                     <%
                                         }
-                                        if (notification.getType() == NotificationType.CHALLENGE) {
+                                        if (notification.getType() == ActivityType.CHALLENGE) {
                                             assert notification instanceof Challenge;
                                             IChallenge challenge = (Challenge) notification;
                                     %>
@@ -117,7 +119,7 @@
                                     </div>
                                     <%
                                         }
-                                        if (notification.getType() == NotificationType.FRIEND_REQUEST) {
+                                        if (notification.getType() == ActivityType.FRIEND_REQUEST) {
                                             assert notification instanceof FriendRequest;
                                             IFriendRequest friendRequest = (FriendRequest) notification;
                                     %>

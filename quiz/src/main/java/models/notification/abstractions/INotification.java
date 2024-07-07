@@ -1,23 +1,9 @@
 package models.notification.abstractions;
 
-import models.enums.NotificationType;
+import models.activity.abstractions.IActivity;
 
-import java.util.Date;
-
-public interface INotification
+public interface INotification extends IActivity
 {
-    int getId();
-    void setId(int id);
-
-    int getFromId();
-    void setFromId(int fromId);
-
     int getToId();
     void setToId(int toId);
-
-    NotificationType getType();
-    void setType(NotificationType type);
-
-    Date getSendTime();
-    void setSendTime(Date time);
 }

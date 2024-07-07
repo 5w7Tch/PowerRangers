@@ -74,7 +74,7 @@ public class QuizFinishServlet extends HttpServlet {
         Dao dao = (Dao)request.getServletContext().getAttribute(Dao.DBID);
         Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
         User user = (User)request.getSession().getAttribute("user");
-        dao.insertIntoQuizHistory(quiz.getId().toString(), user.getId().toString(), startDate, time, score);
+        dao.insertIntoQuizHistory(((Integer)quiz.getId()).toString(), user.getId().toString(), startDate, time, score);
 
     }
     private ArrayList<Double> checkAnswers(HttpServletRequest request) throws IOException {

@@ -1,7 +1,11 @@
 package models.DAO;
 
 import models.achievement.UserAchievement;
+import models.achievement.abstractions.IUserAchievement;
+import models.activity.abstractions.IActivity;
 import models.announcement.abstractions.IAnnouncement;
+import models.friend.Friend;
+import models.friend.abstractions.IFriend;
 import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
@@ -204,7 +208,7 @@ public class mySqlDb implements Dao {
 
     @Override
     public ArrayList<WritenQuiz> getQuizHistory(Integer quizId) throws SQLException {
-        String query = "SELECT quizHistory.score, quizHistory.startTime, " +
+        String query = "SELECT quizHistory.historyId, quizHistory.score, quizHistory.startTime, " +
                 "quizHistory.spentTime, " +
                 "quizHistory.userId FROM quizHistory WHERE quizHistory.quizId = ? " +
                 "ORDER BY quizHistory.score DESC, quizHistory.spentTime ASC";
@@ -214,12 +218,13 @@ public class mySqlDb implements Dao {
             try (ResultSet resultSet = statement.executeQuery()) {
                 ArrayList<WritenQuiz> writenQuizzes = new ArrayList<>();
                 while (resultSet.next()) {
+                    int historyId = resultSet.getInt("historyId");
                     double score = resultSet.getDouble("score");
                     Date startTime = resultSet.getDate("startTime");
                     double timeSpent = resultSet.getDouble("spentTime");
                     int userId = resultSet.getInt("userId");
                     String writerName = getUserById(userId).getUsername();
-                    WritenQuiz writenQuiz = new WritenQuiz(score, startTime, timeSpent, quizId, userId, writerName);
+                    WritenQuiz writenQuiz = new WritenQuiz(historyId, score, startTime, timeSpent, quizId, userId, writerName);
                     writenQuizzes.add(writenQuiz);
                 }
                 return writenQuizzes;
@@ -401,7 +406,7 @@ public class mySqlDb implements Dao {
         HashSet<Integer> friends = getFriends(userId);
         ArrayList<WritenQuiz> writenQuizzes = new ArrayList<>();
 
-        String query = "SELECT quizHistory.score, quizHistory.startTime, " +
+        String query = "SELECT quizHistory.historyId, quizHistory.score, quizHistory.startTime, " +
                 "quizHistory.spentTime, " +
                 "quizHistory.userId FROM quizHistory WHERE quizHistory.quizId = ? " +
                 "ORDER BY quizHistory.score DESC, quizHistory.spentTime ASC";
@@ -410,13 +415,14 @@ public class mySqlDb implements Dao {
             statement.setInt(1, quizId);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
+                    int historyId = resultSet.getInt("historyId");
                     double score = resultSet.getDouble("score");
                     Date startTime = resultSet.getDate("startTime");
                     double timeSpent = resultSet.getDouble("spentTime");
                     Integer user_Id = resultSet.getInt("userId");
                     String writerName = getUserById(userId).getUsername();
                     if(friends.contains(user_Id)){
-                        WritenQuiz writenQuiz = new WritenQuiz(score, startTime, timeSpent, quizId, user_Id, writerName);
+                        WritenQuiz writenQuiz = new WritenQuiz(historyId, score, startTime, timeSpent, quizId, user_Id, writerName);
                         writenQuizzes.add(writenQuiz);
                     }
                 }
@@ -558,11 +564,13 @@ public class mySqlDb implements Dao {
 
     @Override
     public boolean addFriend(IFriendRequest friendRequest) throws SQLException {
-        String query = "INSERT INTO friends (user1Id, user2Id) VALUES (?, ?)";
+        String query = "INSERT INTO friends (user1Id, user2Id, timeStamp) VALUES (?, ?, ?)";
         try (Connection connection = dbSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, friendRequest.getFromId());
             statement.setInt(2, friendRequest.getToId());
+            java.util.Date utilDate = new java.util.Date();
+            statement.setDate(3, new java.sql.Date(utilDate.getTime()));
             boolean rowInserted = statement.executeUpdate() > 0;
             statement.close();
             return rowInserted;
@@ -684,7 +692,7 @@ public class mySqlDb implements Dao {
     }
 
     public ArrayList<WritenQuiz> getUserQuizActivity(int userId) throws SQLException {
-        String query = "SELECT quizHistory.score, quizHistory.startTime, " +
+        String query = "SELECT quizHistory.historyId, quizHistory.score, quizHistory.startTime, " +
                 "quizHistory.spentTime, " +
                 "quizHistory.quizId FROM quizHistory WHERE quizHistory.userId = ? " +
                 "ORDER BY quizHistory.score DESC, spentTime";
@@ -694,12 +702,13 @@ public class mySqlDb implements Dao {
             try (ResultSet resultSet = statement.executeQuery()) {
                 ArrayList<WritenQuiz> writtenQuizzes = new ArrayList<>();
                 while (resultSet.next()) {
+                    int historyId = resultSet.getInt("historyId");
                     double score = resultSet.getDouble("score");
                     Date startTime = resultSet.getDate("startTime");
                     double timeSpent = resultSet.getDouble("spentTime");
                     int quizId = resultSet.getInt("quizId");
                     String writerName = getUserById(userId).getUsername();
-                    WritenQuiz writenQuiz = new WritenQuiz(score, startTime, timeSpent, quizId, userId, writerName);
+                    WritenQuiz writenQuiz = new WritenQuiz(historyId, score, startTime, timeSpent, quizId, userId, writerName);
                     writtenQuizzes.add(writenQuiz);
                 }
                 return writtenQuizzes;
@@ -799,6 +808,144 @@ public class mySqlDb implements Dao {
             }
         }
         return -1;
+    }
+
+    @Override
+    public ArrayList<IAnnouncement> getUserAnnouncements(int userId) throws SQLException
+    {
+        String query = "SELECT * FROM announcements where userId = ? order by announcements.timeStamp DESC";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IAnnouncement> announcements = new ArrayList<>();
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("announcementId");
+                    String text = resultSet.getString("text");
+                    Date timeStamp = resultSet.getDate("timeStamp");
+                    IAnnouncement announcement = new Announcement(id, userId, text, timeStamp);
+                    announcements.add(announcement);
+                }
+                return announcements;
+            }
+        }
+    }
+
+    public ArrayList<IUserAchievement> getUserObtainedAchievements(int userId) throws SQLException {
+        String query = "SELECT * FROM userAchievements a WHERE a.userId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IUserAchievement> achievements = new ArrayList<>();
+                while (resultSet.next()) {
+                    int userAchievementId = resultSet.getInt("userAchievementId");
+                    int achievementId = resultSet.getInt("achievementId");
+                    java.util.Date timeStamp = resultSet.getDate("timeStamp");
+                    achievements.add(new UserAchievement(userAchievementId, userId, achievementId, timeStamp));
+                }
+                return achievements;
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<IFriend> getUserFriends(int userId) throws SQLException
+    {
+        String query = "SELECT * FROM friends a WHERE a.user1Id = ? or a.user2Id = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            statement.setInt(2, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IFriend> friends = new ArrayList<>();
+                while (resultSet.next()) {
+                    int friendId = resultSet.getInt("friendId");
+                    int user1 = resultSet.getInt("user1Id");
+                    int user2 = resultSet.getInt("user2Id");
+                    java.util.Date timeStamp = resultSet.getDate("timeStamp");
+                    friends.add(new Friend(friendId, user1 == userId ? user1 : user2, user1 == userId ? user2 : user1, timeStamp));
+                }
+                return friends;
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<IChallenge> getSentChallenges(int userId) throws SQLException
+    {
+        String query = "SELECT * FROM challenges WHERE challenges.fromId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IChallenge> challenges = new ArrayList<>();
+                while (resultSet.next()) {
+                    int challengeId = resultSet.getInt("challengeId");
+                    int fromId = resultSet.getInt("fromId");
+                    int toId = resultSet.getInt("toId");
+                    int quizId = resultSet.getInt("quizId");
+                    Date sendTime = resultSet.getDate("sendTime");
+                    IChallenge challenge = new Challenge(challengeId, fromId, toId, quizId, sendTime);
+                    challenges.add(challenge);
+                }
+                return challenges;
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<WritenQuiz> getUserWrittenQuizzes(int userId) throws SQLException
+    {
+        ArrayList<WritenQuiz> writenQuizzes = new ArrayList<>();
+
+        String query = "SELECT quizHistory.historyId, quizHistory.score, quizHistory.startTime, " +
+                "quizHistory.spentTime, " +
+                "quizHistory.userId, quizHistory.quizId FROM quizHistory WHERE quizHistory.userId = ? " +
+                "ORDER BY quizHistory.score DESC, quizHistory.spentTime ASC";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    int historyId = resultSet.getInt("historyId");
+                    double score = resultSet.getDouble("score");
+                    Date startTime = resultSet.getDate("startTime");
+                    double timeSpent = resultSet.getDouble("spentTime");
+                    int user_Id = resultSet.getInt("userId");
+                    int quizId = resultSet.getInt("quizId");
+                    String writerName = getUserById(userId).getUsername();
+                    WritenQuiz writenQuiz = new WritenQuiz(historyId, score, startTime, timeSpent, quizId, user_Id, writerName);
+                    writenQuizzes.add(writenQuiz);
+                }
+            }
+        }
+        return writenQuizzes;
+    }
+
+    public ArrayList<IActivity> getFriendsActivity(int userId) throws SQLException {
+        User user = getUserById(userId);
+        if(user == null)
+            throw new RuntimeException("User can't be null");
+        HashSet<Integer> friends = this.getFriends(userId);
+        ArrayList<IActivity> activities = new ArrayList<>();
+        for(int friendId : friends) {
+            ArrayList<Quiz> createdQuizzes = getUserCreatedQuizzes(friendId);
+            ArrayList<IAnnouncement> announcements = getUserAnnouncements(friendId);
+            ArrayList<IUserAchievement> achievements = getUserObtainedAchievements(friendId);
+            ArrayList<IFriend> userFriends = getUserFriends(friendId);
+            ArrayList<IChallenge> challenges = getSentChallenges(friendId);
+            ArrayList<WritenQuiz> writtenQuizzes = getUserWrittenQuizzes(friendId);
+            activities.addAll(createdQuizzes);
+            activities.addAll(announcements);
+            activities.addAll(achievements);
+            activities.addAll(userFriends);
+            activities.addAll(challenges);
+            activities.addAll(writtenQuizzes);
+        }
+        activities.sort((n1, n2) -> n2.getSendTime().compareTo(n1.getSendTime()));
+
+        return activities;
     }
 
 }

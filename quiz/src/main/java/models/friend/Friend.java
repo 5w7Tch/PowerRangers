@@ -1,41 +1,42 @@
 package models.friend;
 
+import models.activity.Activity;
+import models.enums.ActivityType;
 import models.friend.abstractions.IFriend;
 
-public class Friend implements IFriend
+import java.util.Date;
+
+public class Friend extends Activity implements IFriend
 {
-    private int id;
-    private int userOneId;
     private int userTwoId;
 
-    public Friend(int id, int userOneId, int userTwoId) {
-        this.id = id;
-        this.userOneId = userOneId;
+    public Friend(int id, int userOneId, int userTwoId, Date timeStamp) {
+        super(id, userOneId, timeStamp, ActivityType.FRIENDSHIP);
         this.userTwoId = userTwoId;
     }
 
     @Override
     public int getId()
     {
-        return this.id;
+        return super.getId();
     }
 
     @Override
     public void setId(int id)
     {
-        this.id = id;
+        super.setId(id);
     }
 
     @Override
     public int getUserOneId()
     {
-        return this.userOneId;
+        return super.getFromId();
     }
 
     @Override
     public void setUserOneId(int id)
     {
-        this.userOneId = id;
+        super.setFromId(id);
     }
 
     @Override
@@ -48,5 +49,17 @@ public class Friend implements IFriend
     public void setUserTwoId(int id)
     {
         this.userTwoId = id;
+    }
+
+    @Override
+    public Date getTimeStamp()
+    {
+        return super.getSendTime();
+    }
+
+    @Override
+    public void setTimeStamp(Date date)
+    {
+        super.setSendTime(date);
     }
 }

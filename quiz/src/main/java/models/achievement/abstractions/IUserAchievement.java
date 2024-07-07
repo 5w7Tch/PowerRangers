@@ -1,8 +1,10 @@
 package models.achievement.abstractions;
 
+import models.activity.abstractions.IActivity;
+
 import java.util.Date;
 
-public interface IUserAchievement
+public interface IUserAchievement extends IActivity
 {
     int getUserAchievementId();
     void setUserAchievementId(int userAchievementId);
