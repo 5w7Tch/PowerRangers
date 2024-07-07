@@ -470,4 +470,28 @@ public class mySqlDb implements Dao {
         }
     }
 
+    public ArrayList<Quiz> getUserCreatedQuizzes(int userId) throws SQLException {
+        String query = "SELECT * FROM quizzes WHERE author = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, userId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<Quiz> createdQuizzes = new ArrayList<>();
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("quizId");
+                    int author = resultSet.getInt("author");
+                    String name = resultSet.getString("name");
+                    Date creationDate = resultSet.getDate("creationDate");
+                    String description = resultSet.getString("description");
+                    boolean isPracticable = resultSet.getBoolean("isPracticable");
+                    boolean areQuestionsRandom = resultSet.getBoolean("areQuestionsRandom");
+                    double quizTime = resultSet.getDouble("quizTime");
+                    Quiz createdQuiz = new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime);
+                    createdQuizzes.add(createdQuiz);
+                }
+                return createdQuizzes;
+            }
+        }
+    }
+
 }
