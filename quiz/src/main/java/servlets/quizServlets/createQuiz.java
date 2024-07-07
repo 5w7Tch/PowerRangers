@@ -70,22 +70,7 @@ public class createQuiz extends HttpServlet {
         Quiz quiz = readQuizInfo(quizObj,request);
         Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
         db.addQuiz(quiz);
-
-        int userId = quiz.getAuthor();
-        Date currentTimestamp = new Date(System.currentTimeMillis());
-        int createQuizzesQuantity = db.getUserCreatedQuizzes(userId).size();
-
-        switch (createQuizzesQuantity) {
-            case 1:
-            case 5:
-            case 10:
-                UserAchievement userAchievement = new UserAchievement(0, userId, 1, currentTimestamp);
-                db.putUserAchievements(userAchievement);
-                break;
-            default:
-                break;
-        }
-        
+        checkAndAddAchievement(quiz, db);
         return quiz.getId();
     }
 
@@ -126,5 +111,33 @@ public class createQuiz extends HttpServlet {
         object.addProperty("status","Its OK");
         response.getWriter().write(object.toString());
         response.getWriter().flush();
+    }
+
+    private void checkAndAddAchievement(Quiz quiz, Dao db) throws SQLException {
+        int userId = quiz.getAuthor();
+        Date currentTimestamp = new Date(System.currentTimeMillis());
+        int createQuizzesQuantity = db.getUserCreatedQuizzes(userId).size();
+
+        int achievementId;
+        UserAchievement userAchievement;
+        switch (createQuizzesQuantity) {
+            case 1:
+                achievementId = db.getAchievementIdFromType(0);
+                userAchievement = new UserAchievement(0, userId, achievementId, currentTimestamp);
+                db.putUserAchievements(userAchievement);
+                break;
+            case 5:
+                achievementId = db.getAchievementIdFromType(1);
+                userAchievement = new UserAchievement(0, userId, achievementId, currentTimestamp);
+                db.putUserAchievements(userAchievement);
+                break;
+            case 10:
+                achievementId = db.getAchievementIdFromType(2);
+                userAchievement = new UserAchievement(0, userId, achievementId, currentTimestamp);
+                db.putUserAchievements(userAchievement);
+                break;
+            default:
+                break;
+        }
     }
 }
