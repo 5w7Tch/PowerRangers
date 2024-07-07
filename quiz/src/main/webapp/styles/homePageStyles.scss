@@ -2,48 +2,52 @@
 
 .container-fluid .row .col-3 {
 
-    .user .col-3 {
-        position: relative;
+    .user {
+        --bs-bg-opacity: .5;
 
-        .notifications-list {
-            z-index: 999;
-            position: absolute;
-            display: none;
-            height: 600px;
-            width: 400px;
-            overflow: auto;
-            top: 45px;
-            left: -25px;
+        .col-3 {
+            position: relative;
 
-            .list-group {
-                margin-bottom: 0;
+            .notifications-list {
+                z-index: 999;
+                position: absolute;
+                display: none;
+                height: 600px;
+                width: 400px;
+                overflow: auto;
+                top: 45px;
+                left: -25px;
 
-                .notification-wrapper {
-                    padding: 10px;
-                    --bs-bg-opacity: .1;
-                    --bs-border-opacity: .5;
+                .list-group {
+                    margin-bottom: 0;
 
-                    .note-info {
-                        overflow: auto;
-                        height: 48px;
-                        padding: 4px;
+                    .notification-wrapper {
+                        padding: 10px;
+                        --bs-bg-opacity: .1;
+                        --bs-border-opacity: .5;
 
-                        p {
-                            margin-bottom: 0;
+                        .note-info {
+                            overflow: auto;
+                            height: 48px;
+                            padding: 4px;
+
+                            p {
+                                margin-bottom: 0;
+                            }
                         }
-                    }
 
-                    .challenge-info {
+                        .challenge-info {
 
-                        button {
-                            --bs-bg-opacity: .1;
+                            button {
+                                --bs-bg-opacity: .1;
+                            }
                         }
-                    }
 
-                    .friend-request-info {
+                        .friend-request-info {
 
-                        .spinner-border {
-                            display: none;
+                            .spinner-border {
+                                display: none;
+                            }
                         }
                     }
                 }
@@ -68,7 +72,21 @@
                     height: 100px;
                     margin: 10px;
                 }
+
+                .modal-body {
+                    --bs-bg-opacity: .3;
+                }
             }
+        }
+    }
+
+    .quizActivities {
+
+        .quizActivities-container-wrapper {
+            width: 100%;
+            height: 100%;
+            --bs-bg-opacity: .1;
+
         }
     }
 }
