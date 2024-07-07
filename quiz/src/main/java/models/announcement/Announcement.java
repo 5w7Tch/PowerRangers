@@ -19,7 +19,7 @@ public class Announcement extends Activity implements IAnnouncement
     @Override
     public int getUserId()
     {
-        return super.getId();
+        return super.getFromId();
     }
 
     @Override
