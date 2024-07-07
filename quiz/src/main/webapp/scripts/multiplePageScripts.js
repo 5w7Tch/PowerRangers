@@ -8,14 +8,23 @@ const answers = {};
 
 function setState(data){
     let lastEndDate = new Date(sessionStorage.getItem('endTime'));
+    quizId = data.quizId;
+
     if(lastEndDate == null){
         sessionStorage.clear();
         timeRemaining = data.quizTime * 60000;
         sessionStorage.setItem('endTime', new Date(data.endDate));
+        sessionStorage.setItem('quizId', quizId);
     }else if(lastEndDate<(new Date(data.startDate))){
         sessionStorage.clear();
         timeRemaining = data.quizTime * 60000;
         sessionStorage.setItem('endTime', new Date(data.endDate));
+        sessionStorage.setItem('quizId', quizId);
+    }else if(sessionStorage.getItem('quizId').toString() != quizId){
+        sessionStorage.clear();
+        timeRemaining = data.quizTime * 60000;
+        sessionStorage.setItem('endTime', new Date(data.endDate));
+        sessionStorage.setItem('quizId', quizId);
     }else{
         timeRemaining = lastEndDate-(new Date());
         if(sessionStorage.getItem('currentQuestion') != null){
@@ -25,7 +34,6 @@ function setState(data){
             questions[i].innerHTML = sessionStorage.getItem('quest'+i);
         }
     }
-    quizId = data.quizId;
 
 }
 
