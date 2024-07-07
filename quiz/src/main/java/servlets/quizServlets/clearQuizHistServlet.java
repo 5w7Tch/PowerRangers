@@ -21,6 +21,7 @@ public class clearQuizHistServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        response.setCharacterEncoding("UTF-8");
         response.sendRedirect("/quiz?quizid=" + quizId);
     }
 }

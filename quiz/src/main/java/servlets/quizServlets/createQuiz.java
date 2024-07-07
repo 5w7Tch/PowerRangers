@@ -104,6 +104,7 @@ public class createQuiz extends HttpServlet {
 
     private void sendResponse(HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         JsonObject object = new JsonObject();
         object.addProperty("status","Its OK");
         response.getWriter().write(object.toString());

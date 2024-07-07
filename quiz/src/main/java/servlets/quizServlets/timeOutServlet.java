@@ -11,6 +11,7 @@ import java.io.IOException;
 public class timeOutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletResponse.setCharacterEncoding("UTF-8");
         httpServletRequest.getRequestDispatcher("timeOut.jsp").forward(httpServletRequest,httpServletResponse);
     }
 

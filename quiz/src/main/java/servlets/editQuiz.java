@@ -68,6 +68,7 @@ public class editQuiz extends HttpServlet {
 
     private void sendResponse(HttpServletResponse response,JsonObject data) throws IOException {
         response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
         response.getWriter().write(data.toString());
         response.getWriter().flush();
     }

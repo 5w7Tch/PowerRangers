@@ -17,6 +17,8 @@ public class deleteQuizServlet extends HttpServlet {
 
         request.getSession().setAttribute("history", null);
         String quizId = request.getParameter("quizId");
+        response.setCharacterEncoding("UTF-8");
+
         try {
             ((Dao)request.getServletContext().getAttribute(Dao.DBID)).eraseQuiz(quizId);
         } catch (SQLException e) {

@@ -54,7 +54,7 @@ public class multiplePageQuizServlet extends HttpServlet {
                 request.getSession(false).setAttribute("questions", quests);
             }
             request.getSession(false).setAttribute("practise", practise);
-
+            response.setCharacterEncoding("UTF-8");
             request.getRequestDispatcher("multiplePageQuiz.jsp").forward(request,response);
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

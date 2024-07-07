@@ -36,7 +36,6 @@
                     <%=results.get(i)%>/<%=quests.get(i).getScore()%>
                         <div style="display: flex; align-items: center; justify-content: space-between" >
                             <%=quests.get(i).getAnsweredQuestion(answerCollections.get(i))%>
-
                             <%if(!results.get(i).equals(quests.get(i).getScore()) && results.get(i).equals(0.0)){%>
                                 <img class="icon" src="<%=request.getContextPath()%>/static/icons/wrong.png" alt="bla">
                             <%}else{%>

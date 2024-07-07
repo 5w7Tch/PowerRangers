@@ -11,6 +11,8 @@ import java.io.IOException;
 public class cheatedInQuizServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
+        httpServletResponse.setCharacterEncoding("UTF-8");
+
         httpServletRequest.getRequestDispatcher("cheated.jsp").forward(httpServletRequest,httpServletResponse);
     }
 }

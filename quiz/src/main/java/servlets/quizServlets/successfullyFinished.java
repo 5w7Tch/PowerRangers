@@ -10,7 +10,9 @@ import java.io.IOException;
 @WebServlet("/success")
 public class successfullyFinished extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
-        httpServletRequest.getRequestDispatcher("quizFinish.jsp").forward(httpServletRequest, httpServletResponse);
+    protected void doGet(HttpServletRequest httpServletRequest, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("UTF-8");
+
+        httpServletRequest.getRequestDispatcher("quizFinish.jsp").forward(httpServletRequest, response);
     }
 }

@@ -39,14 +39,15 @@ public class checkAnswer extends HttpServlet {
             }
         }
         JSONObject json = new JSONObject();
-//        Double score = quests.get(questNum).checkAnswer(ans);
-//        if(score.equals(quests.get(questNum).getScore())) {
-//            json.put("res",2);
-//        }else if (score == 0.0) {
-//            json.put("res",0);
-//        }else {
-//            json.put("res",1);
-//        }
+        Double score = quests.get(questNum).checkAnswer(ans);
+        if(score.equals(quests.get(questNum).getScore())) {
+            json.put("res",2);
+        }else if (score == 0.0) {
+            json.put("res",0);
+        }else {
+            json.put("res",1);
+        }
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json.toString());

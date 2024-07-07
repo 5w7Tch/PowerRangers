@@ -103,7 +103,7 @@ function addAnswerHtml(){
 }
 function insertSymbol() {
     const textarea = document.getElementById('question');
-    const symbol = ' ★ '; // The symbol to insert
+    const symbol = ' ★ ';
     const cursorPosition = textarea.selectionStart;
     const textBefore = textarea.value.substring(0, cursorPosition);
     const textAfter = textarea.value.substring(cursorPosition);

@@ -25,7 +25,7 @@ public class matching extends Question{
     private void initAnswersList(){
         left = new ArrayList<>();
         right = new ArrayList<>();
-
+        anss = new HashMap<>();
         JsonArray leftArr = answerJson.get("left").getAsJsonArray();
         JsonArray rightArr = answerJson.get("right").getAsJsonArray();
 
@@ -47,7 +47,7 @@ public class matching extends Question{
                 "            <ul class=\"answers\">\n";
 
         for (int i = 0; i < left.size(); i++) {
-            html += "<h5>"+i+1+". <div class=\"match_option\">"+left.get(i)+"</div></h5>\n";
+            html += "<h5>"+(i+1)+". <div class=\"match_option\">"+left.get(i)+"</div></h5>\n";
         }
         html += " </ul>\n"+
                 " <ul class=\"answers\">\n";
@@ -57,12 +57,12 @@ public class matching extends Question{
 
         String middle =" </ul>\n"+
                 "       </div>\n" +
-                "<h4 style=\"background-color: red\">Write corresponding sentences character</h4>"+
+                "<h4 style=\"color: red\">Write corresponding sentences character</h4>"+
                 "        <div class=\"dropdown-container\">\n";
 
         html += middle;
         for (int i = 0; i < right.size(); i++) {
-            html += "      <h5>"+i+1+".\n" +
+            html += "      <h5>"+(i+1)+".\n" +
                     "                <div class=\"answer_response\" contenteditable=\"true\"name=\""+orderNum+"\" ></div>\n" +
                     "            </h5>\n";
         }
@@ -77,10 +77,12 @@ public class matching extends Question{
         Double correct = 0.0;
         for (int i = 0; i < answer.length; i++) {
             String l = left.get(i);
-            int placeInR = answer[i].charAt(0)-'a';
-            String r = right.get(placeInR);
-            if(r.equals(anss.get(l))){
-                correct++;
+            if(answer[i].length()==1){
+                int placeInR = answer[i].charAt(0)-'a';
+                String r = right.get(placeInR);
+                if(r.equals(anss.get(l))){
+                    correct++;
+                }
             }
         }
         return (correct/right.size())*score;
@@ -88,14 +90,13 @@ public class matching extends Question{
 
     @Override
     public String getAnsweredQuestion(String[] answer) {
-
         String html = "<div class=\"question-box\">\n" +
                 "        <div class=\"question-text\">Match.</div>\n" +
                 "        <div class=\"match\">\n"+
                 "            <ul class=\"answers\">\n";
 
         for (int i = 0; i < left.size(); i++) {
-            html += "<h5>"+i+1+". <div class=\"match_option\">"+left.get(i)+"</div></h5>\n";
+            html += "<h5>"+(i+1)+". <div class=\"match_option\">"+left.get(i)+"</div></h5>\n";
         }
         html += " </ul>\n"+
                 " <ul class=\"answers\">\n";
@@ -106,12 +107,9 @@ public class matching extends Question{
         String middle =" </ul>\n"+
                 "       </div>\n" +
                 "        <div class=\"dropdown-container\">\n";
-
         html += middle;
         for (int i = 0; i < right.size(); i++) {
-            html += "      <h5>"+i+1+".\n" +
-                    "                <div class=\"answer_response\" name=\"3\" >"+answer[i]+"</div>\n" +
-                    "            </h5>\n";
+            html += "      <h5>"+(i+1)+".\n" + "<div class=\"answer_response\" name=\"3\" >"+answer[i]+"</div>\n" + "            </h5>\n";
         }
 
         String end = "        </div>\n" +
