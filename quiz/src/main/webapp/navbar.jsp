@@ -3,7 +3,7 @@
 <nav class = "topNavbar">
     <link rel="icon" href="<%=request.getContextPath()%>/static/icons/logo.png" type="image/png">
     <div class = "navDiv">
-        <div>
+        <div class="quizNameClass">
             <a href="/"><p class = "quizName">QuizTime</p></a>
         </div>
 
