@@ -24,6 +24,10 @@ public class displayStrangersAccount extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        if (usr == null){
+            response.sendError(404);
+            return;
+        }
         if(me.getId().equals(usr.getId())){
             request.getRequestDispatcher("/home.jsp").forward(request,response);
             return;
