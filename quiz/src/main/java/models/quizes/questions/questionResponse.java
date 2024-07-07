@@ -22,6 +22,7 @@ public class questionResponse extends Question{
         return object;
     }
     public Double checkAnswer(String[] answer){
+
         if (answer[0].trim().equalsIgnoreCase(answerJson.get("description").getAsString().trim())) {
             return getScore();
         }

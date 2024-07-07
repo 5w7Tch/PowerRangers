@@ -105,6 +105,7 @@ function addTextarea(container , textValue){
         container.removeChild(deleteBtn);
     });
     deleteBtn.style.backgroundColor = "#ff0000";
+    deleteBtn.style.width = '5px';
     textarea.className = 'form-control';
     textarea.style.marginBottom = '5px';
     textarea.id = textareaId;

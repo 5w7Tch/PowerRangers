@@ -86,8 +86,13 @@ export class matching{
 }
 
 function addMatches(firstMatch , secondMatch){
+
     var answersContainer = document.getElementById('answersContainer');
     var textareaId = '' + answersContainer.children.length;
+    if(textareaId == 39){
+        this.style.display = 'none';
+        return;
+    }
     var textarea1 = document.createElement('textarea');
     var textarea2 = document.createElement('textarea');
     var deleteBtn = document.createElement('button');
@@ -97,8 +102,10 @@ function addMatches(firstMatch , secondMatch){
         answersContainer.removeChild(textarea2);
         answersContainer.removeChild(textarea1);
         answersContainer.removeChild(deleteBtn);
+        document.getElementById('addMatchButton').style.display = 'block';
     });
     deleteBtn.style.backgroundColor = "#ff0000";
+    deleteBtn.style.width = '5px';
     textarea1.className = 'form-control';
     textarea1.style.marginBottom = '5px';
     textarea1.id = 'first_'+textareaId;

@@ -32,7 +32,7 @@
     <div class="container">
         <div class="quizBlock">
             <%for (int i = 0; i < quests.size(); i++) {%>
-                <div class="questResult">
+                <div class="questResult" style="max-width: 100%">
                     <%=results.get(i)%>/<%=quests.get(i).getScore()%>
                         <div style="display: flex; align-items: center; justify-content: space-between" >
                             <%=quests.get(i).getAnsweredQuestion(answerCollections.get(i))%>

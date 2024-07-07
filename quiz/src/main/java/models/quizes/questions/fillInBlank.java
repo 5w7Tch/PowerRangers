@@ -31,9 +31,9 @@ public class fillInBlank extends Question{
     public String getQuestion(int orderNum) {
         String html = "<div class=\"question-box\">\n" +
                 "        <div class=\"question-text\">Fill in!</div>\n" +
-                "        <div class=\"question-text\">\n";
+                "        <div class=\"question-text\" style=\"\">\n";
 
-        String field = "<div class=\"answer_response\" contenteditable=\"true\" name=\""+orderNum+"\" style=\"width: 60px\"></div>\n";
+        String field = "<div class=\"answer_response\" contenteditable=\"true\" name=\""+orderNum+"\" style=\"padding: 1px; margin-bottom: 0px; width: 100px;\"></div>";
         String quest = questionJson.get("question").getAsString();
         for (int i = 0; i < quest.length(); i++) {
             if(quest.startsWith("<>", i)){
@@ -64,22 +64,24 @@ public class fillInBlank extends Question{
     }
 
     private boolean isCorrect(String ans, int idx){
+        System.out.println(ans);
+        System.out.println(answers.get(idx));
         return ans.trim().equalsIgnoreCase(answers.get(idx).trim());
     }
     @Override
     public String getAnsweredQuestion(String[] answer) {
         String html = "<div class=\"question-box\">\n" +
                 "        <div class=\"question-text\">Fill in!</div>\n" +
-                "        <div class=\"question-text\">\n";
+                "        <div class=\"question-text\" style=\"\">\n";
 
         String quest = questionJson.get("question").getAsString();
         int idx = 0;
         for (int i = 0; i < quest.length(); i++) {
             if(quest.startsWith("<>", i)){
                 if(isCorrect(answer[idx], idx)){
-                    html+= "<div class=\"answer_response\" name=\"0\" style=\"width: 60px\" style=\"background-color: green;\">"+answer[idx]+"</div>\n";
+                    html+= "<div class=\"answer_response\" name=\"0\" style=\"background-color: green;padding: 1px; margin-bottom: 0px;width: 100px;\" >"+answer[idx]+"</div>";
                 }else{
-                    html+= "<div class=\"answer_response\" name=\"0\" style=\"width: 60px\" style=\"background-color: red;\">"+answer[idx]+"</div>\n";
+                    html+= "<div class=\"answer_response\" name=\"0\" style=\"background-color: red; width: 100px; padding: 1px; margin-bottom: 0px;\" >"+answer[idx]+"</div>";
                 }
                 idx++;
                 i++;
