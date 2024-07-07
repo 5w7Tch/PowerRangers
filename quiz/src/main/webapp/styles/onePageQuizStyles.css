@@ -98,7 +98,7 @@ body {
 }
 .dropdown-container {
     justify-content: center;
-
+    display: flex;
     gap: 20px;
     word-wrap: break-word;
     white-space: pre-wrap;
