@@ -87,6 +87,28 @@
             height: 100%;
             --bs-bg-opacity: .1;
 
+            .quizActivities-container {
+
+                .table {
+
+                    a {
+                        text-decoration: none;
+                    }
+
+                    a:hover {
+                        text-decoration: underline;
+                    }
+
+                    a:visited {
+                        color: inherit;
+                    }
+
+                }
+
+                .modal-body {
+                    --bs-bg-opacity: .1;
+                }
+            }
         }
     }
 }
