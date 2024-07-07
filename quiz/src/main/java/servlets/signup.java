@@ -18,7 +18,24 @@ public class signup extends HttpServlet {
     private static final String CHARS = "abcdefghijklmnopqrstuvwxyz0123456789.,-!";
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("login_signup.jsp").forward(request,response);
+        String[] userInfo = servletGeneralFunctions.readLoginCookies(request,response);
+
+        if(userInfo==null){
+            request.getRequestDispatcher("login_signup.jsp").forward(request,response);
+            return;
+        }
+
+        Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
+        try {
+            if(db.accountExists(userInfo[0],Hasher.getPasswordHash(userInfo[1]))){
+                request.getSession().setAttribute("user",db.getUser(userInfo[0],Hasher.getPasswordHash(userInfo[1])));
+                response.sendRedirect("/");
+            }else{
+                request.getRequestDispatcher("login_signup.jsp").forward(request,response);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private boolean passwordIsValid(String password){
@@ -57,6 +74,7 @@ public class signup extends HttpServlet {
                 User user = new User(-1,name, password,email,false);
                 dao.addUser(user);
                 request.getSession().setAttribute("user",user);
+                servletGeneralFunctions.saveLoginCookies(request,response,name,password);
             }
             response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
             response.setHeader("Pragma", "no-cache");
@@ -67,6 +85,7 @@ public class signup extends HttpServlet {
             jsonObject.addProperty("usernameRP", usernamevalidity);
             jsonObject.addProperty("emailRP", emailValidity);
             jsonObject.addProperty("passwordRP", passwordValidity);
+
             // Construct JSON response
             // Send response back to client
             response.getWriter().write(jsonObject.toString());

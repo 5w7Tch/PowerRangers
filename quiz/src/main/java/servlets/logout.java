@@ -1,10 +1,7 @@
 package servlets;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 public class logout extends HttpServlet {
@@ -16,6 +13,9 @@ public class logout extends HttpServlet {
         if (session != null) {
             session.invalidate();
         }
+
+        servletGeneralFunctions.removeLoginCookies(request,response);
+
         response.sendRedirect("/login");
     }
 }
