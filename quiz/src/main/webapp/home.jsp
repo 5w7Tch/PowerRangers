@@ -63,8 +63,8 @@
 <body>
     <div class="container-fluid bg-primary h-50">
         <div class="row bg-secondary h-75">
-            <div class="col-3 bg-success h-75">
-                <div class="row user bg-warning h-25">
+            <div class="col-3">
+                <div class="row user bg-info">
                     <div class="col-9 align-content-center">
                         <h1><%=user.getUsername() %></h1>
                     </div>
@@ -127,7 +127,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row achievements bg-info h-25">
+                <div class="row achievements bg-info mb-3">
                     <div class="col-12 p-0 card rounded-0">
                         <div class="card-header">
                             Achievements
@@ -154,7 +154,7 @@
                                                 <h1 class="modal-title fs-5" id="exampleModalLabel"><%=achievements.get(i).getType().getDisplayName()%></h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <div class="modal-body d-grid justify-content-center">
+                                            <div class="bg-info modal-body d-grid justify-content-center">
                                                 <div class="card" style="width: 18rem;">
                                                     <img src="<%=request.getContextPath()%><%=achievements.get(i).getIcon()%>" class="img-thumbnail card-img-top" alt="<%=achievements.get(i).getType().getDisplayName()%>>">
                                                     <div class="card-body">
@@ -175,7 +175,35 @@
                         </div>
                     </div>
                 </div>
-                <div class="row quizActivities bg-warning h-25"></div>
+                <div class="row quizActivities bg-warning mb-3">
+                    <div class="col-12 p-0 card rounded-0">
+                        <div class="card-header">
+                            Your Activity
+                        </div>
+                        <div class="quizActivities-container-wrapper bg-info">
+                            <div class="card-body p-0 m-2 d-flex overflow-auto quizActivities-container">
+                                <table class="table table-info table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">First</th>
+                                            <th scope="col">Last</th>
+                                            <th scope="col">Handle</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>Mark</td>
+                                            <td>Otto</td>
+                                            <td>@mdo</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row createdQuizzes bg-info h-25"></div>
             </div>
             <div class="col-6 bg-danger h-75">

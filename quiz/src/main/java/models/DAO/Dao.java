@@ -61,4 +61,5 @@ public interface Dao {
     boolean rememberNote(Note note) throws SQLException;
     boolean rememberAnnouncement(Announcement announcement) throws SQLException;
     ArrayList<IAchievement> getUserAchievements(int userId) throws SQLException;
+    ArrayList<WritenQuiz> getUserQuizActivity(int userId) throws SQLException;
 }
