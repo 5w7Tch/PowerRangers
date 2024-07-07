@@ -1,7 +1,7 @@
 <%@ page import="models.USER.User" %>
 <nav class = "topNavbar">
-    <div class = "navDiv">
-        <div>
+    <div class = "navDiv ">
+        <div class="quizNameClass">
             <a href="/"><p class = "quizName">QuizTime</p></a>
         </div>
 
