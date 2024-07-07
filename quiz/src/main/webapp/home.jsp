@@ -15,6 +15,7 @@
 <%@ page import="models.USER.WritenQuiz" %>
 <%@ page import="static java.lang.Math.min" %>
 <%@ page import="models.quizes.Quiz" %>
+<%@ page import="models.announcement.abstractions.IAnnouncement" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -33,6 +34,7 @@
         ArrayList<Quiz> userCreatedQuizzes = myDb.getUserCreatedQuizzes(user.getId());
         ArrayList<Quiz> popularQuizzes = myDb.getPopularQuizzes();
         ArrayList<Quiz> recentQuizzes = myDb.getRecentQuizzes();
+        ArrayList<IAnnouncement> announcements = myDb.getAnnouncements();
     %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -292,7 +294,10 @@
                                     <%}%>
                                     </tbody>
                                 </table>
-                                <button class="btn btn-link align-self-end" data-bs-toggle="modal" data-bs-target="#createdQuizzesModal">see more</button>
+                                <div class="createdQuizzes-buttons d-flex justify-content-between">
+                                    <button id="createQuizBtn" class="btn btn-outline-primary">create new</button>
+                                    <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#createdQuizzesModal">see more</button>
+                                </div>
                                 <div class="modal" id="createdQuizzesModal" tabindex="-1" aria-labelledby="Created Quizzes Description" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -497,7 +502,43 @@
                         </div>
                     </div>
                 </div>
-                <div class="row announcements bg-warning" style="height: 500px;"></div>
+                <div class="row announcements">
+                    <div class="col-12 p-0 card rounded-0">
+                        <div class="card-header">
+                            Announcements
+                        </div>
+                        <div class="announcements-container-wrapper bg-info">
+                            <div class="card-body p-0 m-2 d-flex flex-column announcements-container">
+                                <%if(recentQuizzes == null || recentQuizzes.isEmpty()){%>
+                                <p>There is no announcement yet.</p>
+                                <%}else{%>
+                                <div id="announcementsList" class="announcements-list shadow-lg p-3 bg-body rounded" aria-labelledby="announcementsButton">
+                                    <div class="list-group announcements-list">
+                                        <%
+                                            for (IAnnouncement announcement : announcements) {
+                                                SimpleDateFormat dayFormat = new SimpleDateFormat("dd, EE"); // EEEE for full day name
+                                                String dayName = dayFormat.format(announcement.getTimeStamp());
+                                                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                                                String time = timeFormat.format(announcement.getTimeStamp());
+                                                User announcer = myDb.getUserById(announcement.getUserId());
+                                        %>
+                                        <div class="announcement-wrapper mb-1 bg-info border-bottom border-info border-2 rounded-top">
+                                            <div class="d-flex justify-content-between">
+                                                <h6 class="mb-1">From <%=announcer.getUsername()%>: <mark>Announcement</mark></h6>
+                                                <p  class="mb-1"><%=dayName%>, <%=time%></p>
+                                            </div>
+                                            <div class="note-info shadow-sm">
+                                                <p><%=announcement.getText()%></p>
+                                            </div>
+                                        </div>
+                                        <%}%>
+                                    </div>
+                                </div>
+                                <%}%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

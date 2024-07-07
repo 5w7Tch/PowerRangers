@@ -251,4 +251,18 @@
             }
         }
     }
+
+    .announcements {
+
+        .announcements-container-wrapper {
+            width: 100%;
+            height: 100%;
+            --bs-bg-opacity: .1;
+
+            .announcements-container {
+                overflow: auto;
+
+            }
+        }
+    }
 }
