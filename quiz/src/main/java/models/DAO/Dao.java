@@ -1,5 +1,7 @@
 package models.DAO;
 import models.achievement.UserAchievement;
+
+import models.announcement.abstractions.IAnnouncement;
 import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
@@ -24,6 +26,7 @@ public interface Dao {
 
     void closeDbConnection();
     boolean addUser(User user);
+    void deleteUser(int id) throws SQLException;
     boolean userNameExists(String userName) throws SQLException;
     boolean accountExists(String userName, String passwordHash) throws SQLException;
     User getUser(String userName, String password) throws SQLException;
@@ -64,7 +67,11 @@ public interface Dao {
     ArrayList<IAchievement> getUserAchievements(int userId) throws SQLException;
     ArrayList<WritenQuiz> getUserQuizActivity(int userId) throws SQLException;
     ArrayList<Quiz> getUserCreatedQuizzes(int userId) throws SQLException;
+    ArrayList<Quiz> getPopularQuizzes() throws SQLException;
+    ArrayList<Quiz> getRecentQuizzes() throws SQLException;
+    ArrayList<IAnnouncement> getAnnouncements() throws SQLException;
+    Integer getUserByName(String userName) throws SQLException;
     ArrayList<Quiz> getPopularQuizes() throws SQLException;
     boolean putUserAchievements(UserAchievement achievement) throws SQLException;
     int getAchievementIdFromType(int type) throws SQLException;
-    }
+}

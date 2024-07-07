@@ -16,3 +16,9 @@ function onNotifications() {
     }
     showNotifications = !showNotifications;
 }
+
+$(document).ready(function (){
+    $('#createQuizBtn').click(function (){
+        window.location.href = "/createQuiz";
+    })
+})

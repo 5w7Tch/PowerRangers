@@ -1,6 +1,8 @@
 package models.DAO;
 
 import models.achievement.UserAchievement;
+
+import models.announcement.abstractions.IAnnouncement;
 import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
@@ -64,6 +66,53 @@ public class mySqlDb implements Dao {
         }
     }
 
+    public void deleteUser(int id) throws SQLException {
+        Connection con = dbSource.getConnection();
+        PreparedStatement friendRequest = con.prepareStatement("delete from friendrequests where fromUserId=? or toUserId=?;");
+        friendRequest.setInt(1,id);
+        friendRequest.setInt(2,id);
+        friendRequest.executeUpdate();
+
+        PreparedStatement friends = con.prepareStatement("delete from friends where user1Id=? or user2Id=?;");
+        friends.setInt(1,id);
+        friends.setInt(2,id);
+        friends.executeUpdate();
+
+        PreparedStatement quizHistory = con.prepareStatement("delete from quizhistory where userId=?");
+        quizHistory.setInt(1,id);
+        quizHistory.executeUpdate();
+
+        PreparedStatement notes = con.prepareStatement("delete from notes where fromId=? or toId=?;");
+        notes.setInt(1,id);
+        notes.setInt(2,id);
+        notes.executeUpdate();
+
+        PreparedStatement challangeUserId = con.prepareStatement("delete from challenges where fromId=? or toId=?;");
+        challangeUserId.setInt(1,id);
+        challangeUserId.setInt(2,id);
+        challangeUserId.executeUpdate();
+
+        PreparedStatement challange = con.prepareStatement("delete from challenges where quizId in (select quizzes.quizId from quizzes where quizzes.author=?)");
+        challange.setInt(1,id);
+        challange.executeUpdate();
+
+        PreparedStatement questions = con.prepareStatement("delete from questions where quizId in (select quizzes.quizId from quizzes where author=?);");
+        questions.setInt(1,id);
+        questions.executeUpdate();
+
+        PreparedStatement announcements = con.prepareStatement("delete from announcements where userId=?;");
+        announcements.setInt(1,id);
+        announcements.executeUpdate();
+
+        PreparedStatement userAcheivments = con.prepareStatement("delete from userachievements where userId=?;");
+        userAcheivments.setInt(1,id);
+        userAcheivments.executeUpdate();
+
+        PreparedStatement users = con.prepareStatement("delete from users where userId=?;");
+        users.setInt(1,id);
+        users.executeUpdate();
+    }
+
     public boolean userNameExists(String username) throws SQLException {
         String query = "SELECT 1 FROM users WHERE firstName = ?";
         try (Connection connection = dbSource.getConnection();
@@ -97,7 +146,9 @@ public class mySqlDb implements Dao {
                     int id = resultSet.getInt("userId");
                     String email = resultSet.getString("email");
                     boolean isAdmin = resultSet.getBoolean("isAdmin");
-                    return new User(id, userName, password, email, isAdmin);
+                    User u = new User(id, userName, password, email, isAdmin);
+                    u.setHash(password);
+                    return u;
                 } else {
                     return null;
                 }
@@ -142,7 +193,9 @@ public class mySqlDb implements Dao {
                     String password = resultSet.getString("passwordHash");
                     String email = resultSet.getString("email");
                     boolean isAdmin = resultSet.getBoolean("isAdmin");
-                    return new User(userId, userName, password, email, isAdmin);
+                    User u = new User(userId, userName, password, email, isAdmin);
+                    u.setHash(password);
+                    return u;
                 } else {
                     return null;
                 }
@@ -678,10 +731,34 @@ public class mySqlDb implements Dao {
         }
     }
 
-    public ArrayList<Quiz> getPopularQuizes() throws SQLException{
+    public ArrayList<Quiz> getRecentQuizzes() throws SQLException {
+        String query = "SELECT * FROM quizzes order by quizzes.creationDate DESC LIMIT 10";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<Quiz> recentQuizzes = new ArrayList<>();
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("quizId");
+                    int author = resultSet.getInt("author");
+                    String name = resultSet.getString("name");
+                    Date creationDate = resultSet.getDate("creationDate");
+                    String description = resultSet.getString("description");
+                    boolean isPracticable = resultSet.getBoolean("isPracticable");
+                    boolean areQuestionsRandom = resultSet.getBoolean("areQuestionsRandom");
+                    double quizTime = resultSet.getDouble("quizTime");
+                    boolean immediateCorrection = resultSet.getBoolean("immediateCorrection");
+                    Quiz recentQuiz = new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime,immediateCorrection);
+                    recentQuizzes.add(recentQuiz);
+                }
+                return recentQuizzes;
+            }
+        }
+    }
+
+    public ArrayList<Quiz> getPopularQuizzes() throws SQLException{
         ArrayList<Quiz> quizes = new ArrayList<>();
         Connection con = dbSource.getConnection();
-        PreparedStatement stm = con.prepareStatement("select quizhistory.quizId from quizhistory group by quizId order by count(*) desc");
+        PreparedStatement stm = con.prepareStatement("select quizhistory.quizId from quizhistory group by quizId order by count(*) desc LIMIT 10");
         ResultSet set = stm.executeQuery();
         while(set.next()){
             quizes.add(getQuiz(""+set.getInt("quizId")));
@@ -689,7 +766,41 @@ public class mySqlDb implements Dao {
         return quizes;
     }
 
-    public boolean putUserAchievements(UserAchievement achievement) throws SQLException {
+  public ArrayList<IAnnouncement> getAnnouncements() throws SQLException {
+        String query = "SELECT * FROM announcements order by announcements.timeStamp DESC";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IAnnouncement> announcements = new ArrayList<>();
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("announcementId");
+                    int userId = resultSet.getInt("userId");
+                    String text = resultSet.getString("text");
+                    Date timeStamp = resultSet.getDate("timeStamp");
+                    IAnnouncement announcement = new Announcement(id, userId, text, timeStamp);
+                    announcements.add(announcement);
+                }
+                return announcements;
+            }
+        }
+    }
+
+    @Override
+    public Integer getUserByName(String userName) throws SQLException {
+        String query = "SELECT * FROM users WHERE firstName = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, userName);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if(resultSet.next()){
+                    return  resultSet.getInt("userId");
+                }
+            }
+        }
+        return -1;
+    }
+  
+   public boolean putUserAchievements(UserAchievement achievement) throws SQLException {
         String selectQuery = "SELECT * FROM userAchievements where userId = ? AND achievementId = ?";
 
         try (Connection connection = dbSource.getConnection();
@@ -726,6 +837,5 @@ public class mySqlDb implements Dao {
                 return resultSet.getInt("achievementId");
             }
         }
-    }
 
 }
