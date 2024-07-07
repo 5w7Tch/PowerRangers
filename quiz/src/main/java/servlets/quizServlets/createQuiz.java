@@ -3,6 +3,7 @@ package servlets.quizServlets;
 import com.google.gson.*;
 import models.DAO.Dao;
 import models.USER.User;
+import models.achievement.UserAchievement;
 import models.quizes.Quiz;
 import models.quizes.questions.Question;
 import servlets.servletGeneralFunctions;
@@ -11,11 +12,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.sql.Date;
+
 
 public class createQuiz extends HttpServlet {
 
@@ -69,6 +70,22 @@ public class createQuiz extends HttpServlet {
         Quiz quiz = readQuizInfo(quizObj,request);
         Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
         db.addQuiz(quiz);
+
+        int userId = quiz.getAuthor();
+        Date currentTimestamp = new Date(System.currentTimeMillis());
+        int createQuizzesQuantity = db.getUserCreatedQuizzes(userId).size();
+
+        switch (createQuizzesQuantity) {
+            case 1:
+            case 5:
+            case 10:
+                UserAchievement userAchievement = new UserAchievement(0, userId, 1, currentTimestamp);
+                db.putUserAchievements(userAchievement);
+                break;
+            default:
+                break;
+        }
+        
         return quiz.getId();
     }
 
