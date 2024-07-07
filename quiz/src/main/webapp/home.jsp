@@ -31,7 +31,7 @@
         ArrayList<IAchievement> achievements = myDb.getUserAchievements(user.getId());
         ArrayList<WritenQuiz> userQuizActivity = myDb.getUserQuizActivity(user.getId());
         ArrayList<Quiz> userCreatedQuizzes = myDb.getUserCreatedQuizzes(user.getId());
-        ArrayList<Quiz> popularQuizzes = null;
+        ArrayList<Quiz> popularQuizzes = myDb.getPopularQuizzes();
         ArrayList<Quiz> recentQuizzes = myDb.getRecentQuizzes();
     %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
