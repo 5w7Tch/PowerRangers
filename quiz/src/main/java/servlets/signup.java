@@ -18,24 +18,7 @@ public class signup extends HttpServlet {
     private static final String CHARS = "abcdefghijklmnopqrstuvwxyz0123456789.,-!";
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String[] userInfo = servletGeneralFunctions.readLoginCookies(request,response);
-
-        if(userInfo==null){
-            request.getRequestDispatcher("login_signup.jsp").forward(request,response);
-            return;
-        }
-
-        Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
-        try {
-            if(db.accountExists(userInfo[0],Hasher.getPasswordHash(userInfo[1]))){
-                request.getSession().setAttribute("user",db.getUser(userInfo[0],Hasher.getPasswordHash(userInfo[1])));
-                response.sendRedirect("/");
-            }else{
-                request.getRequestDispatcher("login_signup.jsp").forward(request,response);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        servletGeneralFunctions.checkLoginCookies(request,response);
     }
 
     private boolean passwordIsValid(String password){

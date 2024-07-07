@@ -20,24 +20,7 @@ public class login extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // todo: read cookies
-        String[] userInfo = servletGeneralFunctions.readLoginCookies(request,response);
-
-        if(userInfo==null){
-            request.getRequestDispatcher("login_signup.jsp").forward(request,response);
-            return;
-        }
-
-        Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
-        try {
-            if(db.accountExists(userInfo[0],Hasher.getPasswordHash(userInfo[1]))){
-                request.getSession().setAttribute("user",db.getUser(userInfo[0],Hasher.getPasswordHash(userInfo[1])));
-                response.sendRedirect("/");
-            }else{
-                request.getRequestDispatcher("login_signup.jsp").forward(request,response);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        servletGeneralFunctions.checkLoginCookies(request,response);
     }
 
     @Override

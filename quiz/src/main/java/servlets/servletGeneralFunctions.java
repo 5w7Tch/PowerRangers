@@ -3,12 +3,16 @@ package servlets;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import models.DAO.Dao;
+import models.USER.Hasher;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class servletGeneralFunctions {
     public static JsonElement readObj(HttpServletRequest request){
@@ -70,6 +74,27 @@ public class servletGeneralFunctions {
         for(Cookie cookie : request.getCookies()){
             cookie.setMaxAge(0);
             response.addCookie(cookie);
+        }
+    }
+
+    public static void checkLoginCookies(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String[] userInfo = servletGeneralFunctions.readLoginCookies(request,response);
+
+        if(userInfo==null){
+            request.getRequestDispatcher("login_signup.jsp").forward(request,response);
+            return;
+        }
+
+        Dao db = (Dao) request.getServletContext().getAttribute(Dao.DBID);
+        try {
+            if(db.accountExists(userInfo[0], Hasher.getPasswordHash(userInfo[1]))){
+                request.getSession().setAttribute("user",db.getUser(userInfo[0],Hasher.getPasswordHash(userInfo[1])));
+                response.sendRedirect("/");
+            }else{
+                request.getRequestDispatcher("login_signup.jsp").forward(request,response);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
