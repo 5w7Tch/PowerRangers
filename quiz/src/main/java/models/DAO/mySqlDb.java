@@ -649,7 +649,12 @@ public class mySqlDb implements Dao {
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, announcement.getUserId());
             statement.setString(2, announcement.getText());
+
+            java.util.Date utilDate = announcement.getTimeStamp();
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            statement.setDate(3, sqlDate);
             statement.setDate(3, (java.sql.Date) announcement.getTimeStamp());
+
             boolean rowInserted = statement.executeUpdate() > 0;
             statement.close();
             return rowInserted;
