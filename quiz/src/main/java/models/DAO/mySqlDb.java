@@ -677,6 +677,30 @@ public class mySqlDb implements Dao {
         }
     }
 
+    public ArrayList<Quiz> getRecentQuizzes() throws SQLException {
+        String query = "SELECT * FROM quizzes order by quizzes.creationDate DESC LIMIT 10";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<Quiz> recentQuizzes = new ArrayList<>();
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("quizId");
+                    int author = resultSet.getInt("author");
+                    String name = resultSet.getString("name");
+                    Date creationDate = resultSet.getDate("creationDate");
+                    String description = resultSet.getString("description");
+                    boolean isPracticable = resultSet.getBoolean("isPracticable");
+                    boolean areQuestionsRandom = resultSet.getBoolean("areQuestionsRandom");
+                    double quizTime = resultSet.getDouble("quizTime");
+                    boolean immediateCorrection = resultSet.getBoolean("immediateCorrection");
+                    Quiz recentQuiz = new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime,immediateCorrection);
+                    recentQuizzes.add(recentQuiz);
+                }
+                return recentQuizzes;
+            }
+        }
+    }
+
     public ArrayList<Quiz> getPopularQuizes() throws SQLException{
         ArrayList<Quiz> quizes = new ArrayList<>();
         Connection con = dbSource.getConnection();
