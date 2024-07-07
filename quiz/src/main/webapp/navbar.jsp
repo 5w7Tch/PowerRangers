@@ -6,7 +6,7 @@
             <a href="/"><p class = "quizName">QuizTime</p></a>
         </div>
 
-        <form action="${pageContext.request.contextPath}/searchAccount" method="get" class="searchForm">
+        <form action="/searchAccount" method="get" class="searchForm">
             <input type="text" name="query" placeholder="Search users..." class = "searchInput">
             <button type="submit" class="userSearchButton">Search</button>
         </form>

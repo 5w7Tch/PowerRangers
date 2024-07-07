@@ -22,13 +22,10 @@ public class searchAccount extends HttpServlet {
 
         try {
             int userId = db.getUserByName(userName);
-            if (userId != -1) {
-                request.setAttribute("Id", userId);
-                request.getRequestDispatcher("/account?id=" + userId).forward(request, response);
-            } else {
-                request.setAttribute("errorMessage", "No users found with name: " + userName);
-                request.getRequestDispatcher("/searchResults.jsp").forward(request, response);
+            if (userId == -1){
+                userId = ((User) request.getSession().getAttribute("user")).getId();
             }
+            request.getRequestDispatcher("/account?id=" + userId).forward(request , response);
         } catch (SQLException e) {
             throw new ServletException(e);
         }
