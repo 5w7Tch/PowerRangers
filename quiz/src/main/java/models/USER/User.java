@@ -52,6 +52,6 @@ public class User {
 
     @Override
     public String toString(){
-String.join(" ", this.id, this.username, this.email, this.passwordHash, this.isAdmin);
+        String.join(" ", this.id, this.username, this.email, this.passwordHash, this.isAdmin);
     }
 }
