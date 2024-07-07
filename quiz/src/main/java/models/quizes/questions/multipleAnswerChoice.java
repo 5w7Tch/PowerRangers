@@ -55,7 +55,7 @@ public class multipleAnswerChoice extends Question{
     @Override
     public Double checkAnswer(String[] answer) {
         Double correctAns = 0.0;
-        HashSet<String> hisAnswers = new HashSet<>(List.of(answer));
+        HashSet<String> hisAnswers = new HashSet<>(Arrays.asList(answer));
         System.out.println(hisAnswers);
         for (int i = 0; i < answers.size(); i++){
             if (hisAnswers.contains(answers.get(i))){
@@ -75,7 +75,7 @@ public class multipleAnswerChoice extends Question{
 
     @Override
     public String getAnsweredQuestion(String[] answer) {
-        HashSet<String> hisAnswers = new HashSet<>(List.of(answer));
+        HashSet<String> hisAnswers = new HashSet<>(Arrays.asList(answer));
 
         String html = "<div class=\"question-box\">\n" +
                 "        <div class=\"question-text\">"+questionJson.get("description").getAsString()+"</div>\n" +

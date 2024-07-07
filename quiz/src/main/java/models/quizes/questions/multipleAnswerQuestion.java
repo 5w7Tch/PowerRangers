@@ -63,7 +63,7 @@ public class multipleAnswerQuestion extends Question{
                     correctAns++;
             }
         }else{
-            HashSet<String> hisAnswers = new HashSet<>(List.of(answer));
+            HashSet<String> hisAnswers = new HashSet<>(Arrays.asList(answer));
             for (int i = 0; i < this.answers.size(); i++){
                 if (hisAnswers.contains(this.answers.get(i))){
                     correctAns++;
