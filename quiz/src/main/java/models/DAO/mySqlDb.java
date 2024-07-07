@@ -1,6 +1,5 @@
 package models.DAO;
 
-import models.achievement.UserAchievement;
 import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
@@ -626,21 +625,6 @@ public class mySqlDb implements Dao {
                 }
                 return achievements;
             }
-        }
-    }
-
-    public boolean putUserAchievements(UserAchievement achievement) throws SQLException {
-        String query = "INSERT INTO userAchievements (userAchievementId, userId, achievementId, timeStamp) VALUES (?, ?, ?, ?)";
-
-        try (Connection connection = dbSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, achievement.getUserAchievementId());
-            statement.setInt(2, achievement.getUserId());
-            statement.setInt(3, achievement.getAchievementId());
-            statement.setDate(4, (java.sql.Date)achievement.getTimeStamp());
-            boolean rowInserted = statement.executeUpdate() > 0;
-            statement.close();
-            return rowInserted;
         }
     }
 
