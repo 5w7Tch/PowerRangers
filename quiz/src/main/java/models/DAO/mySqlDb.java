@@ -594,7 +594,7 @@ public class mySqlDb implements Dao {
 
     @Override
     public boolean rememberAnnouncement(Announcement announcement) throws SQLException {
-        String query = "INSERT INTO announcements (userId,text, timeStamp) VALUES (?, ?, ?)";
+        String query = "INSERT INTO announcements (userId, text, timeStamp) VALUES (?, ?, ?)";
         try (Connection connection = dbSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, announcement.getUserId());
@@ -626,6 +626,10 @@ public class mySqlDb implements Dao {
                 return achievements;
             }
         }
+    }
+
+    public ArrayList<WritenQuiz> getUserQuizActivity(int userId) throws SQLException {
+        return null;
     }
 
 }
