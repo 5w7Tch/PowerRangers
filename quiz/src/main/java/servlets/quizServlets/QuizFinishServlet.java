@@ -3,6 +3,7 @@ package servlets.quizServlets;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import models.DAO.Dao;
+import models.USER.WritenQuiz;
 import models.achievement.UserAchievement;
 import models.quizes.Quiz;
 import models.USER.User;
@@ -81,6 +82,7 @@ public class QuizFinishServlet extends HttpServlet {
         User user = (User)request.getSession().getAttribute("user");
         db.insertIntoQuizHistory(quiz.getId().toString(), user.getId().toString(), startDate, time, score);
         tenQuizzesAchievement(user, db);
+        highestScoreAchievement(user, quiz, db);
     }
 
     private ArrayList<Double> checkAnswers(HttpServletRequest request) throws IOException {
@@ -120,9 +122,22 @@ public class QuizFinishServlet extends HttpServlet {
         return results;
     }
 
-    private void tenQuizzesAchievement(User user, Dao db) throws SQLException {
-        int userId = user.getId();
+    private void highestScoreAchievement(User user, Quiz quiz, Dao db) throws SQLException {
         Date currentTimestamp = new Date(System.currentTimeMillis());
+        int userId = user.getId();
+        int quizId = quiz.getId();
+        int achievementId = db.getAchievementIdFromType(4);
+        ArrayList<WritenQuiz> quizHistory = db.getQuizHistory(quizId);
+        WritenQuiz highestScoreUser= quizHistory.get(0);
+        if(highestScoreUser.getUserId() == userId){
+            UserAchievement userAchievement = new UserAchievement(0, userId, achievementId, currentTimestamp);
+            db.putUserAchievements(userAchievement);
+        }
+    }
+
+    private void tenQuizzesAchievement(User user, Dao db) throws SQLException {
+        Date currentTimestamp = new Date(System.currentTimeMillis());
+        int userId = user.getId();
         int writtenQuizzesQuantity = db.getUserQuizActivity(userId).size();
         int achievementId = db.getAchievementIdFromType(3);
         if(writtenQuizzesQuantity == 10) {
@@ -134,8 +149,8 @@ public class QuizFinishServlet extends HttpServlet {
     private void practiceQuizAchievement(HttpServletRequest request) throws SQLException {
         Dao db = (Dao)request.getServletContext().getAttribute(Dao.DBID);
         User user = (User)request.getSession().getAttribute("user");
-        int userId = user.getId();
         Date currentTimestamp = new Date(System.currentTimeMillis());
+        int userId = user.getId();
         int achievementId = db.getAchievementIdFromType(5);
         UserAchievement userAchievement = new UserAchievement(0, userId, achievementId, currentTimestamp);
         db.putUserAchievements(userAchievement);
