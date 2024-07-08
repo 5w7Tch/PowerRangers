@@ -17,6 +17,12 @@
 <%@ page import="models.quizes.Quiz" %>
 <%@ page import="models.announcement.abstractions.IAnnouncement" %>
 <%@ page import="models.activity.abstractions.IActivity" %>
+<%@ page import="models.announcement.Announcement" %>
+<%@ page import="models.friend.Friend" %>
+<%@ page import="models.friend.abstractions.IFriend" %>
+<%@ page import="models.achievement.Achievement" %>
+<%@ page import="models.achievement.abstractions.IUserAchievement" %>
+<%@ page import="models.achievement.UserAchievement" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -347,8 +353,86 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6 bg-danger" style="height: 2000px;">
-
+            <div class="col-6">
+                <div class="list-group activity-list">
+                    <%
+                        i = 0;
+                        for (IActivity activity : activities) {
+                            SimpleDateFormat dayFormat = new SimpleDateFormat("dd, EE"); // EEEE for full day name
+                            String dayName = dayFormat.format(activity.getSendTime());
+                            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                            String time = timeFormat.format(activity.getSendTime());
+                            User fromUser = myDb.getUserById(activity.getFromId());
+                    %>
+                    <div class="activity-wrapper mb-1 bg-info border-bottom border-info border-2 rounded-top">
+                        <div class="d-flex mb-2 justify-content-between">
+                            <h6 class="mb-1">From <%=fromUser.getUsername()%>: <mark><%=activity.getType().getDisplayName()%></mark></h6>
+                            <p  class="mb-1"><%=dayName%>, <%=time%></p>
+                        </div>
+                        <div class="activity-info d-flex justify-content-center align-items-center">
+                        <%
+                            if (activity.getType() == ActivityType.ANNOUNCEMENT) {
+                                assert activity instanceof Announcement;
+                                IAnnouncement announcement = (Announcement) activity;
+                        %>
+                        <div class="note-info shadow-sm">
+                            <p><%=announcement.getText()%></p>
+                        </div>
+                        <%
+                            }
+                            if (activity.getType() == ActivityType.CHALLENGE) {
+                                assert activity instanceof Challenge;
+                                IChallenge challenge = (Challenge) activity;
+                        %>
+                        <div class="challenge-info shadow-sm">
+                            <p><%=fromUser.getUsername()%> challenged <%=myDb.getUserById(challenge.getToId()).getUsername()%> to write <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= challenge.getQuizId()%>`">quiz</a></p>
+                        </div>
+                        <%
+                            }
+                            if (activity.getType() == ActivityType.FRIENDSHIP) {
+                                assert activity instanceof Friend;
+                                IFriend friendship = (Friend) activity;
+                        %>
+                        <div class="friendship-info shadow-sm">
+                            <p><%=fromUser.getUsername()%> and <%=myDb.getUserById(friendship.getUserTwoId()).getUsername()%> became friends.</p>
+                        </div>
+                        <%
+                            }
+                            if (activity.getType() == ActivityType.ACHIEVEMENT) {
+                                assert activity instanceof UserAchievement;
+                                IUserAchievement userAchievement = (UserAchievement) activity;
+                        %>
+                        <div class="user-achievement-info shadow-sm">
+                            <p><%=fromUser.getUsername()%> gained achievement: <mark><%=myDb.getAchievementById(userAchievement.getAchievementId()).getType().getDisplayName()%></mark></p>
+                        </div>
+                        <%
+                            }
+                            if (activity.getType() == ActivityType.WROTE_QUIZ) {
+                                assert activity instanceof WritenQuiz;
+                                WritenQuiz writtenQuiz = (WritenQuiz) activity;
+                        %>
+                        <div class="written-quiz-info shadow-sm">
+                            <p><%=fromUser.getUsername()%> wrote <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= writtenQuiz.getQuizId()%>`">quiz</a></p>
+                        </div>
+                        <%
+                            }
+                            if (activity.getType() == ActivityType.CREATED_QUIZ) {
+                                assert activity instanceof Quiz;
+                                Quiz createdQuiz = (Quiz) activity;
+                        %>
+                        <div class="created-quiz-info shadow-sm">
+                            <p><%=fromUser.getUsername()%> created <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= createdQuiz.getId()%>`">quiz</a></p>
+                        </div>
+                        <%
+                            }
+                        %>
+                        </div>
+                    </div>
+                    <%
+                            i++;
+                        }
+                    %>
+                </div>
             </div>
             <div class="col-3 page-columns bg-info bg-opacity-25">
                 <div class="row popularQuizzes mb-3">

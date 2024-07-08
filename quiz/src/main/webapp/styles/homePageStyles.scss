@@ -9,277 +9,318 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
-.container-fluid .row .page-columns {
+.container-fluid .row {
 
-    .user {
-        --bs-bg-opacity: .5;
+    .col-6 {
 
-        .col-3 {
-            position: relative;
+        .list-group {
+            margin-bottom: 0;
 
-            .notifications-list {
-                z-index: 999;
-                position: absolute;
-                display: none;
-                height: 600px;
-                width: 400px;
-                overflow: auto;
-                top: 45px;
-                left: -25px;
+            .activity-wrapper {
+                padding: 10px;
+                --bs-bg-opacity: .1;
+                --bs-border-opacity: .5;
 
-                .list-group {
-                    margin-bottom: 0;
+                .activity-info {
+                    min-height: 120px;
 
-                    .notification-wrapper {
-                        padding: 10px;
-                        --bs-bg-opacity: .1;
-                        --bs-border-opacity: .5;
+                    p {
+                        padding: 4px 16px;
+                        margin-bottom: 0;
+                    }
 
-                        .note-info {
-                            overflow: auto;
-                            height: 48px;
-                            padding: 4px;
+                    .note-info {
+                        overflow: auto;
+                        width: 100%;
+                        min-height: 100%;
+                        padding: 4px;
 
-                            p {
-                                margin-bottom: 0;
-                            }
-                        }
-
-                        .challenge-info {
-
-                            button {
-                                --bs-bg-opacity: .1;
-                            }
-                        }
-
-                        .friend-request-info {
-
-                            .spinner-border {
-                                display: none;
-                            }
+                        p {
+                            padding: 0;
                         }
                     }
-                }
-            }
-        }
-    }
 
-    .achievements {
+                    .user-achievement-info {
 
-        .achievement-container-wrapper {
-            width: 100%;
-            height: 100%;
-            --bs-bg-opacity: .1;
-
-            .achievement-container {
-                white-space: nowrap;
-                overflow: auto;
-
-                .achievement-icon {
-                    cursor: pointer;
-                    flex: 0 0 auto;
-                    width: 100px;
-                    height: 100px;
-                    margin: 10px;
-                }
-
-                .modal-body {
-                    --bs-bg-opacity: .3;
-                }
-            }
-        }
-    }
-
-    .quizActivities {
-
-        .quizActivities-container-wrapper {
-            width: 100%;
-            height: 100%;
-            --bs-bg-opacity: .1;
-
-            .quizActivities-container {
-                overflow: auto;
-
-                .table {
-
-                    a {
-                        text-decoration: none;
                     }
 
-                    a:hover {
-                        text-decoration: underline;
+                    .challenge-info {
+
                     }
 
-                    a:visited {
-                        color: inherit;
-                    }
+                    .friendship-info {
 
-                }
-
-                .modal-body {
-                    --bs-bg-opacity: .1;
-                }
-            }
-        }
-    }
-
-    .createdQuizzes {
-
-        .createdQuizzes-container-wrapper {
-            width: 100%;
-            height: 100%;
-            --bs-bg-opacity: .1;
-
-            .createdQuizzes-container {
-                overflow: auto;
-
-                .table {
-
-                    td {
-                        align-content: center;
-                    }
-
-                    a {
-                        text-decoration: none;
-                    }
-
-                    a:hover {
-                        text-decoration: underline;
-                    }
-
-                    a:visited {
-                        color: inherit;
-                    }
-
-                }
-
-                .modal-dialog {
-                    max-width: 700px;
-
-                    .modal-body {
-                        max-height: 500px;
-                        overflow: auto;
-                        --bs-bg-opacity: .1;
                     }
                 }
             }
         }
     }
 
-    .popularQuizzes {
+    .page-columns {
 
-        .popularQuizzes-container-wrapper {
-            width: 100%;
-            height: 100%;
-            --bs-bg-opacity: .1;
+        .user {
+            --bs-bg-opacity: .5;
 
-            .popularQuizzes-container {
-                overflow: auto;
+            .col-3 {
+                position: relative;
 
-                .table {
-
-                    td {
-                        align-content: center;
-                    }
-
-                    a {
-                        text-decoration: none;
-                    }
-
-                    a:hover {
-                        text-decoration: underline;
-                    }
-
-                    a:visited {
-                        color: inherit;
-                    }
-
-                }
-
-                .modal-dialog {
-                    max-width: 700px;
-
-                    .modal-body {
-                        max-height: 500px;
-                        overflow: auto;
-                        --bs-bg-opacity: .1;
-                    }
-                }
-            }
-        }
-    }
-
-    .recentQuizzes {
-
-        .recentQuizzes-container-wrapper {
-            width: 100%;
-            height: 100%;
-            --bs-bg-opacity: .1;
-
-            .recentQuizzes-container {
-                overflow: auto;
-
-                .table {
-
-                    td {
-                        align-content: center;
-                    }
-
-                    a {
-                        text-decoration: none;
-                    }
-
-                    a:hover {
-                        text-decoration: underline;
-                    }
-
-                    a:visited {
-                        color: inherit;
-                    }
-
-                }
-
-                .modal-dialog {
-                    max-width: 700px;
-
-                    .modal-body {
-                        max-height: 500px;
-                        overflow: auto;
-                        --bs-bg-opacity: .1;
-                    }
-                }
-            }
-        }
-    }
-
-    .announcements {
-
-        .announcements-container-wrapper {
-            width: 100%;
-            height: 100%;
-            --bs-bg-opacity: .1;
-
-            .announcements-container {
-                overflow: auto;
-
-                .announcements-list {
+                .notifications-list {
+                    z-index: 999;
+                    position: absolute;
+                    display: none;
+                    height: 600px;
+                    width: 400px;
+                    overflow: auto;
+                    top: 45px;
+                    left: -25px;
 
                     .list-group {
-                        --bs-bg-opacity: .1;
                         margin-bottom: 0;
 
-                        .announcement-wrapper {
+                        .notification-wrapper {
                             padding: 10px;
                             --bs-bg-opacity: .1;
                             --bs-border-opacity: .5;
 
-                            .announcement-info {
+                            .note-info {
                                 overflow: auto;
-                                height: 100px;
+                                height: 48px;
                                 padding: 4px;
 
                                 p {
                                     margin-bottom: 0;
+                                }
+                            }
+
+                            .challenge-info {
+
+                                button {
+                                    --bs-bg-opacity: .1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .achievements {
+
+            .achievement-container-wrapper {
+                width: 100%;
+                height: 100%;
+                --bs-bg-opacity: .1;
+
+                .achievement-container {
+                    white-space: nowrap;
+                    overflow: auto;
+
+                    .achievement-icon {
+                        cursor: pointer;
+                        flex: 0 0 auto;
+                        width: 100px;
+                        height: 100px;
+                        margin: 10px;
+                    }
+
+                    .modal-body {
+                        --bs-bg-opacity: .3;
+                    }
+                }
+            }
+        }
+
+        .quizActivities {
+
+            .quizActivities-container-wrapper {
+                width: 100%;
+                height: 100%;
+                --bs-bg-opacity: .1;
+
+                .quizActivities-container {
+                    overflow: auto;
+
+                    .table {
+
+                        a {
+                            text-decoration: none;
+                        }
+
+                        a:hover {
+                            text-decoration: underline;
+                        }
+
+                        a:visited {
+                            color: inherit;
+                        }
+
+                    }
+
+                    .modal-body {
+                        --bs-bg-opacity: .1;
+                    }
+                }
+            }
+        }
+
+        .createdQuizzes {
+
+            .createdQuizzes-container-wrapper {
+                width: 100%;
+                height: 100%;
+                --bs-bg-opacity: .1;
+
+                .createdQuizzes-container {
+                    overflow: auto;
+
+                    .table {
+
+                        td {
+                            align-content: center;
+                        }
+
+                        a {
+                            text-decoration: none;
+                        }
+
+                        a:hover {
+                            text-decoration: underline;
+                        }
+
+                        a:visited {
+                            color: inherit;
+                        }
+
+                    }
+
+                    .modal-dialog {
+                        max-width: 700px;
+
+                        .modal-body {
+                            max-height: 500px;
+                            overflow: auto;
+                            --bs-bg-opacity: .1;
+                        }
+                    }
+                }
+            }
+        }
+
+        .popularQuizzes {
+
+            .popularQuizzes-container-wrapper {
+                width: 100%;
+                height: 100%;
+                --bs-bg-opacity: .1;
+
+                .popularQuizzes-container {
+                    overflow: auto;
+
+                    .table {
+
+                        td {
+                            align-content: center;
+                        }
+
+                        a {
+                            text-decoration: none;
+                        }
+
+                        a:hover {
+                            text-decoration: underline;
+                        }
+
+                        a:visited {
+                            color: inherit;
+                        }
+
+                    }
+
+                    .modal-dialog {
+                        max-width: 700px;
+
+                        .modal-body {
+                            max-height: 500px;
+                            overflow: auto;
+                            --bs-bg-opacity: .1;
+                        }
+                    }
+                }
+            }
+        }
+
+        .recentQuizzes {
+
+            .recentQuizzes-container-wrapper {
+                width: 100%;
+                height: 100%;
+                --bs-bg-opacity: .1;
+
+                .recentQuizzes-container {
+                    overflow: auto;
+
+                    .table {
+
+                        td {
+                            align-content: center;
+                        }
+
+                        a {
+                            text-decoration: none;
+                        }
+
+                        a:hover {
+                            text-decoration: underline;
+                        }
+
+                        a:visited {
+                            color: inherit;
+                        }
+
+                    }
+
+                    .modal-dialog {
+                        max-width: 700px;
+
+                        .modal-body {
+                            max-height: 500px;
+                            overflow: auto;
+                            --bs-bg-opacity: .1;
+                        }
+                    }
+                }
+            }
+        }
+
+        .announcements {
+
+            .announcements-container-wrapper {
+                width: 100%;
+                height: 100%;
+                --bs-bg-opacity: .1;
+
+                .announcements-container {
+                    overflow: auto;
+
+                    .announcements-list {
+
+                        .list-group {
+                            --bs-bg-opacity: .1;
+                            margin-bottom: 0;
+
+                            .announcement-wrapper {
+                                padding: 10px;
+                                --bs-bg-opacity: .1;
+                                --bs-border-opacity: .5;
+
+                                .announcement-info {
+                                    overflow: auto;
+                                    height: 100px;
+                                    padding: 4px;
+
+                                    p {
+                                        margin-bottom: 0;
+                                    }
                                 }
                             }
                         }

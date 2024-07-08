@@ -948,4 +948,23 @@ public class mySqlDb implements Dao {
         return activities;
     }
 
+    @Override
+    public IAchievement getAchievementById(int achievementId) throws SQLException
+    {
+        String query = "SELECT * FROM achievements a WHERE a.achievementId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, achievementId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                ArrayList<IAchievement> achievements = new ArrayList<>();
+                if (resultSet.next()) {
+                    String icon = resultSet.getString("icon");
+                    AchievementType type = AchievementType.fromOrdinal(resultSet.getInt("type"));
+                    String description = resultSet.getString("description");
+                    return new Achievement(achievementId, icon, type, description);
+                }
+                return null;
+            }
+        }
+    }
 }

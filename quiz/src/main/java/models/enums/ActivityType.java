@@ -3,8 +3,8 @@ package models.enums;
 public enum ActivityType
 {
     NOTE("Note"),
-    CHALLENGE("Challenge"),
     FRIEND_REQUEST("Friend Request"),
+    CHALLENGE("Challenge"),
     ANNOUNCEMENT("Announcement"),
     ACHIEVEMENT("Achievement"),
     FRIENDSHIP("Friendship"),

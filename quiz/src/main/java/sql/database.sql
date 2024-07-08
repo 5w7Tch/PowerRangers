@@ -122,7 +122,7 @@ CREATE TABLE if not exists userAchievements(
 insert into users values (1,'nika','nika@', '34bff7be484da58a7c244a79ef278630f334a732',  true);
 
 insert into users values (2,'lasha','lasha@', 'ee5d0f40184e345d01bf17e5a8a8dab7bcf0c4c8',  true);
-
+insert into users values (3,'zoro','zoro@', '2cdb8c4253053c1e0a8bcba9c9b482aec983bf55',  true);
 
 
 insert into quizzes values (1,1,'ito arabets rostevan', sysdate(), 'it was created to ftest something', true, true,false, 30);
@@ -183,7 +183,7 @@ END $$
 
 DELIMITER ;
 
-CALL insert_random_friend_requests(3);
+CALL insert_random_friend_requests(7);
 
 INSERT INTO achievements (icon, type, description) VALUES
                                                              ('/static/icons/achievements/AmateurAuthor.png', 0, 'You have created a quiz.'),
