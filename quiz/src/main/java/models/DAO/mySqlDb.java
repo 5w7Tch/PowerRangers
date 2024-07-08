@@ -847,10 +847,8 @@ public class mySqlDb implements Dao {
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, "%" + userName + "%");
             ResultSet rs = statement.executeQuery();
-            int cnt = 0;
-            while (rs.next() || cnt != 5) {
+            while (rs.next()) {
                 userIds.add(rs.getInt("userId"));
-                cnt++;
             }
         }
         return userIds;
