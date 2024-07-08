@@ -1,6 +1,7 @@
 package models.USER;
 
 import javax.mail.*;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
@@ -17,11 +18,7 @@ public class EmailSender {
     // Public method to provide access to the instance
     public static EmailSender getInstance() {
         if (instance == null) {
-            synchronized (EmailSender.class) {
-                if (instance == null) {
-                    instance = new EmailSender();
-                }
-            }
+            instance = new EmailSender();
         }
         return instance;
     }
@@ -37,8 +34,7 @@ public class EmailSender {
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.port", "587");
-
-        // Get the Session object.
+        
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
@@ -48,20 +44,15 @@ public class EmailSender {
 
         try {
             Message message = new MimeMessage(session);
-
             message.setFrom(new InternetAddress(from));
-
-            message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(receiver));
-
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
             message.setSubject(subject);
-
             message.setText(body);
 
             Transport.send(message);
 
         } catch (MessagingException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }

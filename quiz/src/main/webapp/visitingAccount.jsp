@@ -88,13 +88,24 @@
                     <h1><%=user.getUsername() %></h1>
                 </div>
                 <div class="createdQuizzes-buttons d-flex" >
-                    <%if(myDb.friendConnectionExists(user.getId(), loggedInUser.getId())){%>
-                    <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; display: none" >Add friend</button>
+                    <%if(myDb.friendConnectionExists(user.getId(), loggedInUser.getId()) || myDb.friendRequestExists(user.getId(), loggedInUser.getId())){%>
+                        <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; display: none; padding: 2px;" name="<%=user.getId()%>">Add friend</button>
                     <%}else{%>
-                    <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px" >Add friend</button>
+                        <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; padding: 2px;" name="<%=user.getId()%>">Add friend</button>
                     <%}%>
-                    <button id="leaveNoteButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px">Note</button>
-                    <button id="challengeButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px">Challenge</button>
+                    <button id="leaveNoteButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Note</button>
+                    <button id="challengeButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Challenge</button>
+                    <%if(loggedInUser.isAdmin()){%>
+                        <button id="deleteAccountButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px;" name="<%=user.getId()%>">Delete Account</button>
+                        <%if(!user.isAdmin()){%>
+                            <button id="makeAdminButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; " name="<%=user.getId()%>">Make Admin</button>
+                        <%}else {%>
+                            <button id="makeAdminButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; display: none;" name="<%=user.getId()%>">Make Admin</button>
+                        <%}%>
+                    <%}else{%>
+                        <button id="deleteAccountButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; display: none;" name="<%=user.getId()%>">Delete Account</button>
+                        <button id="makeAdminButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; display: none;" name="<%=user.getId()%>">Make Admin</button>
+                    <%}%>
                 </div>
             </div>
             <div class="row achievements mb-3">

@@ -69,9 +69,9 @@ public class mySqlDb implements Dao {
         }
     }
 
-    public void deleteUser(int id) throws SQLException {
+    public boolean deleteUser(int id) throws SQLException {
         Connection con = dbSource.getConnection();
-        PreparedStatement friendRequest = con.prepareStatement("delete from friendrequests where fromUserId=? or toUserId=?;");
+        PreparedStatement friendRequest = con.prepareStatement("delete from friendRequests where fromUserId=? or toUserId=?;");
         friendRequest.setInt(1,id);
         friendRequest.setInt(2,id);
         friendRequest.executeUpdate();
@@ -81,7 +81,7 @@ public class mySqlDb implements Dao {
         friends.setInt(2,id);
         friends.executeUpdate();
 
-        PreparedStatement quizHistory = con.prepareStatement("delete from quizhistory where userId=?");
+        PreparedStatement quizHistory = con.prepareStatement("delete from quizHistory where userId=?");
         quizHistory.setInt(1,id);
         quizHistory.executeUpdate();
 
@@ -107,13 +107,13 @@ public class mySqlDb implements Dao {
         announcements.setInt(1,id);
         announcements.executeUpdate();
 
-        PreparedStatement userAcheivments = con.prepareStatement("delete from userachievements where userId=?;");
+        PreparedStatement userAcheivments = con.prepareStatement("delete from userAchievements where userId=?;");
         userAcheivments.setInt(1,id);
         userAcheivments.executeUpdate();
 
         PreparedStatement users = con.prepareStatement("delete from users where userId=?;");
         users.setInt(1,id);
-        users.executeUpdate();
+        return users.executeUpdate()>0;
     }
 
     public boolean userNameExists(String username) throws SQLException {
@@ -601,7 +601,7 @@ public class mySqlDb implements Dao {
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, friendRequest.getFromId());
             statement.setInt(2, friendRequest.getToId());
-            statement.setDate(3, (java.sql.Date)friendRequest.getSendTime());
+            statement.setDate(3, new java.sql.Date(friendRequest.getSendTime().getTime()));
             boolean rowInserted = statement.executeUpdate() > 0;
             statement.close();
             return rowInserted;
@@ -631,7 +631,7 @@ public class mySqlDb implements Dao {
             statement.setInt(1, challenge.getFromId());
             statement.setInt(2, challenge.getToId());
             statement.setInt(3, challenge.getQuizId());
-            statement.setDate(4, (java.sql.Date)challenge.getSendTime());
+            statement.setDate(4, new java.sql.Date(challenge.getSendTime().getTime()));
             boolean rowInserted = statement.executeUpdate() > 0;
             statement.close();
             return rowInserted;
@@ -646,7 +646,7 @@ public class mySqlDb implements Dao {
             statement.setInt(1, note.getFromId());
             statement.setInt(2, note.getToId());
             statement.setString(3, note.getText());
-            statement.setDate(4, (java.sql.Date)note.getSendTime());
+            statement.setDate(4, new java.sql.Date(note.getSendTime().getTime()));
             boolean rowInserted = statement.executeUpdate() > 0;
             statement.close();
             return rowInserted;
@@ -946,6 +946,31 @@ public class mySqlDb implements Dao {
         activities.sort((n1, n2) -> n2.getSendTime().compareTo(n1.getSendTime()));
 
         return activities;
+    }
+
+    @Override
+    public boolean promoteUser(Integer user_Id) throws SQLException {
+        String query = "UPDATE users SET isAdmin = true WHERE userId = ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, user_Id);
+            return statement.executeUpdate() > 0;
+        }
+    }
+
+    @Override
+    public boolean friendRequestExists(Integer user1, Integer user2) throws SQLException {
+        String query = "SELECT * FROM friendRequests WHERE (fromUserId = ? and toUserId = ?) or (fromUserId = ? and toUserId = ?)";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, user1);
+            statement.setInt(2, user2);
+            statement.setInt(3, user2);
+            statement.setInt(4, user1);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return resultSet.next();
+            }
+        }
     }
 
     @Override

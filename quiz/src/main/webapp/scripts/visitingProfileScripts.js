@@ -1,13 +1,104 @@
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 let notificationsButton = document.getElementById('addFriendButton');
-notificationsButton.addEventListener("click", sendFriendRequest);
 
 
-function sendFriendRequest() {
-    //to do
-    notificationsButton.style.display = "none";
-}
+notificationsButton.addEventListener("click", function () {
+    let userId = this.getAttribute('name');
+    let url = '/sendFriendRequest?receiverId='+ userId;
+    fetch(url, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            if(data.res == 1){
+                notificationsButton.style.display = "none";
+            }else{
+                alert("issue detected! Friend request wasn't sent");
+            }
+        })
+        .catch(function(error) {
+            console.error('There was a problem with fetch operation:', error.message);
+        });
+});
+
+
+let deleteAccountBtn = document.getElementById('deleteAccountButton');
+deleteAccountBtn.addEventListener("click", function () {
+    let userId = this.getAttribute('name');
+    let url = '/deleteAccount?userId='+ userId;
+    fetch(url, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            if(data.res == 1){
+                window.location.replace('/');
+            }else{
+                alert("issue detected! Delete Account failed");
+            }
+        })
+        .catch(function(error) {
+            console.error('There was a problem with fetch operation:', error.message);
+        });
+});
+
+let makeAdminButton = document.getElementById('makeAdminButton');
+makeAdminButton.addEventListener("click", function () {
+    let userId = this.getAttribute('name');
+    let url = '/makeAdmin?userId='+ userId;
+    fetch(url, {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            if(data.res == 1){
+                makeAdminButton.style.display = "none";
+            }else{
+                alert("issue detected! User Can't become Admin");
+            }
+        })
+        .catch(function(error) {
+            console.error('There was a problem with fetch operation:', error.message);
+        });
+});
+
+
+let leaveNoteButton = document.getElementById('leaveNoteButton');
+leaveNoteButton.addEventListener("click", function () {
+    //todo
+});
+
+let challengeButton = document.getElementById('challengeButton');
+challengeButton.addEventListener("click", function () {
+    //todo
+});
+
+
 
 $(document).ready(function (){
     $('#createQuizBtn').click(function (){

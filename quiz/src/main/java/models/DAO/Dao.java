@@ -28,7 +28,7 @@ public interface Dao {
 
     void closeDbConnection();
     boolean addUser(User user);
-    void deleteUser(int id) throws SQLException;
+    boolean deleteUser(int id) throws SQLException;
     boolean userNameExists(String userName) throws SQLException;
     boolean accountExists(String userName, String passwordHash) throws SQLException;
     User getUser(String userName, String password) throws SQLException;
@@ -80,4 +80,8 @@ public interface Dao {
     ArrayList<IChallenge> getSentChallenges(int userId) throws SQLException;
     ArrayList<WritenQuiz> getUserWrittenQuizzes(int userId) throws SQLException;
     ArrayList<IActivity> getFriendsActivity(int userId) throws SQLException;
+
+    boolean promoteUser(Integer user_id) throws SQLException;
+
+    boolean friendRequestExists(Integer user1Id, Integer user2Id) throws SQLException;
 }
