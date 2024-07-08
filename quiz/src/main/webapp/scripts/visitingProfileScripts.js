@@ -88,7 +88,6 @@ makeAdminButton.addEventListener("click", function () {
 });
 
 
-let leaveNoteButton = document.getElementById('leaveNoteButton');
 $('#noteBtn').click(function (){
     let text = $('#noteText').val();
     let userId = $('#noteBtn').attr('name');
@@ -116,17 +115,73 @@ $('#noteBtn').click(function (){
             window.location.reload();
         },
         error: function (xhr,status,error){
-            alert("couldn't announce");
+            alert("couldn't send");
             $('#noteCloseBtn').attr("disabled",false);
             $('#noteCloseBtn').click();
         }
     })
 });
+function valid(text) {
+    console.log(text);
+    $.ajax({
+        url: text,
+        type: 'put',
+        contentType: 'application/json; charset=UTF-8',
+        beforeSend: function (xhr){
+        },
+        success: function (result,status,xhr){
+            if(result.result.toString()!="true"){
+                alert("invalid url");
+            }
+            return;
+        },
+        error: function (xhr,status,error){
+            alert("invalid url");
+            return;
+        }
+    })
+}
 
-let challengeButton = document.getElementById('challengeButton');
-challengeButton.addEventListener("click", function () {
-    //todo
+function getId(url) {
+    return url.substring(url.indexOf('=')+1, url.length);
+}
+
+$('#challengeBtn').click(function (){
+    let text = $('#challengeText').val();
+    let userId = $('#challengeBtn').attr('name');
+    console.log(userId);
+    if(text === ''){
+        alert("Fill all fields");
+        return;
+    }
+    valid(text);
+
+    let quizId = getId(text.toString());
+    let challengeJson = {
+        'text' : text
+    }
+    let url = '/sendChallenge?receiverId='+userId+'&quizId='+quizId;
+    $.ajax({
+        url: url,
+        type: 'post',
+        data: JSON.stringify(challengeJson),
+        contentType: 'application/json; charset=UTF-8',
+        beforeSend: function (xhr){
+            $('#challengeBtn').attr("disabled",true);
+            $('#challengeCloseBtn').attr("disabled",true);
+            $('#challengeBtn').text('uploading...');
+        },
+        success: function (result,status,xhr){
+            window.location.reload();
+        },
+        error: function (xhr,status,error){
+            alert("couldn't challenge");
+            $('#challengeCloseBtn').attr("disabled",false);
+            $('#challengeCloseBtn').click();
+        }
+    })
 });
+
 
 
 

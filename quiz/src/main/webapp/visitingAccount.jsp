@@ -93,8 +93,8 @@
                     <%}else{%>
                         <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; padding: 2px;" name="<%=user.getId()%>">Add friend</button>
                     <%}%>
-                    <button class="btn btn-outline-secondary p-0 px-2" data-bs-toggle="modal" data-bs-target="#announceModal" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Note</button>
-                    <div class="modal fade" id="announceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="announceModalLabel" aria-hidden="true">
+                    <button class="btn btn-outline-secondary p-0 px-2" data-bs-toggle="modal" data-bs-target="#noteModal" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Note</button>
+                    <div class="modal fade" id="noteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -104,7 +104,7 @@
                                 <div class="modal-body">
                                     <form>
                                         <div class="mb-3">
-                                            <label for="announcementText" class="form-label">Enter Text</label>
+                                            <label for="noteText" class="form-label">Enter Text</label>
                                             <textarea class="form-control" id="noteText" rows="3"></textarea>
                                         </div>
                                     </form>
@@ -116,7 +116,29 @@
                             </div>
                         </div>
                     </div>
-                    <button id="challengeButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Challenge</button>
+                    <button class="btn btn-outline-secondary p-0 px-2" data-bs-toggle="modal" data-bs-target="#challengeModal" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Challenge</button>
+                    <div class="modal fade" id="challengeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="challengeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="challengeModalLabel">Send Challenge</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="challengeText" class="form-label">Enter Quiz URL</label>
+                                            <textarea class="form-control" id="challengeText" rows="3"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="challengeCloseBtn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" id="challengeBtn" class="btn btn-primary" name="<%=user.getId()%>">Challenge</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <%if(loggedInUser.isAdmin()){%>
                         <button id="deleteAccountButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px;" name="<%=user.getId()%>">Delete Account</button>
                         <%if(!user.isAdmin()){%>
