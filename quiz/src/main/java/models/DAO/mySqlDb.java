@@ -85,6 +85,11 @@ public class mySqlDb implements Dao {
         quizHistory.setInt(1,id);
         quizHistory.executeUpdate();
 
+        PreparedStatement quizHistoryQuiz = con.prepareStatement("delete from quizHistory where quizId in (select quizzes.quizId from quizzes where quizzes.author=?)");
+        quizHistoryQuiz.setInt(1,id);
+        quizHistoryQuiz.executeUpdate();
+
+
         PreparedStatement notes = con.prepareStatement("delete from notes where fromId=? or toId=?;");
         notes.setInt(1,id);
         notes.setInt(2,id);
@@ -95,21 +100,30 @@ public class mySqlDb implements Dao {
         challangeUserId.setInt(2,id);
         challangeUserId.executeUpdate();
 
+
         PreparedStatement challange = con.prepareStatement("delete from challenges where quizId in (select quizzes.quizId from quizzes where quizzes.author=?)");
         challange.setInt(1,id);
         challange.executeUpdate();
+
 
         PreparedStatement questions = con.prepareStatement("delete from questions where quizId in (select quizzes.quizId from quizzes where author=?);");
         questions.setInt(1,id);
         questions.executeUpdate();
 
+
         PreparedStatement announcements = con.prepareStatement("delete from announcements where userId=?;");
         announcements.setInt(1,id);
         announcements.executeUpdate();
 
+
         PreparedStatement userAcheivments = con.prepareStatement("delete from userAchievements where userId=?;");
         userAcheivments.setInt(1,id);
         userAcheivments.executeUpdate();
+
+
+        PreparedStatement quiz = con.prepareStatement("delete from quizzes where author=?");
+        quiz.setInt(1,id);
+        quiz.executeUpdate();
 
         PreparedStatement users = con.prepareStatement("delete from users where userId=?;");
         users.setInt(1,id);

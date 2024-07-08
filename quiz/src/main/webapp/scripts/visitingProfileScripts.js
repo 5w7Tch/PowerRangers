@@ -5,7 +5,6 @@ let notificationsButton = document.getElementById('addFriendButton');
 
 notificationsButton.addEventListener("click", function () {
     let userId = this.getAttribute('name');
-    console.log(userId);
     let url = '/sendFriendRequest?receiverId='+ userId;
     fetch(url, {
         method: 'post',
