@@ -218,7 +218,7 @@
                                         for (i = 0; i < min(userQuizActivity.size(), 5); i++) {%>
                                     <tr>
                                         <td><%=i + 1%></td>
-                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userQuizActivity.get(i).getQuizId() %>`"><%= userQuizActivity.get(i).getQuizId() %></a></td>
+                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userQuizActivity.get(i).getQuizId() %>"><%= userQuizActivity.get(i).getQuizId() %></a></td>
                                         <td><a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%=userQuizActivity.get(i).getUserId()%>"><%=userQuizActivity.get(i).getWriterName()%></a></td>
                                         <td><%= userQuizActivity.get(i).getScoreString() %></td>
                                         <td><%= userQuizActivity.get(i).getTimeString() %></td>
@@ -251,7 +251,7 @@
                                                         for (i = 0; i < userQuizActivity.size(); i++) {%>
                                                     <tr>
                                                         <td><%=i + 1%></td>
-                                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userQuizActivity.get(i).getQuizId() %>`"><%= userQuizActivity.get(i).getQuizId() %></a></td>
+                                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userQuizActivity.get(i).getQuizId() %>"><%= userQuizActivity.get(i).getQuizId() %></a></td>
                                                         <td><a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%=userQuizActivity.get(i).getUserId()%>"><%=userQuizActivity.get(i).getWriterName()%></a></td>
                                                         <td><%= userQuizActivity.get(i).getScoreString() %></td>
                                                         <td><%= userQuizActivity.get(i).getTimeString() %></td>
@@ -296,7 +296,7 @@
                                         for (i = 0; i < min(userCreatedQuizzes.size(), 5); i++) {%>
                                     <tr>
                                         <td><%=i + 1%></td>
-                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userCreatedQuizzes.get(i).getId() %>`">open</a></td>
+                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userCreatedQuizzes.get(i).getId() %>">open</a></td>
                                         <td><%= userCreatedQuizzes.get(i).getName() %></td>
                                         <td><%= userCreatedQuizzes.get(i).getDuration() %></td>
                                     </tr>
@@ -336,7 +336,7 @@
                                                         for (i = 0; i < userCreatedQuizzes.size(); i++) {%>
                                                     <tr>
                                                         <td><%=i + 1%></td>
-                                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userCreatedQuizzes.get(i).getId() %>`">open</a></td>
+                                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userCreatedQuizzes.get(i).getId() %>">open</a></td>
                                                         <td style="min-width: 180px" ><%= userCreatedQuizzes.get(i).getName() %></td>
                                                         <td><%= userCreatedQuizzes.get(i).getDuration() %></td>
                                                         <td style="min-width: 110px" ><%= userCreatedQuizzes.get(i).getCreationDate() %></td>
@@ -398,7 +398,7 @@
                                 IChallenge challenge = (Challenge) activity;
                         %>
                         <div class="challenge-info shadow-sm">
-                            <p><%=fromUser.getUsername()%> challenged <a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%= challenge.getToId() %>"><%=myDb.getUserById(challenge.getToId()).getUsername()%></a> to write <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= challenge.getQuizId()%>`">quiz</a></p>
+                            <p><%=fromUser.getUsername()%> challenged <a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%= challenge.getToId() %>"><%=myDb.getUserById(challenge.getToId()).getUsername()%></a> to write <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= challenge.getQuizId()%>">quiz</a></p>
                         </div>
                         <%
                             }
@@ -450,7 +450,7 @@
                                 WritenQuiz writtenQuiz = (WritenQuiz) activity;
                         %>
                         <div class="written-quiz-info shadow-sm">
-                            <p><%=fromUser.getUsername()%> wrote <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= writtenQuiz.getQuizId()%>`">quiz</a></p>
+                            <p><%=fromUser.getUsername()%> wrote <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= writtenQuiz.getQuizId()%>">quiz</a></p>
                         </div>
                         <%
                             }
@@ -459,7 +459,7 @@
                                 Quiz createdQuiz = (Quiz) activity;
                         %>
                         <div class="created-quiz-info shadow-sm">
-                            <p><%=fromUser.getUsername()%> created <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= createdQuiz.getId()%>`">quiz</a></p>
+                            <p><%=fromUser.getUsername()%> created <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= createdQuiz.getId()%>">quiz</a></p>
                         </div>
                         <%
                             }
@@ -497,7 +497,7 @@
                                         for (i = 0; i < min(popularQuizzes.size(), 5); i++) {%>
                                     <tr>
                                         <td><%=i + 1%></td>
-                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= popularQuizzes.get(i).getId() %>`">open</a></td>
+                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= popularQuizzes.get(i).getId() %>">open</a></td>
                                         <td><%= popularQuizzes.get(i).getName() %></td>
                                         <td><%= popularQuizzes.get(i).getDuration() %></td>
                                     </tr>
@@ -529,7 +529,7 @@
                                                         for (i = 0; i < popularQuizzes.size(); i++) {%>
                                                     <tr>
                                                         <td><%=i + 1%></td>
-                                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= popularQuizzes.get(i).getId() %>`">open</a></td>
+                                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= popularQuizzes.get(i).getId() %>">open</a></td>
                                                         <td style="min-width: 180px" ><%= popularQuizzes.get(i).getName() %></td>
                                                         <td><%= popularQuizzes.get(i).getDuration() %></td>
                                                         <td style="min-width: 110px" ><%= popularQuizzes.get(i).getCreationDate() %></td>
@@ -574,7 +574,7 @@
                                         for (i = 0; i < min(recentQuizzes.size(), 5); i++) {%>
                                     <tr>
                                         <td><%=i + 1%></td>
-                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= recentQuizzes.get(i).getId() %>`">open</a></td>
+                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= recentQuizzes.get(i).getId() %>">open</a></td>
                                         <td><%= recentQuizzes.get(i).getName() %></td>
                                         <td><%= recentQuizzes.get(i).getDuration() %></td>
                                     </tr>
@@ -606,7 +606,7 @@
                                                         for (i = 0; i < recentQuizzes.size(); i++) {%>
                                                     <tr>
                                                         <td><%=i + 1%></td>
-                                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= recentQuizzes.get(i).getId() %>`">open</a></td>
+                                                        <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= recentQuizzes.get(i).getId() %>">open</a></td>
                                                         <td style="min-width: 180px" ><%= recentQuizzes.get(i).getName() %></td>
                                                         <td><%= recentQuizzes.get(i).getDuration() %></td>
                                                         <td style="min-width: 110px" ><%= recentQuizzes.get(i).getCreationDate() %></td>
