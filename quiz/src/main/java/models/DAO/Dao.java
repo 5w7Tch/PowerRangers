@@ -72,4 +72,6 @@ public interface Dao {
     Integer getUserByName(String userName) throws SQLException;
     boolean putUserAchievements(UserAchievement achievement) throws SQLException;
     int getAchievementIdFromType(int type) throws SQLException;
+
+    List<Integer> searchUserByUsername (String userName) throws SQLException;
 }
