@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 
 
 public class matching extends Question{
@@ -77,8 +78,9 @@ public class matching extends Question{
         Double correct = 0.0;
         for (int i = 0; i < answer.length; i++) {
             String l = left.get(i);
-            if(answer[i].length()==1){
-                int placeInR = answer[i].charAt(0)-'a';
+            String hisAns = answer[i].trim().toLowerCase();
+            if(hisAns.length()==1){
+                int placeInR = hisAns.charAt(0)-'a';
                 String r = right.get(placeInR);
                 if(r.equals(anss.get(l))){
                     correct++;
@@ -109,11 +111,28 @@ public class matching extends Question{
                 "        <div class=\"dropdown-container\">\n";
         html += middle;
         for (int i = 0; i < right.size(); i++) {
-            html += "      <h5>"+(i+1)+".\n" + "<div class=\"answer_response\" name=\"3\" >"+answer[i]+"</div>\n" + "            </h5>\n";
+            if(isCorrect(answer[i], i)){
+                html += "      <h5>"+(i+1)+".\n" + "<div class=\"answer_response\" name=\"3\" style=\"background-color: green;\">"+answer[i]+"</div>\n" + "            </h5>\n";
+            }else{
+                html += "      <h5>"+(i+1)+".\n" + "<div class=\"answer_response\" name=\"3\" style=\"background-color: red;\">"+answer[i]+"</div>\n" + "            </h5>\n";
+            }
         }
 
         String end = "        </div>\n" +
                 "    </div>";
         return html+end;
+    }
+
+    private boolean isCorrect(String s, int i) {
+        String l = left.get(i);
+        String hisAns = s.trim().toLowerCase();
+        if(hisAns.length()==1){
+            int placeInR = hisAns.charAt(0)-'a';
+            String r = right.get(placeInR);
+            if(r.equals(anss.get(l))){
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -177,6 +177,7 @@ function parseJson(arr){
         res+=''+currentQuestionIndex+':';
     }
     res+='}';
+    console.log(res);
     return res;
 }
 
@@ -286,7 +287,7 @@ function radioChange(thisObj, name) {
     for (let i = 0; i < radios.length; i++) {
         if (radios[i].style.backgroundColor === 'orange') {
             answers[name] = [radios[i].innerText];
-            return;
+            break;
         }
     }
 }
@@ -296,7 +297,7 @@ function answerChange(thisObj, name) {
     let arr = new Array(fillers.length);
 
     for (let i = 0; i < fillers.length; i++) {
-        arr[i] = fillers[i].innerText;
+        arr[i] = fillers[i].innerText.toString().trim();
     }
     answers[name] = arr;
 }
@@ -312,9 +313,9 @@ function radioChangeMultiple(thisObj, name) {
     let arr = new Array(radios.length);
     for (let i = 0; i < radios.length; i++) {
         if (radios[i].style.backgroundColor === 'orange') {
-            arr[i] = [radios[i].innerText];
+            arr[i] = radios[i].innerText;
         }else{
-            arr[i] = [""];
+            arr[i] = "";
         }
     }
     answers[name] = arr;

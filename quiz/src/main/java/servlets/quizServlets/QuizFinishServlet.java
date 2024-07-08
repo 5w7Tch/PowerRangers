@@ -29,7 +29,7 @@ import java.util.Iterator;
 @WebServlet("/finished")
 public class QuizFinishServlet extends HttpServlet {
     @Override
-protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Date finishDate = new Date(System.currentTimeMillis());
         Date startDate = (Date) request.getSession(false).getAttribute("startTime");
 
@@ -58,10 +58,10 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             for (int i = 0; i < results.size(); i++) {
                 score += results.get(i);
             }
-            request.getSession().setAttribute("score", score);
 
-            try {
-                if(!practise.equals("on")) {
+            request.getSession().setAttribute("score", df.format(score));
+            if(!practise.equals("on")){
+                try {
                     remember(score, results, startDate, differenceInMinutes, request);
                 } else {
                     practiceQuizAchievement(request);
@@ -105,10 +105,8 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             String answers = jsonObject.get(fieldName).toString();
             String stringWithoutBrackets = answers.substring(1, answers.length() - 1);
             String[] parts = stringWithoutBrackets.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-            System.out.println(fieldName);
             for (int i = 0; i < parts.length; i++) {
                 parts[i] = parts[i].trim().replaceAll("^\"|\"$", "");
-                System.out.println(parts[i]);
             }
             answerCollections.add(parts);
             Double score = quests.get(Integer.parseInt(fieldName)).checkAnswer(parts);

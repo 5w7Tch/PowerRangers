@@ -19,7 +19,8 @@ public class login extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("login_signup.jsp").forward(request,response);
+        // todo: read cookies
+        servletGeneralFunctions.checkLoginCookies(request,response);
     }
 
     @Override
@@ -37,6 +38,8 @@ public class login extends HttpServlet {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("user", curUser);
                 res = "found";
+                // todo: save cookies;
+                servletGeneralFunctions.saveLoginCookies(request,response,username,password);
             }else{
                 res = "notFound";
             }
