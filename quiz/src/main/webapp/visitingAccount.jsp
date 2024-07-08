@@ -91,9 +91,31 @@
                     <%if(myDb.friendConnectionExists(user.getId(), loggedInUser.getId()) || myDb.friendRequestExists(user.getId(), loggedInUser.getId())){%>
                         <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; display: none; padding: 2px;" name="<%=user.getId()%>">Add friend</button>
                     <%}else{%>
-                        <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; padding: 2px;" name="<%=user.getId()%>">Add friend</button>
+                        <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; padding: 2px;">Add friend</button>
                     <%}%>
-                    <button id="leaveNoteButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Note</button>
+                    <button class="btn btn-outline-secondary p-0 px-2" data-bs-toggle="modal" data-bs-target="#announceModal" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Note</button>
+                    <div class="modal fade" id="announceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="announceModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="noteModalLabel">Send Notification</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="announcementText" class="form-label">Enter Text</label>
+                                            <textarea class="form-control" id="noteText" rows="3"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="noteCloseBtn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" id="noteBtn" class="btn btn-primary" name="<%=user.getId()%>">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <button id="challengeButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Challenge</button>
                     <%if(loggedInUser.isAdmin()){%>
                         <button id="deleteAccountButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px;" name="<%=user.getId()%>">Delete Account</button>

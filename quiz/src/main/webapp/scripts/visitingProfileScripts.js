@@ -89,8 +89,38 @@ makeAdminButton.addEventListener("click", function () {
 
 
 let leaveNoteButton = document.getElementById('leaveNoteButton');
-leaveNoteButton.addEventListener("click", function () {
-    //todo
+$('#noteBtn').click(function (){
+    let text = $('#noteText').val();
+    let userId = $('#noteBtn').attr('name');
+    console.log(userId);
+    if(text === ''){
+        alert("Fill all fields");
+        return;
+    }
+
+    let noteJson = {
+        'text' : text
+    }
+
+    $.ajax({
+        url: '/sendNote?receiverId='+userId,
+        type: 'post',
+        data: JSON.stringify(noteJson),
+        contentType: 'application/json; charset=UTF-8',
+        beforeSend: function (xhr){
+            $('#noteBtn').attr("disabled",true);
+            $('#noteCloseBtn').attr("disabled",true);
+            $('#noteBtn').text('uploading...');
+        },
+        success: function (result,status,xhr){
+            window.location.reload();
+        },
+        error: function (xhr,status,error){
+            alert("couldn't announce");
+            $('#noteCloseBtn').attr("disabled",false);
+            $('#noteCloseBtn').click();
+        }
+    })
 });
 
 let challengeButton = document.getElementById('challengeButton');
