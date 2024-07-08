@@ -15,6 +15,28 @@
 
         .list-group {
             margin-bottom: 0;
+            height: 100%;
+
+            .empty-activities {
+                width: 100%;
+                height: 100%;
+
+                div {
+                    width: 100%;
+                    height: 300px;
+                    display: grid;
+                    align-content: center;
+                    justify-content: center;
+                    
+                    h4 {
+                        font-family: oswald, serif;
+                        font-size: 32px;
+                        font-weight: 400;
+                        text-transform: uppercase;
+                        line-height: 1;
+                    }
+                }
+            }
 
             .activity-wrapper {
                 padding: 10px;
@@ -27,6 +49,8 @@
                     p {
                         padding: 4px 16px;
                         margin-bottom: 0;
+                        font-family: monospace;
+                        font-size: 18px;
                     }
 
                     .note-info {
@@ -42,6 +66,20 @@
 
                     .user-achievement-info {
 
+                        .achievement-activity-icon {
+                            cursor: pointer;
+                            flex: 0 0 auto;
+                            width: 100px;
+                            height: 100px;
+                            margin: auto;
+
+                            img {
+                            }
+                        }
+
+                        .modal-body {
+                            --bs-bg-opacity: .3;
+                        }
                     }
 
                     .challenge-info {
