@@ -70,50 +70,80 @@ public class mySqlDb implements Dao {
     }
 
     public boolean deleteUser(int id) throws SQLException {
-        Connection con = dbSource.getConnection();
-        PreparedStatement friendRequest = con.prepareStatement("delete from friendRequests where fromUserId=? or toUserId=?;");
-        friendRequest.setInt(1, id);
-        friendRequest.setInt(2, id);
-        friendRequest.executeUpdate();
+        try(Connection con = dbSource.getConnection();){
+            PreparedStatement friendRequest = con.prepareStatement("delete from friendRequests where fromUserId=? or toUserId=?;");
+            friendRequest.setInt(1,id);
+            friendRequest.setInt(2,id);
+            friendRequest.executeUpdate();
+            friendRequest.close();
 
-        PreparedStatement friends = con.prepareStatement("delete from friends where user1Id=? or user2Id=?;");
-        friends.setInt(1, id);
-        friends.setInt(2, id);
-        friends.executeUpdate();
+            PreparedStatement friends = con.prepareStatement("delete from friends where user1Id=? or user2Id=?;");
+            friends.setInt(1,id);
+            friends.setInt(2,id);
+            friends.executeUpdate();
+            friends.close();
 
-        PreparedStatement quizHistory = con.prepareStatement("delete from quizHistory where userId=?");
-        quizHistory.setInt(1, id);
-        quizHistory.executeUpdate();
+            PreparedStatement quizHistory = con.prepareStatement("delete from quizHistory where userId=?");
+            quizHistory.setInt(1,id);
+            quizHistory.executeUpdate();
+            quizHistory.close();
 
-        PreparedStatement notes = con.prepareStatement("delete from notes where fromId=? or toId=?;");
-        notes.setInt(1, id);
-        notes.setInt(2, id);
-        notes.executeUpdate();
+            PreparedStatement quizHistoryQuiz = con.prepareStatement("delete from quizHistory where quizId in (select quizzes.quizId from quizzes where quizzes.author=?)");
+            quizHistoryQuiz.setInt(1,id);
+            quizHistoryQuiz.executeUpdate();
+            quizHistoryQuiz.close();
 
-        PreparedStatement challangeUserId = con.prepareStatement("delete from challenges where fromId=? or toId=?;");
-        challangeUserId.setInt(1, id);
-        challangeUserId.setInt(2, id);
-        challangeUserId.executeUpdate();
 
-        PreparedStatement challange = con.prepareStatement("delete from challenges where quizId in (select quizzes.quizId from quizzes where quizzes.author=?)");
-        challange.setInt(1, id);
-        challange.executeUpdate();
+            PreparedStatement notes = con.prepareStatement("delete from notes where fromId=? or toId=?;");
+            notes.setInt(1,id);
+            notes.setInt(2,id);
+            notes.executeUpdate();
+            notes.close();
 
-        PreparedStatement questions = con.prepareStatement("delete from questions where quizId in (select quizzes.quizId from quizzes where author=?);");
-        questions.setInt(1, id);
-        questions.executeUpdate();
+            PreparedStatement challangeUserId = con.prepareStatement("delete from challenges where fromId=? or toId=?;");
+            challangeUserId.setInt(1,id);
+            challangeUserId.setInt(2,id);
+            challangeUserId.executeUpdate();
+            challangeUserId.close();
 
-        PreparedStatement announcements = con.prepareStatement("delete from announcements where userId=?;");
-        announcements.setInt(1, id);
-        announcements.executeUpdate();
 
-        PreparedStatement userAcheivments = con.prepareStatement("delete from userAchievements where userId=?;");
-        userAcheivments.setInt(1, id);
-        userAcheivments.executeUpdate();
+            PreparedStatement challange = con.prepareStatement("delete from challenges where quizId in (select quizzes.quizId from quizzes where quizzes.author=?)");
+            challange.setInt(1,id);
+            challange.executeUpdate();
+            challange.close();
 
-        PreparedStatement users = con.prepareStatement("delete from users where userId=?;");
-        users.setInt(1, id);
-        return users.executeUpdate()>0;
+
+            PreparedStatement questions = con.prepareStatement("delete from questions where quizId in (select quizzes.quizId from quizzes where author=?);");
+            questions.setInt(1,id);
+            questions.executeUpdate();
+            questions.close();
+
+
+            PreparedStatement announcements = con.prepareStatement("delete from announcements where userId=?;");
+            announcements.setInt(1,id);
+            announcements.executeUpdate();
+            announcements.close();
+
+
+            PreparedStatement userAcheivments = con.prepareStatement("delete from userAchievements where userId=?;");
+            userAcheivments.setInt(1,id);
+            userAcheivments.executeUpdate();
+            userAcheivments.close();
+
+
+            PreparedStatement quiz = con.prepareStatement("delete from quizzes where author=?");
+            quiz.setInt(1,id);
+            quiz.executeUpdate();
+            quiz.close();
+            PreparedStatement users = con.prepareStatement("delete from users where userId=?;");
+            users.setInt(1,id);
+            boolean res =  users.executeUpdate()>0;
+            users.close();
+            return res;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean userNameExists(String username) throws SQLException {
@@ -309,7 +339,10 @@ public class mySqlDb implements Dao {
             stm.setInt(5, question.getOrderNum());
             stm.setDouble(6, question.getScore());
             int rowsAffected = stm.executeUpdate();
-            if (rowsAffected == 0) {
+
+            stm.close();
+            if(rowsAffected==0){
+
                 throw new SQLException();
             }
             try (ResultSet set = stm.getGeneratedKeys()) {
@@ -372,6 +405,8 @@ public class mySqlDb implements Dao {
             stm.setDouble(6, quiz.getDuration());
             stm.setInt(7, quiz.getId());
             stm.executeUpdate();
+            stm.close();
+
         }
     }
 
@@ -380,6 +415,7 @@ public class mySqlDb implements Dao {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM questions WHERE questions.quizId = ?");
             statement.setInt(1, quizId);
             statement.executeUpdate();
+            statement.close();
         }
     }
 
@@ -394,6 +430,7 @@ public class mySqlDb implements Dao {
             statement.setDouble(4, time);
             statement.setDouble(5, score);
             statement.executeUpdate();
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -763,6 +800,7 @@ public class mySqlDb implements Dao {
 
     public ArrayList<Quiz> getPopularQuizzes() throws SQLException {
         ArrayList<Quiz> quizes = new ArrayList<>();
+
         try(Connection con = dbSource.getConnection()){
             PreparedStatement stm = con.prepareStatement("select quizHistory.quizId from quizHistory group by quizId order by count(*) desc LIMIT 10");
             try(ResultSet set = stm.executeQuery()){
@@ -990,7 +1028,9 @@ public class mySqlDb implements Dao {
         try (Connection connection = dbSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, user_Id);
-            return statement.executeUpdate() > 0;
+            boolean res = statement.executeUpdate() > 0;
+            statement.close();
+            return res;
         }
     }
 

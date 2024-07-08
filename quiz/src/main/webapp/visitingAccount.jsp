@@ -90,12 +90,12 @@
                 </div>
                 <div class="createdQuizzes-buttons d-flex" >
                     <%if(myDb.friendConnectionExists(user.getId(), loggedInUser.getId()) || myDb.friendRequestExists(user.getId(), loggedInUser.getId())){%>
-                        <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; display: none; padding: 2px;" name="<%=user.getId()%>">Add friend</button>
+                        <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; display: none; padding: 2px;">Add friend</button>
                     <%}else{%>
-                        <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; padding: 2px;">Add friend</button>
+                        <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; padding: 2px;" name="<%=user.getId()%>">Add friend</button>
                     <%}%>
-                    <button class="btn btn-outline-secondary p-0 px-2" data-bs-toggle="modal" data-bs-target="#announceModal" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Note</button>
-                    <div class="modal fade" id="announceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="announceModalLabel" aria-hidden="true">
+                    <button class="btn btn-outline-secondary p-0 px-2" data-bs-toggle="modal" data-bs-target="#noteModal" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Note</button>
+                    <div class="modal fade" id="noteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="noteModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -105,7 +105,7 @@
                                 <div class="modal-body">
                                     <form>
                                         <div class="mb-3">
-                                            <label for="announcementText" class="form-label">Enter Text</label>
+                                            <label for="noteText" class="form-label">Enter Text</label>
                                             <textarea class="form-control" id="noteText" rows="3"></textarea>
                                         </div>
                                     </form>
@@ -117,7 +117,29 @@
                             </div>
                         </div>
                     </div>
-                    <button id="challengeButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Challenge</button>
+                    <button class="btn btn-outline-secondary p-0 px-2" data-bs-toggle="modal" data-bs-target="#challengeModal" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Challenge</button>
+                    <div class="modal fade" id="challengeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="challengeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="challengeModalLabel">Send Challenge</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form>
+                                        <div class="mb-3">
+                                            <label for="challengeText" class="form-label">Enter Quiz URL</label>
+                                            <textarea class="form-control" id="challengeText" rows="3"></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="challengeCloseBtn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" id="challengeBtn" class="btn btn-primary" name="<%=user.getId()%>">Challenge</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <%if(loggedInUser.isAdmin()){%>
                         <button id="deleteAccountButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px;" name="<%=user.getId()%>">Delete Account</button>
                         <%if(!user.isAdmin()){%>
@@ -205,7 +227,7 @@
                                     for (i = 0; i < min(userQuizActivity.size(), 5); i++) {%>
                                 <tr>
                                     <td><%=i + 1%></td>
-                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userQuizActivity.get(i).getQuizId() %>`"><%= userQuizActivity.get(i).getQuizId() %></a></td>
+                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userQuizActivity.get(i).getQuizId() %>"><%= userQuizActivity.get(i).getQuizId() %></a></td>
                                     <td><a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%=userQuizActivity.get(i).getUserId()%>"><%=userQuizActivity.get(i).getWriterName()%></a></td>
                                     <td><%= userQuizActivity.get(i).getScoreString() %></td>
                                     <td><%= userQuizActivity.get(i).getTimeString() %></td>
@@ -238,7 +260,7 @@
                                                     for (i = 0; i < userQuizActivity.size(); i++) {%>
                                                 <tr>
                                                     <td><%=i + 1%></td>
-                                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userQuizActivity.get(i).getQuizId() %>`"><%= userQuizActivity.get(i).getQuizId() %></a></td>
+                                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userQuizActivity.get(i).getQuizId() %>"><%= userQuizActivity.get(i).getQuizId() %></a></td>
                                                     <td><a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%=userQuizActivity.get(i).getUserId()%>"><%=userQuizActivity.get(i).getWriterName()%></a></td>
                                                     <td><%= userQuizActivity.get(i).getScoreString() %></td>
                                                     <td><%= userQuizActivity.get(i).getTimeString() %></td>
@@ -283,7 +305,7 @@
                                     for (i = 0; i < min(userCreatedQuizzes.size(), 5); i++) {%>
                                 <tr>
                                     <td><%=i + 1%></td>
-                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userCreatedQuizzes.get(i).getId() %>`">open</a></td>
+                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userCreatedQuizzes.get(i).getId() %>">open</a></td>
                                     <td><%= userCreatedQuizzes.get(i).getName() %></td>
                                     <td><%= userCreatedQuizzes.get(i).getDuration() %></td>
                                 </tr>
@@ -318,7 +340,7 @@
                                                     for (i = 0; i < userCreatedQuizzes.size(); i++) {%>
                                                 <tr>
                                                     <td><%=i + 1%></td>
-                                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userCreatedQuizzes.get(i).getId() %>`">open</a></td>
+                                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= userCreatedQuizzes.get(i).getId() %>">open</a></td>
                                                     <td style="min-width: 180px" ><%= userCreatedQuizzes.get(i).getName() %></td>
                                                     <td><%= userCreatedQuizzes.get(i).getDuration() %></td>
                                                     <td style="min-width: 110px" ><%= userCreatedQuizzes.get(i).getCreationDate() %></td>
@@ -371,7 +393,7 @@
                                 IChallenge challenge = (Challenge) activity;
                         %>
                         <div class="challenge-info shadow-sm">
-                            <p><%=fromUser.getUsername()%> challenged <a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%= challenge.getToId() %>"><%=myDb.getUserById(challenge.getToId()).getUsername()%></a> to write <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= challenge.getQuizId()%>`">quiz</a></p>
+                            <p><%=fromUser.getUsername()%> challenged <a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%= challenge.getToId() %>"><%=myDb.getUserById(challenge.getToId()).getUsername()%></a> to write <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= challenge.getQuizId()%>">quiz</a></p>
                         </div>
                         <%
                             }
@@ -398,7 +420,7 @@
                                 WritenQuiz writtenQuiz = (WritenQuiz) activity;
                         %>
                         <div class="written-quiz-info shadow-sm">
-                            <p><%=fromUser.getUsername()%> wrote <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= writtenQuiz.getQuizId()%>`">quiz</a></p>
+                            <p><%=fromUser.getUsername()%> wrote <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= writtenQuiz.getQuizId()%>">quiz</a></p>
                         </div>
                         <%
                             }
@@ -407,7 +429,7 @@
                                 Quiz createdQuiz = (Quiz) activity;
                         %>
                         <div class="created-quiz-info shadow-sm">
-                            <p><%=fromUser.getUsername()%> created <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= createdQuiz.getId()%>`">quiz</a></p>
+                            <p><%=fromUser.getUsername()%> created <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= createdQuiz.getId()%>">quiz</a></p>
                         </div>
                         <%
                             }
@@ -445,7 +467,7 @@
                                     for (i = 0; i < min(popularQuizzes.size(), 5); i++) {%>
                                 <tr>
                                     <td><%=i + 1%></td>
-                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= popularQuizzes.get(i).getId() %>`">open</a></td>
+                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= popularQuizzes.get(i).getId() %>">open</a></td>
                                     <td><%= popularQuizzes.get(i).getName() %></td>
                                     <td><%= popularQuizzes.get(i).getDuration() %></td>
                                 </tr>
@@ -477,7 +499,7 @@
                                                     for (i = 0; i < popularQuizzes.size(); i++) {%>
                                                 <tr>
                                                     <td><%=i + 1%></td>
-                                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= popularQuizzes.get(i).getId() %>`">open</a></td>
+                                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= popularQuizzes.get(i).getId() %>">open</a></td>
                                                     <td style="min-width: 180px" ><%= popularQuizzes.get(i).getName() %></td>
                                                     <td><%= popularQuizzes.get(i).getDuration() %></td>
                                                     <td style="min-width: 110px" ><%= popularQuizzes.get(i).getCreationDate() %></td>
@@ -522,7 +544,7 @@
                                     for (i = 0; i < min(recentQuizzes.size(), 5); i++) {%>
                                 <tr>
                                     <td><%=i + 1%></td>
-                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= recentQuizzes.get(i).getId() %>`">open</a></td>
+                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= recentQuizzes.get(i).getId() %>">open</a></td>
                                     <td><%= recentQuizzes.get(i).getName() %></td>
                                     <td><%= recentQuizzes.get(i).getDuration() %></td>
                                 </tr>
@@ -554,7 +576,7 @@
                                                     for (i = 0; i < recentQuizzes.size(); i++) {%>
                                                 <tr>
                                                     <td><%=i + 1%></td>
-                                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= recentQuizzes.get(i).getId() %>`">open</a></td>
+                                                    <td><a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= recentQuizzes.get(i).getId() %>">open</a></td>
                                                     <td style="min-width: 180px" ><%= recentQuizzes.get(i).getName() %></td>
                                                     <td><%= recentQuizzes.get(i).getDuration() %></td>
                                                     <td style="min-width: 110px" ><%= recentQuizzes.get(i).getCreationDate() %></td>

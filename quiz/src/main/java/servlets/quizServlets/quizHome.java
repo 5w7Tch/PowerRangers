@@ -1,9 +1,15 @@
 package servlets.quizServlets;
 
+import com.google.gson.JsonObject;
 import models.DAO.Dao;
+
+import org.json.simple.JSONObject;
+
 import models.USER.User;
 import models.achievement.UserAchievement;
 
+
+import javax.faces.view.ActionSource2AttachedObjectTarget;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +47,37 @@ public class quizHome extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
+
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String quiz = request.getParameter("quizid");
+        Dao myDb = (Dao)request.getServletContext().getAttribute(Dao.DBID);
+
+        try {
+            if (quiz == null || !myDb.quizExists(Integer.parseInt(quiz))) {
+                System.out.println(1);
+                sendResponse(response, "false");
+                return;
+            }else{
+                System.out.println(2);
+                sendResponse(response, "true");
+                return;
+            }
+        } catch (SQLException e) {
+            System.out.println(3);
+            sendResponse(response, "false");
+            return;
+        }
+    }
+
+    private void sendResponse(HttpServletResponse response, String data) throws IOException {
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        JSONObject json = new JSONObject();
+        json.put("result", data);
+        response.getWriter().write(json.toString());
+    }
     private void practiceQuizAchievement(HttpServletRequest request) throws SQLException {
         Dao db = (Dao)request.getServletContext().getAttribute(Dao.DBID);
         User user = (User)request.getSession().getAttribute("user");
@@ -49,6 +86,7 @@ public class quizHome extends HttpServlet {
         int achievementId = db.getAchievementIdFromType(5);
         UserAchievement userAchievement = new UserAchievement(0, userId, achievementId, currentTimestamp);
         db.putUserAchievements(userAchievement);
+
     }
 }
 

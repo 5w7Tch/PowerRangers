@@ -28,6 +28,7 @@ public class sendChallenge extends HttpServlet {
         EmailSender es = EmailSender.getInstance();
         String topic = "QuizTime Challenge received";
         String quizName;
+        System.out.println(quizId);
         try {
             quizName = db.getQuiz(quizId).getName();
         } catch (SQLException e) {
