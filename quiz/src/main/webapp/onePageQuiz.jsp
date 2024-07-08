@@ -19,6 +19,8 @@
     <%
         Quiz quiz = (Quiz)session.getAttribute("quiz");
         ArrayList<Question> quests = (ArrayList<Question>) session.getAttribute("questions");
+        String practise = (String) session.getAttribute("practise");
+
     %>
     <title><%=quiz.getName()%></title>
 
@@ -27,7 +29,9 @@
 
 <div id="quizContent">
     <div class="info">
-        <div id="countdown" class="countDown">Time left: <span id="time">00:00:00</span> </div>
+        <%if(!practise.equals("on")){%>
+            <div id="countdown" class="countDown">Time left: <span id="time">00:00:00</span> </div>
+        <%}%>
         <button id="submitQuiz">Submit</button>
     </div>
     <div class="quiz-container">

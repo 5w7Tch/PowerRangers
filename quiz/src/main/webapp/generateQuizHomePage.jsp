@@ -44,7 +44,7 @@
 
     <div class="container-one">
         <div class="name"><%=quiz.getName()%></div>
-        <a href="/account?id=<%=quiz.getAuthor()%>"><%=myDb.getUserById(quiz.getAuthor()).getUsername()%></a>
+        <a href="/account?id=<%=quiz.getAuthor()%>" style="color: #007bff"><%=myDb.getUserById(quiz.getAuthor()).getUsername()%></a>
     </div>
     <div class="container-two">
         <div style="width: 68%">
@@ -135,20 +135,17 @@
         </div>
 
         <div class="buttons">
-            <% if(quiz.isPracticable()) {%>
-                <h4 style="color: #007bff">Practise: </h4>
+            <%if(!quiz.isImmediateCorrection()){%>
+                <h4 style="color: #ff4200">Page Mode: </h4>
                 <div class="radio-buttons">
-                    <label><input type="radio"  name="practise" value="on">ON</label>
-                    <label><input type="radio"  name="practise" value="off">OFF</label>
+                    <label><input type="radio"  name="practise" value="on">Single</label>
+                    <label><input type="radio"  name="practise" value="off">Multiple</label>
                 </div>
             <%}%>
-            <%if(!quiz.isImmediateCorrection()){%>
-                <button class="button" id="startSinglePage" name="<%=quiz.getId()%>">Start Single Page</button>
-            <%}else{%>
-                <button class="button" id="startSinglePage" name="<%=quiz.getId()%>" STYLE="display: none">Start Single Page</button>
+            <button class="button" id="start" name="<%=quiz.getId()%>">Start</button>
+            <% if(quiz.isPracticable()) {%>
+                <button class="button" id="startPractise" name="<%=quiz.getId()%>" STYLE="background-color: #007bff">Practise</button>
             <%}%>
-            <button class="button" id="startMultiPage" name="<%=quiz.getId()%>">Start Multi Page</button>
-
             <% if(quiz.getAuthor() == ((User)session.getAttribute("user")).getId()) {%>
                 <a href="editQuiz?quizId=<%=quiz.getId()%>"><button class="button" style="background-color: gray"> Edit</button></a>
             <%}%>
@@ -193,7 +190,7 @@
             <div class="label-container" style="justify-content: center; margin-top: 40px;">
                 <h4 style="color: blue">Summary stats</h4>
             </div>
-            <div class="rectangle" style="height: 160px; border: 2px solid blue; display: flow; text-align: left;">
+            <div class="rectangle" style="height: 165px; border: 2px solid blue; display: flow; text-align: left;">
                 <%if(!history.isEmpty()){%>
                     <h5>Average Score: <%= WritenQuiz.getAvgScore(history) %></h5>
                     <h5>Last Written: <%= WritenQuiz.getLastWritenDate(history) %></h5>
@@ -208,6 +205,7 @@
                     <h5>Average Time Spent: Not Available</h5>
                     <h5>Top Scorer: Not Available</h5>
                 <%}%>
+                <h5>Duration minutes: <%=quiz.getDuration()%></h5>
             </div>
         </div>
     </div>
