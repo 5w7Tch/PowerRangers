@@ -89,6 +89,18 @@ public abstract class Question {
         return obj;
     }
 
+    @Override
+    public boolean equals(Object obj){
+        if(!(obj instanceof Question)){
+            return false;
+        }
+
+        Question q = (Question) obj;
+        return this.questionId==q.questionId && this.quizId==q.quizId &&
+                this.orderNum==q.orderNum && this.type.equals(q.type) && this.score==q.score &&
+                this.questionJson.equals(q.questionJson) && this.answerJson.equals(q.answerJson);
+    }
+
     public abstract String getQuestion(int orderNum);
 
     public abstract Double checkAnswer(String[] answer);

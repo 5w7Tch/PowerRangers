@@ -30,8 +30,9 @@ public class testWritenQuiz extends TestCase {
         assertEquals(1,wq.getQuizId());
         assertEquals(2, wq.getUserId());
         assertEquals("jaja", wq.getWriterName());
-        assertEquals("25.0", wq.getTimeString());
-        assertEquals("20.0", wq.getScoreString());
+        System.out.println(wq.getTimeString());
+        assertEquals("25.00", wq.getTimeString());
+        assertEquals("20.00", wq.getScoreString());
         assertEquals(date.toString(), wq.getDateString());
 
     }
