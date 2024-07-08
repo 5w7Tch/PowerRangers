@@ -839,5 +839,19 @@ public class mySqlDb implements Dao {
         }
     }
 
+    @Override
+    public List<Integer> searchUserByUsername(String userName) throws SQLException {
+        List<Integer> userIds = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE firstName LIKE ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, "%" + userName + "%");
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                userIds.add(rs.getInt("userId"));
+            }
+        }
+        return userIds;
+    }
 }
 
