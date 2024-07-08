@@ -89,7 +89,7 @@ function addMatches(firstMatch , secondMatch){
 
     var answersContainer = document.getElementById('answersContainer');
     var textareaId = '' + answersContainer.children.length;
-    if(textareaId == 42){
+    if(textareaId == 36){
         this.style.display = 'none';
         return;
     }

@@ -23,7 +23,7 @@ public class WritenQuiz {
 
     public WritenQuiz(Double score, Date date, Double time, int quizId, int userId, String writerName) {
         this.score = score;
-        this.scoreString = score.toString();
+        this.scoreString = df.format(score);
         this.date = date;
         this.time = time;
         this.timeString = df.format(time);

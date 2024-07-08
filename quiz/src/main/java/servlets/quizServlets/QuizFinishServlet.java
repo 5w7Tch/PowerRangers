@@ -28,6 +28,7 @@ import java.util.Iterator;
 public class QuizFinishServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         Date finishDate = new Date(System.currentTimeMillis());
         Date startDate = (Date) request.getSession(false).getAttribute("startTime");
 
@@ -56,7 +57,7 @@ public class QuizFinishServlet extends HttpServlet {
             for (int i = 0; i < results.size(); i++) {
                 score += results.get(i);
             }
-            request.getSession().setAttribute("score", score);
+            request.getSession().setAttribute("score", df.format(score));
             if(!practise.equals("on")){
                 try {
                     remember(score, results, startDate, differenceInMinutes, request);

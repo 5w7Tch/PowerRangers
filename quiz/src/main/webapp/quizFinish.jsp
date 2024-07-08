@@ -3,7 +3,8 @@
 <%@ page import="models.USER.User" %>
 <%@ page import="models.quizes.questions.Question" %>
 <%@ page import="models.USER.WritenQuiz" %>
-<%@ page import="models.DAO.Dao" %><%--
+<%@ page import="models.DAO.Dao" %>
+<%@ page import="java.text.DecimalFormat" %><%--
   Created by IntelliJ IDEA.
   User: sw1tch
   Date: 03.07.24
@@ -23,6 +24,7 @@
         Dao myDb = (Dao)application.getAttribute(Dao.DBID);
         ArrayList<WritenQuiz> friendHistory = myDb.getFriendHistory(quiz.getId(), user.getId());
         ArrayList<String[]> answerCollections = (ArrayList<String[]>)session.getAttribute("answerCollection");
+        DecimalFormat df = new DecimalFormat("#.00");
     %>
     <title>Quiz result</title>
 </head>
@@ -33,7 +35,7 @@
         <div class="quizBlock">
             <%for (int i = 0; i < quests.size(); i++) {%>
                 <div class="questResult" style="max-width: 100%">
-                    <%=results.get(i)%>/<%=quests.get(i).getScore()%>
+                    <%=df.format(results.get(i))%>/<%=quests.get(i).getScore()%>
                         <div style="display: flex; align-items: center; justify-content: space-between" >
                             <%=quests.get(i).getAnsweredQuestion(answerCollections.get(i))%>
                             <%if(!results.get(i).equals(quests.get(i).getScore()) && results.get(i).equals(0.0)){%>
