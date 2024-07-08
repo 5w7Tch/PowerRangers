@@ -47,17 +47,16 @@ public class createQuiz extends HttpServlet {
     }
 
     public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("got1");
         JsonObject quizObj = (JsonObject) servletGeneralFunctions.readObj(request);
         Quiz quiz = readQuizInfo(quizObj,request);
         quiz.setId(Integer.parseInt(request.getParameter("quizId")));
         Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
-        System.out.println("got2");
         try {
             db.updateQuiz(quiz);
             db.deleteQuestions(quiz.getId());
             JsonArray questionArr = quizObj.get("questions").getAsJsonArray();
             uploadQuestionsToDB(questionArr,quiz.getId());
+            db.clearQuizHistory(""+quiz.getId());
         } catch (SQLException e) {
             // todo: erise 500 error
             throw new RuntimeException(e);
