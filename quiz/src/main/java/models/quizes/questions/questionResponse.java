@@ -22,7 +22,8 @@ public class questionResponse extends Question{
         return object;
     }
     public Double checkAnswer(String[] answer){
-        if (answer[0].equals(answerJson.get("description").getAsString())) {
+
+        if (answer[0].trim().equalsIgnoreCase(answerJson.get("description").getAsString().trim())) {
             return getScore();
         }
         return 0.0;
@@ -33,10 +34,18 @@ public class questionResponse extends Question{
         String question = "<div class=\"question-box\">\n" +
                 "        <div class=\"question-text\">"+questionJson.get("description").getAsString()+"</div>\n" +
                 "        <ul class=\"answers\">\n" +
-                "            <div class=\"answer_response\"name=\"0\">"+answer[0]+"</div>\n" +
+                "            <div class=\"answer_response\"name=\"0\" style=\"background-color: red;\">"+answer[0]+"</div>\n" +
                 "        </ul>\n" +
                 "    </div>";
-
+        if(checkAnswer(answer).equals(0.0)){
+            return question;
+        }
+        question = "<div class=\"question-box\">\n" +
+                "        <div class=\"question-text\">"+questionJson.get("description").getAsString()+"</div>\n" +
+                "        <ul class=\"answers\">\n" +
+                "            <div class=\"answer_response\"name=\"0\" style=\"background-color: green;\">"+answer[0]+"</div>\n" +
+                "        </ul>\n" +
+                "    </div>";
         return question;
     }
 

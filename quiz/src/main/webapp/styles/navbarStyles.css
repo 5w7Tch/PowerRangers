@@ -106,6 +106,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
 }
 
 .userInfoContainer button{
@@ -118,6 +119,31 @@ a {
 .userInfoContainer a{
     text-decoration: none;
     outline: none;
+}
+
+
+.suggestions {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    right: 0;
+    border: none;
+    border-radius: 2px;
+    background-color: #fff;
+    z-index: 1000;
+    max-height: 150px;
+    overflow-y: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+    text-decoration: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
 }
 
 .topNavbar .userSearchButton:hover,

@@ -24,8 +24,9 @@ public class checkAnswer extends HttpServlet {
             sb.append(line);
         }
         String string = sb.toString();
-        System.out.println(string);
+
         string = string.substring(2, string.length() - 2);
+
         String[] ans = string.trim().split(",");
 
         int questNum = Integer.parseInt(ans[0].trim().split(":")[0]);
@@ -39,9 +40,9 @@ public class checkAnswer extends HttpServlet {
             }
         }
         JSONObject json = new JSONObject();
+
         Double score = quests.get(questNum).checkAnswer(ans);
-        System.out.println(score);
-        System.out.println(quests.get(questNum).getScore());
+
 
         if(score.equals(quests.get(questNum).getScore())) {
             json.put("res",2);

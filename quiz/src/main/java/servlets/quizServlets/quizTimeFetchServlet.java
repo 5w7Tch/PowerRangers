@@ -32,7 +32,7 @@ public class quizTimeFetchServlet extends HttpServlet {
 
             json.put("startDate", now.format(formatter));
             json.put("endDate", nowPlus5Minutes.format(formatter));
-
+            json.put("practise", request.getSession().getAttribute("practise").toString());
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(json.toString());

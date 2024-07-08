@@ -1,31 +1,50 @@
+let questions = document.querySelectorAll('.question-box');
 let timeRemaining;
 let quizId = 0;
 const answers = {};
-
+let countdownInterval;
+let dontUse = new Map();
 
 function setState(data){
     let lastEndDate = new Date(sessionStorage.getItem('endTime'));
     quizId = data.quizId;
 
-    if(lastEndDate == null){
-        sessionStorage.clear();
-        timeRemaining = data.quizTime * 60000;
-        sessionStorage.setItem('endTime', new Date(data.endDate));
-        sessionStorage.setItem('quizId', quizId);
-    }else if(lastEndDate<(new Date(data.startDate))){
-        sessionStorage.clear();
-        timeRemaining = data.quizTime * 60000;
-        sessionStorage.setItem('endTime', new Date(data.endDate));
-        sessionStorage.setItem('quizId', quizId);
-    }else if(sessionStorage.getItem('quizId').toString() != quizId){
-        sessionStorage.clear();
-        timeRemaining = data.quizTime * 60000;
-        sessionStorage.setItem('endTime', new Date(data.endDate));
-        sessionStorage.setItem('quizId', quizId);
-    }else {
-        timeRemaining = lastEndDate-(new Date());
-        for (let i = 0; i < document.querySelectorAll('.question-box').length; i++) {
-            document.querySelectorAll('.question-box')[i].innerHTML = sessionStorage.getItem('quest'+i);
+    if(data.practise == 'off'){
+        if(lastEndDate == null){
+            sessionStorage.clear();
+            timeRemaining = data.quizTime * 60000;
+            sessionStorage.setItem('endTime', new Date(data.endDate));
+            sessionStorage.setItem('quizId', quizId);
+        }else if(lastEndDate<(new Date(data.startDate))){
+            sessionStorage.clear();
+            timeRemaining = data.quizTime * 60000;
+            sessionStorage.setItem('endTime', new Date(data.endDate));
+            sessionStorage.setItem('quizId', quizId);
+        }else if(sessionStorage.getItem('quizId').toString() != quizId){
+            sessionStorage.clear();
+            timeRemaining = data.quizTime * 60000;
+            sessionStorage.setItem('endTime', new Date(data.endDate));
+            sessionStorage.setItem('quizId', quizId);
+        }else{
+            timeRemaining = lastEndDate-(new Date());
+            if(sessionStorage.getItem('currentQuestion') != null){
+                currentQuestionIndex = Number.parseInt(sessionStorage.getItem('currentQuestion'));
+            }
+            for (let i = 0; i < questions.length; i++) {
+                questions[i].innerHTML = sessionStorage.getItem('quest'+i);
+            }
+        }
+    }else{
+        let prevLvl = {};
+        if(sessionStorage.getItem('practise') == null){
+            sessionStorage.setItem('practise', data.practise);
+            for (const answersKey in answers) {
+                prevLvl[answersKey] = 0;
+            }
+            sessionStorage.setItem("prevLvL", JSON.stringify(prevLvl));
+            for (let i = 0; i < document.querySelectorAll('.question-box').length; i++) {
+                sessionStorage.setItem('quest'+i, document.querySelectorAll('.question-box')[i].innerHTML);
+            }
         }
     }
 }
@@ -45,10 +64,13 @@ function fetchQuizAttribute() {
             return response.json();
         })
         .then(function(data) {
-            setState(data);
             answerListeners();
-            updateCountdown(); // Update countdown initially
-            countdownInterval = setInterval(updateCountdown, 1000); // Start countdown
+            setState(data);
+            if(data.practise == 'off') {
+                answerListeners();
+                updateCountdown(); // Update countdown initially
+                countdownInterval = setInterval(updateCountdown, 1000); // Start countdown
+            }
         })
         .catch(function(error) {
             console.error('There was a problem with fetch operation:', error.message);
@@ -110,15 +132,71 @@ function finish() {
         });
 }
 
+function next() {
+
+    fetch('/practise', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(answers)
+    })
+        .then(function(response) {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(function(data) {
+            let last = JSON.parse(sessionStorage.getItem('prevLvL').toString());
+            for (const ansKey in answers){
+                if(data[ansKey] == '1'){
+                    last[ansKey] =  Number(last[ansKey])+1;
+                    if(last[ansKey] == '3'){
+                        dontUse.set(ansKey,ansKey);
+                    }
+                }else{
+                    last[ansKey] = 0;
+                }
+            }
+            sessionStorage.setItem('prevLvL', JSON.stringify(last));
+            if(dontUse.size == Object.keys(answers).length){
+                let url = '/quiz?quizid='+quizId+'&practise=done';
+
+                window.location.replace(url);
+            }
+            for (let i = 0; i < questions.length; i++) {
+                if(!dontUse.has(i+'')){
+                    questions[i].innerHTML = sessionStorage.getItem('quest'+i);
+                }else{
+                    questions[i].innerHTML = '';
+                }
+                sessionStorage.setItem('quest'+i, questions[i].innerHTML);
+            }
+            answerListeners();
+        })
+        .catch((error) => {
+            console.error('There was a problem with fetch operation:', error.message);
+        });
+}
+
+
 // Event listener for submit quiz button
 document.getElementById('submitQuiz').addEventListener('click', function() {
     clearInterval(countdownInterval);
-    finish();
+    if(sessionStorage.getItem('practise') == null){
+        finish();
+    }else{
+        next();
+    }
 });
 
 window.addEventListener('beforeunload', function() {
     for (let i = 0; i < document.querySelectorAll('.question-box').length; i++) {
         sessionStorage.setItem('quest'+i, document.querySelectorAll('.question-box')[i].innerHTML);
+    }
+    if(sessionStorage.getItem('practise') == 'on'){
+        sessionStorage.clear();
     }
 });
 
@@ -152,7 +230,6 @@ function answerListeners() {
             answerChange(this, this.getAttribute('name'));
         });
         answerChange(div, div.getAttribute('name'));
-        console.log(div.getAttribute('name'));
     });
     detectDivsCallingSpecificMethod();
 
@@ -171,6 +248,8 @@ function radioChange(thisObj, name) {
         if (radios[i].style.backgroundColor === 'orange') {
             answers[name] = [radios[i].innerText];
             break;
+        }else{
+            answers[name] = [""];
         }
     }
 }
@@ -180,7 +259,7 @@ function answerChange(thisObj, name) {
     let arr = new Array(fillers.length);
 
     for (let i = 0; i < fillers.length; i++) {
-        arr[i] = fillers[i].innerText;
+        arr[i] = fillers[i].innerText.toString().trim();
     }
     answers[name] = arr;
 }
@@ -202,5 +281,4 @@ function radioChangeMultiple(thisObj, name) {
         }
     }
     answers[name] = arr;
-
 }

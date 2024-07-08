@@ -206,7 +206,7 @@ public class mySqlDb implements Dao {
                     boolean areQuestionsRandom = resultSet.getBoolean("areQuestionsRandom");
                     double quizTime = resultSet.getDouble("quizTime");
                     boolean immediateCorrection = resultSet.getBoolean("immediateCorrection");
-                    return new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime,immediateCorrection);
+                    return new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime, immediateCorrection);
                 } else {
                     return null;
                 }
@@ -289,6 +289,7 @@ public class mySqlDb implements Dao {
         }
 
     }
+
     @Override
     public void clearQuizHistory(String quizId) throws SQLException {
         String query = "DELETE FROM quizHistory WHERE quizHistory.quizId = ?";
@@ -303,24 +304,24 @@ public class mySqlDb implements Dao {
 
     @Override
     public void addQuiz(Quiz quiz) throws SQLException {
-        try(Connection con = dbSource.getConnection()){
+        try (Connection con = dbSource.getConnection()) {
             PreparedStatement stm = con.prepareStatement("insert into quizzes" +
-                    "(author, name, creationDate, description, isPracticable, areQuestionsRandom, immediateCorrection, quizTime) values (?,?,?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
-            stm.setInt(1,quiz.getAuthor());
-            stm.setString(2,quiz.getName());
-            stm.setDate(3,quiz.getCreationDate());
-            stm.setString(4,quiz.getDescription());
-            stm.setBoolean(5,quiz.isPracticable());
-            stm.setBoolean(6,quiz.isQuestionSecRand());
-            stm.setBoolean(7,quiz.isImmediateCorrection());
-            stm.setDouble(8,quiz.getDuration());
+                    "(author, name, creationDate, description, isPracticable, areQuestionsRandom, immediateCorrection, quizTime) values (?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            stm.setInt(1, quiz.getAuthor());
+            stm.setString(2, quiz.getName());
+            stm.setDate(3, quiz.getCreationDate());
+            stm.setString(4, quiz.getDescription());
+            stm.setBoolean(5, quiz.isPracticable());
+            stm.setBoolean(6, quiz.isQuestionSecRand());
+            stm.setBoolean(7, quiz.isImmediateCorrection());
+            stm.setDouble(8, quiz.getDuration());
             int rowsAffected = stm.executeUpdate();
-            if(rowsAffected==0){
+            if (rowsAffected == 0) {
                 throw new SQLException();
             }
 
-            try(ResultSet set = stm.getGeneratedKeys()){
-                if(set.next()){
+            try (ResultSet set = stm.getGeneratedKeys()) {
+                if (set.next()) {
                     quiz.setId(set.getInt(1));
                 }
             }
@@ -329,21 +330,23 @@ public class mySqlDb implements Dao {
 
     @Override
     public void addQuestion(Question question) throws SQLException {
-        try(Connection con = dbSource.getConnection()){
-            PreparedStatement stm = con.prepareStatement("insert into questions (quizId, type, questionJson, answerJson, orderNum, score) values (?,?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
-            stm.setInt(1,question.getQuizId());
-            stm.setString(2,question.getType());
-            stm.setString(3,question.getQuestionJson());
-            stm.setString(4,question.getAnswerJson());
-            stm.setInt(5,question.getOrderNum());
-            stm.setDouble(6,question.getScore());
+        try (Connection con = dbSource.getConnection()) {
+            PreparedStatement stm = con.prepareStatement("insert into questions (quizId, type, questionJson, answerJson, orderNum, score) values (?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            stm.setInt(1, question.getQuizId());
+            stm.setString(2, question.getType());
+            stm.setString(3, question.getQuestionJson());
+            stm.setString(4, question.getAnswerJson());
+            stm.setInt(5, question.getOrderNum());
+            stm.setDouble(6, question.getScore());
             int rowsAffected = stm.executeUpdate();
+
             stm.close();
             if(rowsAffected==0){
+
                 throw new SQLException();
             }
-            try(ResultSet set = stm.getGeneratedKeys()){
-                if(set.next()){
+            try (ResultSet set = stm.getGeneratedKeys()) {
+                if (set.next()) {
                     question.setQuestionId(set.getInt(1));
                 }
             }
@@ -355,10 +358,10 @@ public class mySqlDb implements Dao {
 
     @Override
     public boolean quizExists(int id) throws SQLException {
-        try(Connection con = dbSource.getConnection()){
+        try (Connection con = dbSource.getConnection()) {
             PreparedStatement stm = con.prepareStatement("select * from quizzes where quizId=?");
-            stm.setInt(1,id);
-            try(ResultSet set = stm.executeQuery()){
+            stm.setInt(1, id);
+            try (ResultSet set = stm.executeQuery()) {
                 return set.next();
             }
         }
@@ -366,13 +369,13 @@ public class mySqlDb implements Dao {
 
     @Override
     public List<Question> getQuestionsByQuizId(int quizId) throws SQLException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        try(Connection con = dbSource.getConnection()){
+        try (Connection con = dbSource.getConnection()) {
             PreparedStatement stm = con.prepareStatement("select * from questions where quizId=? order by orderNum");
-            stm.setInt(1,quizId);
-            try(ResultSet set = stm.executeQuery()){
+            stm.setInt(1, quizId);
+            try (ResultSet set = stm.executeQuery()) {
                 List<Question> questions = new ArrayList<>();
 
-                while (set.next()){
+                while (set.next()) {
                     int questionId = set.getInt("questionId");
                     String type = set.getString("type");
                     String questionJson = set.getString("questionJson");
@@ -380,8 +383,8 @@ public class mySqlDb implements Dao {
                     int orderNum = set.getInt("orderNum");
                     double score = set.getDouble("score");
                     Class<?> questionClass = Question.getClass(type);
-                    Question question = (Question) questionClass.getConstructor(int.class,int.class,String.class,String.class,String.class,int.class,double.class)
-                            .newInstance(questionId,quizId,type,questionJson,answerJson,orderNum,score);
+                    Question question = (Question) questionClass.getConstructor(int.class, int.class, String.class, String.class, String.class, int.class, double.class)
+                            .newInstance(questionId, quizId, type, questionJson, answerJson, orderNum, score);
                     questions.add(question);
                 }
 
@@ -392,15 +395,15 @@ public class mySqlDb implements Dao {
     }
 
     public void updateQuiz(Quiz quiz) throws SQLException {
-        try(Connection connection = dbSource.getConnection()){
-            PreparedStatement stm  = connection.prepareStatement("update quizzes set name=?, description=?,areQuestionsRandom=?,immediateCorrection=?,isPracticable=?,quizTime=? where quizId=?");
-            stm.setString(1,quiz.getName());
-            stm.setString(2,quiz.getDescription());
-            stm.setBoolean(3,quiz.isQuestionSecRand());
-            stm.setBoolean(4,quiz.isImmediateCorrection());
-            stm.setBoolean(5,quiz.isPracticable());
-            stm.setDouble(6,quiz.getDuration());
-            stm.setInt(7,quiz.getId());
+        try (Connection connection = dbSource.getConnection()) {
+            PreparedStatement stm = connection.prepareStatement("update quizzes set name=?, description=?,areQuestionsRandom=?,immediateCorrection=?,isPracticable=?,quizTime=? where quizId=?");
+            stm.setString(1, quiz.getName());
+            stm.setString(2, quiz.getDescription());
+            stm.setBoolean(3, quiz.isQuestionSecRand());
+            stm.setBoolean(4, quiz.isImmediateCorrection());
+            stm.setBoolean(5, quiz.isPracticable());
+            stm.setDouble(6, quiz.getDuration());
+            stm.setInt(7, quiz.getId());
             stm.executeUpdate();
             stm.close();
 
@@ -408,7 +411,7 @@ public class mySqlDb implements Dao {
     }
 
     public void deleteQuestions(int quizId) throws SQLException {
-        try(Connection connection = dbSource.getConnection()){
+        try (Connection connection = dbSource.getConnection()) {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM questions WHERE questions.quizId = ?");
             statement.setInt(1, quizId);
             statement.executeUpdate();
@@ -422,17 +425,16 @@ public class mySqlDb implements Dao {
         try (Connection connection = dbSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, quizId);
-            statement.setString(2,userId);
-            statement.setDate(3,start);
-            statement.setDouble(4,time);
-            statement.setDouble(5,score);
+            statement.setString(2, userId);
+            statement.setDate(3, start);
+            statement.setDouble(4, time);
+            statement.setDouble(5, score);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
 
 
     @Override
@@ -456,7 +458,7 @@ public class mySqlDb implements Dao {
                     double timeSpent = resultSet.getDouble("spentTime");
                     Integer user_Id = resultSet.getInt("userId");
                     String writerName = getUserById(userId).getUsername();
-                    if(friends.contains(user_Id)){
+                    if (friends.contains(user_Id)) {
                         WritenQuiz writenQuiz = new WritenQuiz(historyId, score, startTime, timeSpent, quizId, user_Id, writerName);
                         writenQuizzes.add(writenQuiz);
                     }
@@ -479,9 +481,9 @@ public class mySqlDb implements Dao {
                 while (resultSet.next()) {
                     Integer user1Id = resultSet.getInt("user1Id");
                     Integer user2Id = resultSet.getInt("user2Id");
-                    if(user2Id.equals(userId)){
+                    if (user2Id.equals(userId)) {
                         friends.add(user1Id);
-                    }else if(user1Id.equals(userId)){
+                    } else if (user1Id.equals(userId)) {
                         friends.add(user2Id);
                     }
                 }
@@ -491,10 +493,9 @@ public class mySqlDb implements Dao {
     }
 
     @Override
-    public ArrayList<INotification> getUserNotifications(int userId) throws SQLException
-    {
+    public ArrayList<INotification> getUserNotifications(int userId) throws SQLException {
         User user = getUserById(userId);
-        if(user == null)
+        if (user == null)
             throw new RuntimeException("User can't be null");
         ArrayList<INotification> notifications = new ArrayList<>();
         ArrayList<INote> notes = getUserNotes(userId);
@@ -510,8 +511,7 @@ public class mySqlDb implements Dao {
     }
 
     @Override
-    public ArrayList<INote> getUserNotes(int userId) throws SQLException
-    {
+    public ArrayList<INote> getUserNotes(int userId) throws SQLException {
         String query = "SELECT * FROM notes WHERE notes.toId = ?";
         try (Connection connection = dbSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -533,8 +533,7 @@ public class mySqlDb implements Dao {
     }
 
     @Override
-    public ArrayList<IChallenge> getUserChallenges(int userId) throws SQLException
-    {
+    public ArrayList<IChallenge> getUserChallenges(int userId) throws SQLException {
         String query = "SELECT * FROM challenges WHERE challenges.toId = ?";
         try (Connection connection = dbSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -556,8 +555,7 @@ public class mySqlDb implements Dao {
     }
 
     @Override
-    public ArrayList<IFriendRequest> getUserFriendRequests(int userId) throws SQLException
-    {
+    public ArrayList<IFriendRequest> getUserFriendRequests(int userId) throws SQLException {
         String query = "SELECT * FROM friendRequests WHERE friendRequests.toUserId = ?";
         try (Connection connection = dbSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -578,7 +576,7 @@ public class mySqlDb implements Dao {
     }
 
     @Override
-    public IFriendRequest getFriendRequestById(int friendRequestId) throws SQLException{
+    public IFriendRequest getFriendRequestById(int friendRequestId) throws SQLException {
         String query = "SELECT * FROM friendRequests WHERE friendRequests.requestId = ?";
         try (Connection connection = dbSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -613,12 +611,12 @@ public class mySqlDb implements Dao {
     }
 
     @Override
-    public boolean acceptFriendRequest(IFriendRequest friendRequest) throws SQLException{
+    public boolean acceptFriendRequest(IFriendRequest friendRequest) throws SQLException {
         return addFriend(friendRequest) && removeFriendRequest(friendRequest);
     }
 
     @Override
-    public boolean removeFriendRequest(IFriendRequest friendRequest) throws SQLException{
+    public boolean removeFriendRequest(IFriendRequest friendRequest) throws SQLException {
         String query = "DELETE FROM friendRequests WHERE requestId = ?";
         try (Connection connection = dbSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -636,7 +634,7 @@ public class mySqlDb implements Dao {
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, friendRequest.getFromId());
             statement.setInt(2, friendRequest.getToId());
-            statement.setDate(3, new java.sql.Date(friendRequest.getSendTime().getTime()));
+            statement.setDate(3, new java.sql.Date( friendRequest.getSendTime().getTime()));
             boolean rowInserted = statement.executeUpdate() > 0;
             statement.close();
             return rowInserted;
@@ -666,7 +664,7 @@ public class mySqlDb implements Dao {
             statement.setInt(1, challenge.getFromId());
             statement.setInt(2, challenge.getToId());
             statement.setInt(3, challenge.getQuizId());
-            statement.setDate(4, new java.sql.Date(challenge.getSendTime().getTime()));
+            statement.setDate(4, new java.sql.Date( challenge.getSendTime().getTime()));
             boolean rowInserted = statement.executeUpdate() > 0;
             statement.close();
             return rowInserted;
@@ -681,7 +679,7 @@ public class mySqlDb implements Dao {
             statement.setInt(1, note.getFromId());
             statement.setInt(2, note.getToId());
             statement.setString(3, note.getText());
-            statement.setDate(4, new java.sql.Date(note.getSendTime().getTime()));
+            statement.setDate(4, new java.sql.Date( note.getSendTime().getTime()));
             boolean rowInserted = statement.executeUpdate() > 0;
             statement.close();
             return rowInserted;
@@ -768,7 +766,7 @@ public class mySqlDb implements Dao {
                     boolean areQuestionsRandom = resultSet.getBoolean("areQuestionsRandom");
                     double quizTime = resultSet.getDouble("quizTime");
                     boolean immediateCorrection = resultSet.getBoolean("immediateCorrection");
-                    Quiz createdQuiz = new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime,immediateCorrection);
+                    Quiz createdQuiz = new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime, immediateCorrection);
                     createdQuizzes.add(createdQuiz);
                 }
                 return createdQuizzes;
@@ -792,7 +790,7 @@ public class mySqlDb implements Dao {
                     boolean areQuestionsRandom = resultSet.getBoolean("areQuestionsRandom");
                     double quizTime = resultSet.getDouble("quizTime");
                     boolean immediateCorrection = resultSet.getBoolean("immediateCorrection");
-                    Quiz recentQuiz = new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime,immediateCorrection);
+                    Quiz recentQuiz = new Quiz(id, author, name, creationDate, description, isPracticable, areQuestionsRandom, quizTime, immediateCorrection);
                     recentQuizzes.add(recentQuiz);
                 }
                 return recentQuizzes;
@@ -800,13 +798,14 @@ public class mySqlDb implements Dao {
         }
     }
 
-    public ArrayList<Quiz> getPopularQuizzes() throws SQLException{
+    public ArrayList<Quiz> getPopularQuizzes() throws SQLException {
         ArrayList<Quiz> quizes = new ArrayList<>();
-        try(Connection con = dbSource.getConnection();){
+
+        try(Connection con = dbSource.getConnection()){
             PreparedStatement stm = con.prepareStatement("select quizHistory.quizId from quizHistory group by quizId order by count(*) desc LIMIT 10");
-            try (ResultSet set = stm.executeQuery();) {
-                while(set.next()){
-                    quizes.add(getQuiz(""+set.getInt("quizId")));
+            try(ResultSet set = stm.executeQuery()){
+                while (set.next()) {
+                    quizes.add(getQuiz("" + set.getInt("quizId")));
                 }
                 return quizes;
             }
@@ -839,14 +838,52 @@ public class mySqlDb implements Dao {
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, userName);
             try (ResultSet resultSet = statement.executeQuery()) {
-                if(resultSet.next()){
-                    return  resultSet.getInt("userId");
+                if (resultSet.next()) {
+                    return resultSet.getInt("userId");
                 }
             }
         }
         return -1;
     }
 
+    public boolean putUserAchievements(UserAchievement achievement) throws SQLException {
+        String selectQuery = "SELECT * FROM userAchievements where userId = ? AND achievementId = ?";
+
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(selectQuery)) {
+            statement.setInt(1, achievement.getUserId());
+            statement.setInt(2, achievement.getAchievementId());
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) return false;
+            }
+        }
+
+        String insertQuery = "INSERT INTO userAchievements ( userId, achievementId, timeStamp) VALUES (?, ?, ?)";
+
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(insertQuery)) {
+            statement.setInt(1, achievement.getUserId());
+            statement.setInt(2, achievement.getAchievementId());
+            statement.setDate(3, (java.sql.Date) achievement.getTimeStamp());
+            boolean rowInserted = statement.executeUpdate() > 0;
+            statement.close();
+            return rowInserted;
+        }
+    }
+
+    public int getAchievementIdFromType(int type) throws SQLException {
+        String query = "SELECT * FROM achievements where type = ?";
+
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, type);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getInt("achievementId");
+            }
+        }
+    }
     @Override
     public ArrayList<IAnnouncement> getUserAnnouncements(int userId) throws SQLException
     {
@@ -1031,4 +1068,20 @@ public class mySqlDb implements Dao {
             }
         }
     }
+
+    @Override
+    public List<Integer> searchUserByUsername(String userName) throws SQLException {
+        List<Integer> userIds = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE firstName LIKE ?";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, "%" + userName + "%");
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                userIds.add(rs.getInt("userId"));
+            }
+        }
+        return userIds;
+    }
 }
+

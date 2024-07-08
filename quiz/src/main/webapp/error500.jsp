@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Achi
-  Date: 6/19/2024
-  Time: 1:07 PM
+  Date: 7/8/2024
+  Time: 12:36 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -14,6 +14,6 @@
 </head>
 <body style="overflow: hidden">
     <%@include file="navbar.jsp"%>
-    <img class="error_wallpaper" src="<%=request.getContextPath()%>/static/icons/error404.jpg" alt="bla">
+    <img class="error_wallpaper" src="<%=request.getContextPath()%>/static/icons/error500.png" alt="bla">
 </body>
 </html>

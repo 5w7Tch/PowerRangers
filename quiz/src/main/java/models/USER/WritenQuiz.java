@@ -25,7 +25,7 @@ public class WritenQuiz extends Activity
     public WritenQuiz(int id, Double score, Date date, Double time, int quizId, int userId, String writerName) {
         super(id, userId, date, ActivityType.WROTE_QUIZ);
         this.score = score;
-        this.scoreString = score.toString();
+        this.scoreString = df.format(score);
         this.time = time;
         this.timeString = df.format(time);
         this.dateString = date.toString();

@@ -8,8 +8,9 @@
         </div>
 
         <form action="/searchAccount" method="get" class="searchForm">
-            <input type="text" name="query" placeholder="Search users..." class = "searchInput">
+            <input type="text" name="query" placeholder="Search users..." class = "searchInput" id = "searchInput">
             <button type="submit" class="userSearchButton">Search</button>
+            <div id="suggestions" class="suggestions"></div>
         </form>
 
         <div class = "userInfoContainer">
@@ -25,3 +26,35 @@
         </div>
     </div>
 </nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function() {
+            var query = this.value;
+            if (query.length > 1) {
+                fetch('<%=request.getContextPath()%>/searchAccount?query=' + query , {
+                    method: "POST"
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        var suggestions = document.getElementById('suggestions');
+                        suggestions.innerHTML = '';
+
+                        data.forEach(username => {
+                            var div = document.createElement('div');
+                            div.className = 'suggestion-item';
+                            div.innerHTML = username;
+                            div.addEventListener('click', function() {
+                                searchInput.value = username;
+                                suggestions.innerHTML = '';
+                            });
+                            suggestions.appendChild(div);
+                        });
+                    });
+            } else {
+                document.getElementById('suggestions').innerHTML = '';
+            }
+        });
+    });
+</script>

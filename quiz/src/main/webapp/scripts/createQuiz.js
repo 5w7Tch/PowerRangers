@@ -77,6 +77,11 @@ $(document).ready(function (){
             return;
         }
 
+        if(questions.length===0){
+            alert("You have to add at least 1 question");
+            return;
+        }
+
         let quizJson = generateJsonObject();
         let url;
         let method;

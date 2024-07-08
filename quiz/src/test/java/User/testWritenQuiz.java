@@ -1,13 +1,12 @@
+package User;
+
 import com.mysql.cj.conf.ConnectionUrlParser;
 import junit.framework.TestCase;
-import models.USER.Hasher;
 import models.USER.WritenQuiz;
 
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Optional;
 
 public class testWritenQuiz extends TestCase {
     ArrayList<WritenQuiz> writtenQuizzes;

@@ -41,7 +41,6 @@ public class editQuiz extends HttpServlet {
         JsonObject obj = (JsonObject) servletGeneralFunctions.readObj(request);
         int quizId = obj.get("quizId").getAsInt();
 
-        // todo: retreive quiz from db and build json
         Dao db = (Dao) getServletContext().getAttribute(Dao.DBID);
         try {
             Quiz quiz = db.getQuiz(""+quizId);
@@ -51,7 +50,6 @@ public class editQuiz extends HttpServlet {
             sendResponse(response,quizObject);
         } catch (SQLException | NoSuchMethodException | InstantiationException | InvocationTargetException |
                 IllegalAccessException e) {
-            // todo: erase 500 error
             throw new RuntimeException(e);
         }
     }
