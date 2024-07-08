@@ -176,7 +176,7 @@
                                                 <div class="card" style="width: 18rem;">
                                                     <img src="<%=request.getContextPath()%><%=achievements.get(i).getIcon()%>" class="img-thumbnail card-img-top" alt="<%=achievements.get(i).getType().getDisplayName()%>>">
                                                     <div class="card-body">
-                                                        <p class="card-text"><%=achievements.get(i).getDescription()%></p>
+                                                        <p class="card-text" style="word-wrap: break-word; white-space: pre-wrap;"><%=achievements.get(i).getDescription()%></p>
                                                     </div>
                                                 </div>
                                             </div>
