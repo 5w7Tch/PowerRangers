@@ -63,11 +63,15 @@ public class QuizFinishServlet extends HttpServlet {
             if(!practise.equals("on")){
                 try {
                     remember(score, results, startDate, differenceInMinutes, request);
-                } else {
-                    practiceQuizAchievement(request);
+                }catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            } else {
+                try {
+                    practiceQuizAchievement(request);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             response.setContentType("application/json");
