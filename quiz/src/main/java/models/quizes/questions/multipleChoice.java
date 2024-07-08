@@ -42,7 +42,7 @@ public class  multipleChoice extends Question{
 
     @Override
     public Double checkAnswer(String[] answer) {
-        return answer[0].equals(questionJson.get("correctAnswer").getAsString()) ? this.score : 0.0;
+        return answer[0].equals(answerJson.get("answer").getAsString()) ? this.score : 0.0;
     }
 
     @Override

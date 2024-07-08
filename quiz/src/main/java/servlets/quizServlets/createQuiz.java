@@ -83,7 +83,7 @@ public class createQuiz extends HttpServlet {
         boolean practiceMode = quizObj.get("practiceMode").getAsBoolean();
         double duration = quizObj.get("duration").getAsDouble();
 
-        return new Quiz(-1,authorId,title,creationDate,description,practiceMode,isRandom,duration,immediateCorrection);
+        return new Quiz(id,authorId,title,creationDate,description,practiceMode,isRandom,duration,immediateCorrection);
     }
 
     private void uploadQuestionsToDB(JsonArray questionArr,int quizId){
