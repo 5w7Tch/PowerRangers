@@ -13,10 +13,11 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/multiplePageQuizStyles.css">
-
+    <link rel="icon" href="<%=request.getContextPath()%>/static/icons/logo.png" type="image/png">
     <%
         Quiz quiz = (Quiz)session.getAttribute("quiz");
         ArrayList<Question> quests = (ArrayList<Question>) session.getAttribute("questions");
+        String practise = (String) session.getAttribute("practise");
     %>
     <title><%=quiz.getName()%></title>
 
@@ -29,9 +30,8 @@
             <%=quests.get(i).getQuestion(i)%>
         <%}%>
     </div>
-
         <div class="button-container">
-            <%if(!quiz.isImmediateCorrection()){%>
+            <%if(!quiz.isImmediateCorrection() || practise.equals("on")){%>
                 <button id="prevButton">Previous</button>
                 <button id="nextButton">Next</button>
                 <button id="next" STYLE="display: none">Next</button>
@@ -42,13 +42,14 @@
             <%}%>
         </div>
 
-    </div>
-</div>
-<div class="info">
-    <div id="countdown" class="countDown">Time left: <span id="time">00:00:00</span> </div>
-    <button id="submitQuiz">Submit</button>
 </div>
 
+<div class="info">
+    <%if(!practise.equals("on")){%>
+        <div id="countdown" class="countDown">Time left: <span id="time">00:00:00</span> </div>
+    <%}%>
+    <button id="submitQuiz">Submit</button>
+</div>
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/scripts/multiplePageScripts.js"></script>
 
 </body>

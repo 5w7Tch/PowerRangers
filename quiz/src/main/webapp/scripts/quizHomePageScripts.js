@@ -87,7 +87,7 @@ function confirmClear(event) {
     }
 }
 
-document.getElementById('startSinglePage').addEventListener('click', function () {
+document.getElementById('start').addEventListener('click', function () {
     let radios = document.getElementsByName('practise');
     var selectedValue = null;
     for (var i = 0; i < radios.length; i++) {
@@ -96,14 +96,15 @@ document.getElementById('startSinglePage').addEventListener('click', function ()
             break;
         }
     }
-    if(selectedValue === 'on'){
-        window.location.href = '/quizSinglePage?practise=on&quizId='+this.getAttribute('name');
+
+    if(selectedValue === 'off'){
+        window.location.href = '/quizMultiplePage?practise=off&quizId='+this.getAttribute('name');
     }else{
         window.location.href = '/quizSinglePage?practise=off&quizId='+this.getAttribute('name');
     }
 });
 
-document.getElementById('startMultiPage').addEventListener('click', function () {
+document.getElementById('startPractise').addEventListener('click', function () {
     let radios = document.getElementsByName('practise');
     var selectedValue = null;
     for (var i = 0; i < radios.length; i++) {
@@ -112,9 +113,9 @@ document.getElementById('startMultiPage').addEventListener('click', function () 
             break;
         }
     }
-    if(selectedValue === 'on'){
+    if(selectedValue === 'off'){
         window.location.href = '/quizMultiplePage?practise=on&quizId='+this.getAttribute('name');
     }else{
-        window.location.href = '/quizMultiplePage?practise=off&quizId='+this.getAttribute('name');
+        window.location.href = '/quizSinglePage?practise=on&quizId='+this.getAttribute('name');
     }
 });

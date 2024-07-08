@@ -10,6 +10,7 @@
 <head>
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/notificationWindowStyles.css">
     <title>Possible Cheating Detected</title>
+    <link rel="icon" href="<%=request.getContextPath()%>/static/icons/logo.png" type="image/png">
 </head>
 <body>
     <div id="cheatedMessage" class="frame">
