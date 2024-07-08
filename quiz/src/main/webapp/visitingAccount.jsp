@@ -91,7 +91,7 @@
                     <%if(myDb.friendConnectionExists(user.getId(), loggedInUser.getId()) || myDb.friendRequestExists(user.getId(), loggedInUser.getId())){%>
                         <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; display: none; padding: 2px;" name="<%=user.getId()%>">Add friend</button>
                     <%}else{%>
-                        <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; padding: 2px;">Add friend</button>
+                        <button id="addFriendButton" class="btn btn-outline-primary" style="margin-bottom: 5px; margin-left: 10px; padding: 2px; display: none;">Add friend</button>
                     <%}%>
                     <button class="btn btn-outline-secondary p-0 px-2" data-bs-toggle="modal" data-bs-target="#announceModal" style="margin-bottom: 5px; margin-left: 10px" name="<%=user.getId()%>">Note</button>
                     <div class="modal fade" id="announceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="announceModalLabel" aria-hidden="true">
