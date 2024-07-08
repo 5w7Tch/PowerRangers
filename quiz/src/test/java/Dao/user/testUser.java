@@ -1,3 +1,5 @@
+package Dao.user;
+
 import junit.framework.TestCase;
 import models.USER.Hasher;
 import models.USER.User;
