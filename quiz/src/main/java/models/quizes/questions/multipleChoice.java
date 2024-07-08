@@ -61,12 +61,12 @@ public class  multipleChoice extends Question{
         for (int i = 0; i < answers.size(); i++) {
             if(answers.get(i).equals(answer[0])){
                 if(checkAnswer(answer).equals(0.0)){
-                    html += "<div class=\"answer_radio\" onclick=\"radioChange(this, 0)\" name=\"0\" style=\"background-color: red;\">"+answers.get(i)+"</div>\n";
+                    html += "<div class=\"answer_radio\" name=\"0\" style=\"background-color: red;\">"+answers.get(i)+"</div>\n";
                 }else{
-                    html += "<div class=\"answer_radio\" onclick=\"radioChange(this, 0)\" name=\"0\" style=\"background-color: green;\">"+answers.get(i)+"</div>\n";
+                    html += "<div class=\"answer_radio\" name=\"0\" style=\"background-color: green;\">"+answers.get(i)+"</div>\n";
                 }
             }else{
-                html += "<div class=\"answer_radio\" onclick=\"radioChange(this, 0)\" name=\"0\">"+answers.get(i)+"</div>\n";
+                html += "<div class=\"answer_radio\" name=\"0\">"+answers.get(i)+"</div>\n";
             }
         }
         String end = "        </ul>\n" +

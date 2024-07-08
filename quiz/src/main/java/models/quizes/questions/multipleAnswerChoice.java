@@ -55,7 +55,9 @@ public class multipleAnswerChoice extends Question{
     @Override
     public Double checkAnswer(String[] answer) {
         Double correctAns = 0.0;
+
         HashSet<String> hisAnswers = new HashSet<>(Arrays.asList(answer));
+
         for (int i = 0; i < answers.size(); i++){
             if (hisAnswers.contains(answers.get(i))){
                 correctAns++;
@@ -69,7 +71,8 @@ public class multipleAnswerChoice extends Question{
         if (correctAns < 0){
             correctAns = 0.0;
         }
-        return (correctAns/answers.size())*score;
+        Double res = (correctAns/answers.size())*score;
+        return res;
     }
 
     @Override
@@ -87,12 +90,12 @@ public class multipleAnswerChoice extends Question{
         for (int i = 0; i < posAnswers.size(); i++) {
             if(hisAnswers.contains(posAnswers.get(i))){
                 if(answers.contains(posAnswers.get(i))){
-                    html += "<div class=\"answer_radio\" onclick=\"radioChangeMultiple(this, 0)\" name=\"0\" style=\"background-color: green;\">"+posAnswers.get(i)+"</div>\n";
+                    html += "<div class=\"answer_radio\"  name=\"0\" style=\"background-color: green;\">"+posAnswers.get(i)+"</div>\n";
                 }else{
-                    html += "<div class=\"answer_radio\" onclick=\"radioChangeMultiple(this, 0)\" name=\"0\" style=\"background-color: red;\">"+posAnswers.get(i)+"</div>\n";
+                    html += "<div class=\"answer_radio\"  name=\"0\" style=\"background-color: red;\">"+posAnswers.get(i)+"</div>\n";
                 }
             }else{
-                html += "<div class=\"answer_radio\" onclick=\"radioChangeMultiple(this, 0)\" name=\"0\">"+posAnswers.get(i)+"</div>\n";
+                html += "<div class=\"answer_radio\" name=\"0\">"+posAnswers.get(i)+"</div>\n";
             }
         }
         String end ="        </ul>\n" +

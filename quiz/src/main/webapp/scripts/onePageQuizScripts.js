@@ -202,5 +202,4 @@ function radioChangeMultiple(thisObj, name) {
         }
     }
     answers[name] = arr;
-
 }

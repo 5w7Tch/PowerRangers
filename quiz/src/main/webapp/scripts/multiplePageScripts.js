@@ -287,7 +287,7 @@ function radioChange(thisObj, name) {
     for (let i = 0; i < radios.length; i++) {
         if (radios[i].style.backgroundColor === 'orange') {
             answers[name] = [radios[i].innerText];
-            return;
+            break;
         }
     }
 }
@@ -313,9 +313,9 @@ function radioChangeMultiple(thisObj, name) {
     let arr = new Array(radios.length);
     for (let i = 0; i < radios.length; i++) {
         if (radios[i].style.backgroundColor === 'orange') {
-            arr[i] = [radios[i].innerText];
+            arr[i] = radios[i].innerText;
         }else{
-            arr[i] = [""];
+            arr[i] = "";
         }
     }
     answers[name] = arr;
