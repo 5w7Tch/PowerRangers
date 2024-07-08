@@ -306,7 +306,11 @@
                                 <%}%>
                                 <div class="createdQuizzes-buttons d-flex justify-content-between">
                                     <button id="createQuizBtn" class="btn btn-outline-primary">create new</button>
+                                    <%
+                                        if(!userCreatedQuizzes.isEmpty()){
+                                    %>
                                     <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#createdQuizzesModal">see more</button>
+                                    <%}%>
                                 </div>
                                 <div class="modal" id="createdQuizzesModal" tabindex="-1" aria-labelledby="Created Quizzes Description" aria-hidden="true">
                                     <div class="modal-dialog">
