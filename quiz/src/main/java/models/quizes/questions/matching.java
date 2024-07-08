@@ -87,7 +87,8 @@ public class matching extends Question{
                 }
             }
         }
-        return (correct/right.size())*score;
+        double expected = (correct/right.size())*score;
+        return Math.round(expected*100.0)/100.0;
     }
 
     @Override
