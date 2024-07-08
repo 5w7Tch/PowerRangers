@@ -429,7 +429,6 @@ public class mySqlDb implements Dao {
             statement.setDouble(4, time);
             statement.setDouble(5, score);
             statement.executeUpdate();
-            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
