@@ -1028,7 +1028,6 @@ public class mySqlDb implements Dao {
             }
         }
     }
-}
 
     @Override
     public List<Integer> searchUserByUsername(String userName) throws SQLException {
@@ -1044,5 +1043,6 @@ public class mySqlDb implements Dao {
         }
         return userIds;
     }
+
 }
 
