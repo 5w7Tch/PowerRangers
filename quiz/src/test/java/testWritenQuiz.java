@@ -18,13 +18,13 @@ public class testWritenQuiz extends TestCase {
         writtenQuizzes = new ArrayList<>();
         date = new Date();
         for (double i = 1.0; i <= 10.0; i++) {
-            writtenQuizzes.add(new WritenQuiz(i, date, i, 1,2,"jaja"));
+            writtenQuizzes.add(new WritenQuiz((int)i, i, date, i, 1,2,"jaja"));
         }
     }
 
     public void testConstructor(){
         Date date = new Date();
-        WritenQuiz wq = new WritenQuiz(20.0, date, 25.0, 1, 2, "jaja");
+        WritenQuiz wq = new WritenQuiz(20, 20.0, date, 25.0, 1, 2, "jaja");
         assertEquals(20.0, wq.getScore());
         assertEquals(date, wq.getDate());
         assertEquals(25.0, wq.getTime());
@@ -65,7 +65,7 @@ public class testWritenQuiz extends TestCase {
     public void testLastWrittenDate(){
         assertEquals(date, WritenQuiz.getLastWritenDate(writtenQuizzes));
         Date newDate = new Date();
-        WritenQuiz wq = new WritenQuiz(20.0, newDate, 25.0, 1, 2, "jaja");
+        WritenQuiz wq = new WritenQuiz(40, 20.0, newDate, 25.0, 1, 2, "jaja");
         writtenQuizzes.add(wq);
         assertEquals(newDate, WritenQuiz.getLastWritenDate(writtenQuizzes));
     }

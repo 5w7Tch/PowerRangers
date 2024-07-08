@@ -1,37 +1,34 @@
 package models.achievement;
 
 import models.achievement.abstractions.IUserAchievement;
+import models.activity.Activity;
+import models.enums.ActivityType;
 
 import java.util.Date;
 
-public class UserAchievement implements IUserAchievement
+public class UserAchievement extends Activity implements IUserAchievement
 {
-    private int userAchievementId;
-    private int userId;
     private int achievementId;
-    private Date timeStamp;
 
     public UserAchievement(int userAchievementId, int userId, int achievementId, Date timeStamp) {
-        this.userAchievementId = userAchievementId;
-        this.userId = userId;
+        super(userAchievementId, userId, timeStamp, ActivityType.ACHIEVEMENT);
         this.achievementId = achievementId;
-        this.timeStamp = timeStamp;
     }
 
     public int getUserAchievementId() {
-        return userAchievementId;
+        return super.getId();
     }
 
     public void setUserAchievementId(int userAchievementId) {
-        this.userAchievementId = userAchievementId;
+        super.setId(userAchievementId);
     }
 
     public int getUserId() {
-        return userId;
+        return super.getFromId();
     }
 
     public void setUserId(int userId) {
-        this.userId = userId;
+        super.setFromId(userId);
     }
 
     public int getAchievementId() {
@@ -43,20 +40,20 @@ public class UserAchievement implements IUserAchievement
     }
 
     public Date getTimeStamp() {
-        return timeStamp;
+        return super.getSendTime();
     }
 
     public void setTimeStamp(Date timeStamp) {
-        this.timeStamp = timeStamp;
+        super.setSendTime(timeStamp);
     }
 
     @Override
     public String toString() {
         return "UserAchievement{" +
-                "userAchievementId=" + userAchievementId +
-                ", userId=" + userId +
+                "userAchievementId=" + super.getId() +
+                ", userId=" + super.getFromId() +
                 ", achievementId=" + achievementId +
-                ", timeStamp=" + timeStamp +
+                ", timeStamp=" + super.getSendTime() +
                 '}';
     }
 }

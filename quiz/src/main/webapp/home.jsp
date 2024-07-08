@@ -3,7 +3,7 @@
 <%@ page import="models.DAO.Dao" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="models.notification.abstractions.INotification" %>
-<%@ page import="models.enums.NotificationType" %>
+<%@ page import="models.enums.ActivityType" %>
 <%@ page import="models.notification.abstractions.INote" %>
 <%@ page import="models.notification.Note" %>
 <%@ page import="models.notification.abstractions.IChallenge" %>
@@ -16,6 +16,13 @@
 <%@ page import="static java.lang.Math.min" %>
 <%@ page import="models.quizes.Quiz" %>
 <%@ page import="models.announcement.abstractions.IAnnouncement" %>
+<%@ page import="models.activity.abstractions.IActivity" %>
+<%@ page import="models.announcement.Announcement" %>
+<%@ page import="models.friend.Friend" %>
+<%@ page import="models.friend.abstractions.IFriend" %>
+<%@ page import="models.achievement.Achievement" %>
+<%@ page import="models.achievement.abstractions.IUserAchievement" %>
+<%@ page import="models.achievement.UserAchievement" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -35,6 +42,7 @@
         ArrayList<Quiz> popularQuizzes = myDb.getPopularQuizzes();
         ArrayList<Quiz> recentQuizzes = myDb.getRecentQuizzes();
         ArrayList<IAnnouncement> announcements = myDb.getAnnouncements();
+        ArrayList<IActivity> activities = myDb.getFriendsActivity(user.getId());
     %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -99,7 +107,7 @@
                                         <p  class="mb-1"><%=dayName%>, <%=time%></p>
                                     </div>
                                     <%
-                                        if (notification.getType() == NotificationType.NOTE) {
+                                        if (notification.getType() == ActivityType.NOTE) {
                                             assert notification instanceof Note;
                                             INote note = (Note) notification;
                                     %>
@@ -108,7 +116,7 @@
                                     </div>
                                     <%
                                         }
-                                        if (notification.getType() == NotificationType.CHALLENGE) {
+                                        if (notification.getType() == ActivityType.CHALLENGE) {
                                             assert notification instanceof Challenge;
                                             IChallenge challenge = (Challenge) notification;
                                     %>
@@ -117,7 +125,7 @@
                                     </div>
                                     <%
                                         }
-                                        if (notification.getType() == NotificationType.FRIEND_REQUEST) {
+                                        if (notification.getType() == ActivityType.FRIEND_REQUEST) {
                                             assert notification instanceof FriendRequest;
                                             IFriendRequest friendRequest = (FriendRequest) notification;
                                     %>
@@ -168,7 +176,7 @@
                                                 <div class="card" style="width: 18rem;">
                                                     <img src="<%=request.getContextPath()%><%=achievements.get(i).getIcon()%>" class="img-thumbnail card-img-top" alt="<%=achievements.get(i).getType().getDisplayName()%>>">
                                                     <div class="card-body">
-                                                        <p class="card-text"><%=achievements.get(i).getDescription()%></p>
+                                                        <p class="card-text" style="word-wrap: break-word; white-space: pre-wrap;"><%=achievements.get(i).getDescription()%></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -295,9 +303,14 @@
                                     <%}%>
                                     </tbody>
                                 </table>
+                                <%}%>
                                 <div class="createdQuizzes-buttons d-flex justify-content-between">
                                     <button id="createQuizBtn" class="btn btn-outline-primary">create new</button>
+                                    <%
+                                        if(!userCreatedQuizzes.isEmpty()){
+                                    %>
                                     <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#createdQuizzesModal">see more</button>
+                                    <%}%>
                                 </div>
                                 <div class="modal" id="createdQuizzesModal" tabindex="-1" aria-labelledby="Created Quizzes Description" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -339,14 +352,125 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%}%>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-6 bg-danger" style="height: 2000px;">
-
+            <div class="col-6">
+                <div class="list-group activity-list">
+                    <%
+                        if(activities.isEmpty()){
+                    %>
+                    <div class="empty-activities bg-info bg-opacity-25">
+                        <div>
+                            <h4>Add friends to see their activity</h4>
+                        </div>
+                    </div>
+                    <%}%>
+                    <%
+                        i = 0;
+                        for (IActivity activity : activities) {
+                            SimpleDateFormat dayFormat = new SimpleDateFormat("dd, EE"); // EEEE for full day name
+                            String dayName = dayFormat.format(activity.getSendTime());
+                            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                            String time = timeFormat.format(activity.getSendTime());
+                            User fromUser = myDb.getUserById(activity.getFromId());
+                    %>
+                    <div class="activity-wrapper mb-1 bg-info border-bottom border-info border-2 rounded-top">
+                        <div class="d-flex mb-2 justify-content-between">
+                            <h6 class="mb-1">From <a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%= fromUser.getId() %>"><%=fromUser.getUsername()%></a>: <mark><%=activity.getType().getDisplayName()%></mark></h6>
+                            <p  class="mb-1"><%=dayName%>, <%=time%></p>
+                        </div>
+                        <div class="activity-info d-flex justify-content-center align-items-center">
+                        <%
+                            if (activity.getType() == ActivityType.ANNOUNCEMENT) {
+                                assert activity instanceof Announcement;
+                                IAnnouncement announcement = (Announcement) activity;
+                        %>
+                        <div class="note-info shadow-sm">
+                            <p><%=announcement.getText()%></p>
+                        </div>
+                        <%
+                            }
+                            if (activity.getType() == ActivityType.CHALLENGE) {
+                                assert activity instanceof Challenge;
+                                IChallenge challenge = (Challenge) activity;
+                        %>
+                        <div class="challenge-info shadow-sm">
+                            <p><%=fromUser.getUsername()%> challenged <a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%= challenge.getToId() %>"><%=myDb.getUserById(challenge.getToId()).getUsername()%></a> to write <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= challenge.getQuizId()%>`">quiz</a></p>
+                        </div>
+                        <%
+                            }
+                            if (activity.getType() == ActivityType.FRIENDSHIP) {
+                                assert activity instanceof Friend;
+                                IFriend friendship = (Friend) activity;
+                        %>
+                        <div class="friendship-info shadow-sm">
+                            <p><%=fromUser.getUsername()%> and <a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%= friendship.getUserTwoId() %>"><%=myDb.getUserById(friendship.getUserTwoId()).getUsername()%></a> became friends.</p>
+                        </div>
+                        <%
+                            }
+                            if (activity.getType() == ActivityType.ACHIEVEMENT) {
+                                assert activity instanceof UserAchievement;
+                                IUserAchievement userAchievement = (UserAchievement) activity;
+                                IAchievement achievement = myDb.getAchievementById(userAchievement.getAchievementId());
+                        %>
+                        <div class="user-achievement-info shadow-sm">
+                            <p><%=fromUser.getUsername()%> gained achievement: <mark><%=achievement.getType().getDisplayName()%></mark></p>
+                            <div class="achievement-activity-icon my-3 text-white d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#achievementActivityModal">
+                                <img src="<%=request.getContextPath()%><%=achievement.getIcon()%>" class="img-thumbnail" alt="<%=achievement.getType().getDisplayName()%>>" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<%=achievement.getType().getDisplayName()%>">
+                            </div>
+                            <div class="modal" id="achievementActivityModal" tabindex="-1" aria-labelledby="Achievement Activity Description" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="achievementActivityModalLabel"><%=achievement.getType().getDisplayName()%></h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="bg-info modal-body d-grid justify-content-center">
+                                            <div class="card" style="width: 18rem;">
+                                                <img src="<%=request.getContextPath()%><%=achievement.getIcon()%>" class="img-thumbnail card-img-top" alt="<%=achievement.getType().getDisplayName()%>>">
+                                                <div class="card-body">
+                                                    <p class="card-text" style="word-wrap: break-word; white-space: pre-wrap;"><%=achievement.getDescription()%></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%
+                            }
+                            if (activity.getType() == ActivityType.WROTE_QUIZ) {
+                                assert activity instanceof WritenQuiz;
+                                WritenQuiz writtenQuiz = (WritenQuiz) activity;
+                        %>
+                        <div class="written-quiz-info shadow-sm">
+                            <p><%=fromUser.getUsername()%> wrote <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= writtenQuiz.getQuizId()%>`">quiz</a></p>
+                        </div>
+                        <%
+                            }
+                            if (activity.getType() == ActivityType.CREATED_QUIZ) {
+                                assert activity instanceof Quiz;
+                                Quiz createdQuiz = (Quiz) activity;
+                        %>
+                        <div class="created-quiz-info shadow-sm">
+                            <p><%=fromUser.getUsername()%> created <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= createdQuiz.getId()%>`">quiz</a></p>
+                        </div>
+                        <%
+                            }
+                        %>
+                        </div>
+                    </div>
+                    <%
+                            i++;
+                        }
+                    %>
+                </div>
             </div>
             <div class="col-3 page-columns bg-info bg-opacity-25">
                 <div class="row popularQuizzes mb-3">

@@ -1,8 +1,10 @@
 package models.announcement.abstractions;
 
+import models.activity.abstractions.IActivity;
+
 import java.util.Date;
 
-public interface IAnnouncement
+public interface IAnnouncement extends IActivity
 {
     public int getId();
     public int getUserId();
