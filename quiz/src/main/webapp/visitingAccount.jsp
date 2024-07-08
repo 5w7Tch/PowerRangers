@@ -289,8 +289,8 @@
                                 <%}%>
                                 </tbody>
                             </table>
+                            <%}%>
                             <div class="createdQuizzes-buttons d-flex justify-content-between">
-
                                 <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#createdQuizzesModal">see more</button>
                             </div>
                             <div class="modal" id="createdQuizzesModal" tabindex="-1" aria-labelledby="Created Quizzes Description" aria-hidden="true">
@@ -333,7 +333,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <%}%>
                         </div>
                     </div>
                 </div>
@@ -580,7 +579,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div style="margin: 0;">Announcements</div>
                         <%
-                            if(user.isAdmin()) {%>
+                            if(loggedInUser.isAdmin()) {%>
                         <button class="btn btn-outline-secondary p-0 px-2" data-bs-toggle="modal" data-bs-target="#announceModal">Announce</button>
                         <div class="modal fade" id="announceModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="announceModalLabel" aria-hidden="true">
                             <div class="modal-dialog">

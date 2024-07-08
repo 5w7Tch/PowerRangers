@@ -303,6 +303,7 @@
                                     <%}%>
                                     </tbody>
                                 </table>
+                                <%}%>
                                 <div class="createdQuizzes-buttons d-flex justify-content-between">
                                     <button id="createQuizBtn" class="btn btn-outline-primary">create new</button>
                                     <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#createdQuizzesModal">see more</button>
@@ -347,7 +348,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <%}%>
                             </div>
                         </div>
                     </div>
