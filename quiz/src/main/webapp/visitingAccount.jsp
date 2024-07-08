@@ -32,6 +32,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/homePageStyles.scss">
     <title>Home</title>
+    <link rel="icon" href="<%=request.getContextPath()%>/static/icons/logo.png" type="image/png">
     <%
         Dao myDb = (Dao)application.getAttribute(Dao.DBID);
         User loggedInUser = (User) request.getSession().getAttribute("user");

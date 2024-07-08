@@ -15,6 +15,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <link rel="icon" href="<%=request.getContextPath()%>/static/icons/logo.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/static/styles/quizResultStyles.css">
     <%
         Quiz quiz = (Quiz)session.getAttribute("quiz");
