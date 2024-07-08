@@ -28,17 +28,18 @@ public class sendChallenge extends HttpServlet {
         EmailSender es = EmailSender.getInstance();
         String topic = "QuizTime Challenge received";
         String quizName;
-        System.out.println(quizId);
-        try {
-            quizName = db.getQuiz(quizId).getName();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        String body = sender.getUsername() + " Challenged you into writing Quiz: "+ quizName;
+
+        String body = sender.getUsername() + " Challenged you into writing Quiz ";
 
         JSONObject json = new JSONObject();
 
         if(receiverId != null && quizId != null){
+            try {
+                quizName = db.getQuiz(quizId).getName();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            body += quizName;
             try {
                 if(db.sendChallenge(new Challenge(0, sender.getId(), Integer.parseInt(receiverId),Integer.parseInt(quizId), new Date()))){
                     es.sendEmail(db.getUserById(Integer.parseInt(receiverId)).getEmail(), topic, body);

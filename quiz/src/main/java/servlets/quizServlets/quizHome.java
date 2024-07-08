@@ -55,19 +55,19 @@ public class quizHome extends HttpServlet {
         Dao myDb = (Dao)request.getServletContext().getAttribute(Dao.DBID);
 
         try {
-            if (quiz == null || !myDb.quizExists(Integer.parseInt(quiz))) {
-                System.out.println(1);
-                sendResponse(response, "false");
-                return;
-            }else{
-                System.out.println(2);
-                sendResponse(response, "true");
-                return;
-            }
-        } catch (SQLException e) {
-            System.out.println(3);
+            Integer id = Integer.parseInt(quiz);
+        } catch (NumberFormatException e) {
             sendResponse(response, "false");
             return;
+        }
+        try {
+            if (quiz == null || !myDb.quizExists(Integer.parseInt(quiz))) {
+                sendResponse(response, "false");
+            }else{
+                sendResponse(response, "true");
+            }
+        } catch (SQLException e) {
+            sendResponse(response, "false");
         }
     }
 

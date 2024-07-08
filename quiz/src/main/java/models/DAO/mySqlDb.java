@@ -340,7 +340,6 @@ public class mySqlDb implements Dao {
             stm.setDouble(6, question.getScore());
             int rowsAffected = stm.executeUpdate();
 
-            stm.close();
             if(rowsAffected==0){
 
                 throw new SQLException();

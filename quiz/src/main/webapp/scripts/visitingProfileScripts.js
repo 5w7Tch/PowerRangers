@@ -121,26 +121,7 @@ $('#noteBtn').click(function (){
         }
     })
 });
-function valid(text) {
-    console.log(text);
-    $.ajax({
-        url: text,
-        type: 'put',
-        contentType: 'application/json; charset=UTF-8',
-        beforeSend: function (xhr){
-        },
-        success: function (result,status,xhr){
-            if(result.result.toString()!="true"){
-                alert("invalid url");
-            }
-            return;
-        },
-        error: function (xhr,status,error){
-            alert("invalid url");
-            return;
-        }
-    })
-}
+
 
 function getId(url) {
     return url.substring(url.indexOf('=')+1, url.length);
@@ -149,12 +130,31 @@ function getId(url) {
 $('#challengeBtn').click(function (){
     let text = $('#challengeText').val();
     let userId = $('#challengeBtn').attr('name');
-    console.log(userId);
+
     if(text === ''){
         alert("Fill all fields");
         return;
     }
-    valid(text);
+    $.ajax({
+        url: text.toString(),
+        type: 'put',
+        contentType: 'application/json; charset=UTF-8',
+        beforeSend: function (xhr){
+        },
+        success: function (result,status,xhr){
+            if(result.result.toString()!="true"){
+                alert("invalid url");
+            }else{
+                challenge(text, userId);
+            }
+        },
+        error: function (xhr,status,error){
+            alert("invalid url");
+        }
+    })
+});
+
+function challenge(text, userId) {
 
     let quizId = getId(text.toString());
     let challengeJson = {
@@ -180,8 +180,8 @@ $('#challengeBtn').click(function (){
             $('#challengeCloseBtn').click();
         }
     })
-});
 
+}
 
 
 
