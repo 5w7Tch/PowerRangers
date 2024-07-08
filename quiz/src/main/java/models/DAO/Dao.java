@@ -1,6 +1,9 @@
 package models.DAO;
 import models.achievement.UserAchievement;
+import models.achievement.abstractions.IUserAchievement;
+import models.activity.abstractions.IActivity;
 import models.announcement.abstractions.IAnnouncement;
+import models.friend.abstractions.IFriend;
 import models.quizes.Quiz;
 import models.USER.User;
 import models.USER.WritenQuiz;
@@ -25,7 +28,7 @@ public interface Dao {
 
     void closeDbConnection();
     boolean addUser(User user);
-    void deleteUser(int id) throws SQLException;
+    boolean deleteUser(int id) throws SQLException;
     boolean userNameExists(String userName) throws SQLException;
     boolean accountExists(String userName, String passwordHash) throws SQLException;
     User getUser(String userName, String password) throws SQLException;
@@ -63,6 +66,7 @@ public interface Dao {
     boolean sendChallenge(Challenge challenge) throws SQLException;
     boolean rememberNote(Note note) throws SQLException;
     boolean rememberAnnouncement(Announcement announcement) throws SQLException;
+    IAchievement getAchievementById(int achievementId) throws SQLException;
     ArrayList<IAchievement> getUserAchievements(int userId) throws SQLException;
     ArrayList<WritenQuiz> getUserQuizActivity(int userId) throws SQLException;
     ArrayList<Quiz> getUserCreatedQuizzes(int userId) throws SQLException;
@@ -74,4 +78,14 @@ public interface Dao {
     int getAchievementIdFromType(int type) throws SQLException;
 
     List<Integer> searchUserByUsername (String userName) throws SQLException;
+    ArrayList<IAnnouncement> getUserAnnouncements(int userId) throws SQLException;
+    ArrayList<IUserAchievement> getUserObtainedAchievements(int userId) throws SQLException;
+    ArrayList<IFriend> getUserFriends(int userId) throws SQLException;
+    ArrayList<IChallenge> getSentChallenges(int userId) throws SQLException;
+    ArrayList<WritenQuiz> getUserWrittenQuizzes(int userId) throws SQLException;
+    ArrayList<IActivity> getFriendsActivity(int userId) throws SQLException;
+
+    boolean promoteUser(Integer user_id) throws SQLException;
+
+    boolean friendRequestExists(Integer user1Id, Integer user2Id) throws SQLException;
 }
