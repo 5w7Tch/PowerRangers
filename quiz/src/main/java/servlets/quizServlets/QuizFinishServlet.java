@@ -84,7 +84,7 @@ public class QuizFinishServlet extends HttpServlet {
         Dao db = (Dao)request.getServletContext().getAttribute(Dao.DBID);
         Quiz quiz = (Quiz)request.getSession().getAttribute("quiz");
         User user = (User)request.getSession().getAttribute("user");
-        db.insertIntoQuizHistory(quiz.getId().toString(), user.getId().toString(), startDate, time, score);
+        db.insertIntoQuizHistory(((Integer)quiz.getId()).toString(), user.getId().toString(), startDate, time, score);
         tenQuizzesAchievement(user, db);
         highestScoreAchievement(user, quiz, db);
     }

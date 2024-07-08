@@ -19,6 +19,7 @@ function onNotifications() {
 
 $(document).ready(function (){
     $('#createQuizBtn').click(function (){
+        console.log("hello");
         window.location.href = "/createQuiz";
     })
 

@@ -1,10 +1,13 @@
 package models.quizes;
 
 import com.google.gson.JsonObject;
+import models.activity.Activity;
+import models.enums.ActivityType;
 
 import java.sql.Date;
 
-public class Quiz {
+public class Quiz extends Activity
+{
     private int id;
     private int author;
     private String name;
@@ -16,6 +19,7 @@ public class Quiz {
     private boolean immediateCorrection;
 
     public Quiz(int id, int author, String name, Date creationDate, String description, boolean isPracticable, boolean rand, double duration,boolean immediateCorrection) {
+        super(id, author, creationDate, ActivityType.CREATED_QUIZ);
         this.id = id;
         this.author = author;
         this.name = name;
@@ -25,14 +29,6 @@ public class Quiz {
         this.duration = duration;
         this.isRandomQuestionSec = rand;
         this.immediateCorrection=immediateCorrection;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(int id){
-        this.id=id;
     }
 
     public int getAuthor() {

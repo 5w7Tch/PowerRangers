@@ -17,6 +17,10 @@ public class displayStrangersAccount extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Dao db = (Dao)request.getServletContext().getAttribute(Dao.DBID);
         String userId = request.getParameter("id");
+        if (userId == null) {
+            response.sendError(404);
+            return;
+        }
         User me = (User)request.getSession(false).getAttribute("user");
         User usr;
         try {
