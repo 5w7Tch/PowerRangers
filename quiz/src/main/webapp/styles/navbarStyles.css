@@ -120,6 +120,30 @@ a {
     outline: none;
 }
 
+
+.suggestions {
+    all: unset;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    z-index: 1000;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.suggestion-item {
+    all: unset;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+
 .topNavbar .userSearchButton:hover,
 .topNavbar .loginBtn:hover {
     background-color: #d9d9d9;
