@@ -70,4 +70,6 @@ public interface Dao {
     ArrayList<Quiz> getRecentQuizzes() throws SQLException;
     ArrayList<IAnnouncement> getAnnouncements() throws SQLException;
     Integer getUserByName(String userName) throws SQLException;
+    boolean putUserAchievements(UserAchievement achievement) throws SQLException;
+    int getAchievementIdFromType(int type) throws SQLException;
 }
