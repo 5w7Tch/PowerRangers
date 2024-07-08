@@ -1,4 +1,4 @@
-package Dao.user;
+package User;
 
 import com.mysql.cj.conf.ConnectionUrlParser;
 import junit.framework.TestCase;
