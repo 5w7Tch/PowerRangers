@@ -182,7 +182,7 @@
             <div class="row quizActivities mb-3">
                 <div class="col-12 p-0 card rounded-0">
                     <div class="card-header">
-                        <%=user.getUsername()%> Quiz Activity
+                        Quiz Activity
                     </div>
                     <div class="quizActivities-container-wrapper bg-info">
                         <div class="card-body p-0 m-2 d-flex flex-column quizActivities-container">
@@ -261,7 +261,7 @@
             <div class="row createdQuizzes">
                 <div class="col-12 p-0 card rounded-0">
                     <div class="card-header">
-                        <%=user.getUsername()%> Created Quizzes
+                        Created Quizzes
                     </div>
                     <div class="createdQuizzes-container-wrapper bg-info">
                         <div class="card-body p-0 m-2 d-flex flex-column createdQuizzes-container">
@@ -351,7 +351,7 @@
                 %>
                 <div class="activity-wrapper mb-1 bg-info border-bottom border-info border-2 rounded-top">
                     <div class="d-flex mb-2 justify-content-between">
-                        <h6 class="mb-1">From <%=fromUser.getUsername()%>: <mark><%=activity.getType().getDisplayName()%></mark></h6>
+                        <h6 class="mb-1">From <a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%= fromUser.getId() %>"><%=fromUser.getUsername()%></a>: <mark><%=activity.getType().getDisplayName()%></mark></h6>
                         <p  class="mb-1"><%=dayName%>, <%=time%></p>
                     </div>
                     <div class="activity-info d-flex justify-content-center align-items-center">
@@ -370,7 +370,7 @@
                                 IChallenge challenge = (Challenge) activity;
                         %>
                         <div class="challenge-info shadow-sm">
-                            <p><%=fromUser.getUsername()%> challenged <%=myDb.getUserById(challenge.getToId()).getUsername()%> to write <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= challenge.getQuizId()%>`">quiz</a></p>
+                            <p><%=fromUser.getUsername()%> challenged <a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%= challenge.getToId() %>"><%=myDb.getUserById(challenge.getToId()).getUsername()%></a> to write <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= challenge.getQuizId()%>`">quiz</a></p>
                         </div>
                         <%
                             }
@@ -379,7 +379,7 @@
                                 IFriend friendship = (Friend) activity;
                         %>
                         <div class="friendship-info shadow-sm">
-                            <p><%=fromUser.getUsername()%> and <%=myDb.getUserById(friendship.getUserTwoId()).getUsername()%> became friends.</p>
+                            <p><%=fromUser.getUsername()%> and <a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%= friendship.getUserTwoId() %>"><%=myDb.getUserById(friendship.getUserTwoId()).getUsername()%></a> became friends.</p>
                         </div>
                         <%
                             }

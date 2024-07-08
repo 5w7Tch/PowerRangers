@@ -306,7 +306,11 @@
                                 <%}%>
                                 <div class="createdQuizzes-buttons d-flex justify-content-between">
                                     <button id="createQuizBtn" class="btn btn-outline-primary">create new</button>
+                                    <%
+                                        if(!userCreatedQuizzes.isEmpty()){
+                                    %>
                                     <button class="btn btn-link" data-bs-toggle="modal" data-bs-target="#createdQuizzesModal">see more</button>
+                                    <%}%>
                                 </div>
                                 <div class="modal" id="createdQuizzesModal" tabindex="-1" aria-labelledby="Created Quizzes Description" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -356,6 +360,15 @@
             <div class="col-6">
                 <div class="list-group activity-list">
                     <%
+                        if(activities.isEmpty()){
+                    %>
+                    <div class="empty-activities bg-info bg-opacity-25">
+                        <div>
+                            <h4>Add friends to see their activity</h4>
+                        </div>
+                    </div>
+                    <%}%>
+                    <%
                         i = 0;
                         for (IActivity activity : activities) {
                             SimpleDateFormat dayFormat = new SimpleDateFormat("dd, EE"); // EEEE for full day name
@@ -366,7 +379,7 @@
                     %>
                     <div class="activity-wrapper mb-1 bg-info border-bottom border-info border-2 rounded-top">
                         <div class="d-flex mb-2 justify-content-between">
-                            <h6 class="mb-1">From <%=fromUser.getUsername()%>: <mark><%=activity.getType().getDisplayName()%></mark></h6>
+                            <h6 class="mb-1">From <a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%= fromUser.getId() %>"><%=fromUser.getUsername()%></a>: <mark><%=activity.getType().getDisplayName()%></mark></h6>
                             <p  class="mb-1"><%=dayName%>, <%=time%></p>
                         </div>
                         <div class="activity-info d-flex justify-content-center align-items-center">
@@ -385,7 +398,7 @@
                                 IChallenge challenge = (Challenge) activity;
                         %>
                         <div class="challenge-info shadow-sm">
-                            <p><%=fromUser.getUsername()%> challenged <%=myDb.getUserById(challenge.getToId()).getUsername()%> to write <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= challenge.getQuizId()%>`">quiz</a></p>
+                            <p><%=fromUser.getUsername()%> challenged <a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%= challenge.getToId() %>"><%=myDb.getUserById(challenge.getToId()).getUsername()%></a> to write <a class="link-primary" href="<%= request.getContextPath() %>/quiz?quizid=<%= challenge.getQuizId()%>`">quiz</a></p>
                         </div>
                         <%
                             }
@@ -394,16 +407,41 @@
                                 IFriend friendship = (Friend) activity;
                         %>
                         <div class="friendship-info shadow-sm">
-                            <p><%=fromUser.getUsername()%> and <%=myDb.getUserById(friendship.getUserTwoId()).getUsername()%> became friends.</p>
+                            <p><%=fromUser.getUsername()%> and <a class="link-primary" href="<%= request.getContextPath() %>/account?id=<%= friendship.getUserTwoId() %>"><%=myDb.getUserById(friendship.getUserTwoId()).getUsername()%></a> became friends.</p>
                         </div>
                         <%
                             }
                             if (activity.getType() == ActivityType.ACHIEVEMENT) {
                                 assert activity instanceof UserAchievement;
                                 IUserAchievement userAchievement = (UserAchievement) activity;
+                                IAchievement achievement = myDb.getAchievementById(userAchievement.getAchievementId());
                         %>
                         <div class="user-achievement-info shadow-sm">
-                            <p><%=fromUser.getUsername()%> gained achievement: <mark><%=myDb.getAchievementById(userAchievement.getAchievementId()).getType().getDisplayName()%></mark></p>
+                            <p><%=fromUser.getUsername()%> gained achievement: <mark><%=achievement.getType().getDisplayName()%></mark></p>
+                            <div class="achievement-activity-icon my-3 text-white d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#achievementActivityModal">
+                                <img src="<%=request.getContextPath()%><%=achievement.getIcon()%>" class="img-thumbnail" alt="<%=achievement.getType().getDisplayName()%>>" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<%=achievement.getType().getDisplayName()%>">
+                            </div>
+                            <div class="modal" id="achievementActivityModal" tabindex="-1" aria-labelledby="Achievement Activity Description" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="achievementActivityModalLabel"><%=achievement.getType().getDisplayName()%></h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="bg-info modal-body d-grid justify-content-center">
+                                            <div class="card" style="width: 18rem;">
+                                                <img src="<%=request.getContextPath()%><%=achievement.getIcon()%>" class="img-thumbnail card-img-top" alt="<%=achievement.getType().getDisplayName()%>>">
+                                                <div class="card-body">
+                                                    <p class="card-text" style="word-wrap: break-word; white-space: pre-wrap;"><%=achievement.getDescription()%></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <%
                             }
