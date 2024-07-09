@@ -1,7 +1,7 @@
 package notifications;
 
 import junit.framework.TestCase;
-import models.enums.NotificationType;
+import models.enums.*;
 import models.notification.Notification;
 
 import java.time.Instant;
