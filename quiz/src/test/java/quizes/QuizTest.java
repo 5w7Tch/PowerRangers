@@ -9,7 +9,7 @@ import java.sql.Date;
 public class QuizTest extends TestCase {
     public void testQuiz1(){
         Quiz quiz = new Quiz(1,1,"math",new Date(3),"bla",true,true,50,false);
-        assertEquals(1,quiz.getId().intValue());
+        assertEquals(1,quiz.getId());
         assertEquals(1,quiz.getAuthor());
         assertEquals("math",quiz.getName());
         assertEquals("bla",quiz.getDescription());
@@ -20,7 +20,7 @@ public class QuizTest extends TestCase {
         assertEquals(new Date(3),quiz.getCreationDate());
 
         quiz.setId(3);
-        assertEquals(3,quiz.getId().intValue());
+        assertEquals(3, quiz.getId());
     }
 
     public void testGetJson(){
