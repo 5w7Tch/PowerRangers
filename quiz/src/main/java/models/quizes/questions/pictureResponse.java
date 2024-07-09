@@ -31,7 +31,7 @@ public class pictureResponse extends Question{
 
     @Override
     public String getQuestion(int orderNum) {
-        String image = "<img src=\""+questionJson.get("pictureUrl").getAsString()+"\" alt=\"Image not Found\">";
+        String image = "<img style=\"width: 300px; height: 400px\" src=\""+questionJson.get("pictureUrl").getAsString()+"\" alt=\"Image not Found\">";
         String html = "<div class=\"question-box\">\n" +
                 "        <div class=\"question-text\">describe!</div>\n" +
                 image+
@@ -49,7 +49,7 @@ public class pictureResponse extends Question{
 
     @Override
     public String getAnsweredQuestion(String[] answer) {
-        String image = "<img src=\""+questionJson.get("pictureUrl").getAsString()+"\" alt=\"Image not Found\">";
+        String image = "<img style=\"width: 300px; height: 400px\" src=\""+questionJson.get("pictureUrl").getAsString()+"\" alt=\"Image not Found\">";
         String html = "<div class=\"question-box\">\n" +
                 "        <div class=\"question-text\">describe!</div>\n" +
                 image+
