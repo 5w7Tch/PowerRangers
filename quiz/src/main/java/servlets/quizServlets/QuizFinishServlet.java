@@ -60,19 +60,13 @@ public class QuizFinishServlet extends HttpServlet {
             }
 
             request.getSession().setAttribute("score", df.format(score));
-            if(!practise.equals("on")){
-                try {
-                    remember(score, results, startDate, differenceInMinutes, request);
-                }catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
-                try {
-                    practiceQuizAchievement(request);
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
+
+            try {
+                remember(score, results, startDate, differenceInMinutes, request);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
+
 
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");

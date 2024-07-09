@@ -1048,6 +1048,68 @@ public class mySqlDb implements Dao {
     }
 
     @Override
+    public Integer getUserCount() throws SQLException {
+        String query = "SELECT * FROM users;";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                int count = 0;
+                while (resultSet.next()) {
+                    count++;
+                }
+                return count;
+            }
+        }
+    }
+    @Override
+    public Integer getQuizCount() throws SQLException {
+        String query = "SELECT * FROM quizzes;";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                int count = 0;
+                while (resultSet.next()) {
+                    count++;
+                }
+                return count;
+            }
+        }
+    }
+    @Override
+    public Integer getWrittenQuizCount() throws SQLException {
+        String query = "SELECT * FROM quizHistory;";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                int count = 0;
+                while (resultSet.next()) {
+                    count++;
+                }
+                return count;
+            }
+        }
+    }
+
+    @Override
+    public Integer getAdmins() throws SQLException {
+        String query = "SELECT * FROM users;";
+        try (Connection connection = dbSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                int count = 0;
+                while (resultSet.next()) {
+                    boolean isAdmin = resultSet.getBoolean("isAdmin");
+                    if(isAdmin){
+                        count++;
+                    }
+                }
+                return count;
+            }
+        }
+    }
+
+
+    @Override
     public IAchievement getAchievementById(int achievementId) throws SQLException
     {
         String query = "SELECT * FROM achievements a WHERE a.achievementId = ?";

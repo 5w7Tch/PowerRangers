@@ -368,7 +368,7 @@
                     for (IActivity activity : activities) {
                         SimpleDateFormat dayFormat = new SimpleDateFormat("dd, EE"); // EEEE for full day name
                         String dayName = dayFormat.format(activity.getSendTime());
-                        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy");
                         String time = timeFormat.format(activity.getSendTime());
                         User fromUser = myDb.getUserById(activity.getFromId());
                 %>
@@ -640,7 +640,7 @@
                                         for (IAnnouncement announcement : announcements) {
                                             SimpleDateFormat dayFormat = new SimpleDateFormat("dd, EE"); // EEEE for full day name
                                             String dayName = dayFormat.format(announcement.getTimeStamp());
-                                            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                                            SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy");
                                             String time = timeFormat.format(announcement.getTimeStamp());
                                             User announcer = myDb.getUserById(announcement.getUserId());
                                     %>

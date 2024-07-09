@@ -88,4 +88,11 @@ public interface Dao {
     boolean promoteUser(Integer user_id) throws SQLException;
 
     boolean friendRequestExists(Integer user1Id, Integer user2Id) throws SQLException;
+
+    Integer getUserCount() throws SQLException;
+    Integer getWrittenQuizCount() throws SQLException;
+
+    Integer getAdmins()throws SQLException;
+
+    Integer getQuizCount()throws SQLException;
 }
