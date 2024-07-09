@@ -88,6 +88,33 @@
                         <h1><%=user.getUsername() %></h1>
                     </div>
                     <div class="col-3 d-flex justify-content-center align-items-center">
+                        <%if(user.isAdmin()){%>
+                            <button type="button" id="appSummaryButton" class="btn btn-secondary" style="margin-right: 30px; padding: 2px;">stats</button>
+                        <div id="appSummaryList" class="notifications-list shadow-lg p-3 bg-body rounded" aria-labelledby="appSummaryButton">
+                            <div class="list-group notification-list">
+                                <div class="notification-wrapper mb-1 bg-info border-bottom border-info border-2 rounded-top">
+                                    <div class="note-info shadow-sm">
+                                        <h6 class="mb-1">Currently exists <%=myDb.getQuizCount()%> Quiz</h6>
+                                    </div>
+                                </div>
+                                <div class="notification-wrapper mb-1 bg-info border-bottom border-info border-2 rounded-top">
+                                    <div class="note-info shadow-sm">
+                                        <h6 class="mb-1">Currently has been taken <%=myDb.getWrittenQuizCount()%> tests</h6>
+                                    </div>
+                                </div>
+                                <div class="notification-wrapper mb-1 bg-info border-bottom border-info border-2 rounded-top">
+                                    <div class="note-info shadow-sm">
+                                        <h6 class="mb-1">Currently app has <%=myDb.getUserCount()%> Users</h6>
+                                    </div>
+                                </div>
+                                <div class="notification-wrapper mb-1 bg-info border-bottom border-info border-2 rounded-top">
+                                    <div class="note-info shadow-sm">
+                                        <h6 class="mb-1">Currently app has <%=myDb.getAdmins()%> admins</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%}%>
                         <button type="button" id="notificationsButton" class="btn btn-secondary">
                             <i class="bi bi-bell"></i>
                         </button>
@@ -98,7 +125,7 @@
                                     for (INotification notification : notifications) {
                                         SimpleDateFormat dayFormat = new SimpleDateFormat("dd, EE"); // EEEE for full day name
                                         String dayName = dayFormat.format(notification.getSendTime());
-                                        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                                        SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy");
                                         String time = timeFormat.format(notification.getSendTime());
                                         User fromUser = myDb.getUserById(notification.getFromId());
                                 %>
@@ -374,7 +401,7 @@
                         for (IActivity activity : activities) {
                             SimpleDateFormat dayFormat = new SimpleDateFormat("dd, EE"); // EEEE for full day name
                             String dayName = dayFormat.format(activity.getSendTime());
-                            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                            SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy");
                             String time = timeFormat.format(activity.getSendTime());
                             User fromUser = myDb.getUserById(activity.getFromId());
                     %>
@@ -669,9 +696,9 @@
                                     <div class="list-group announcements-list bg-info">
                                         <%
                                             for (IAnnouncement announcement : announcements) {
-                                                SimpleDateFormat dayFormat = new SimpleDateFormat("dd, EE"); // EEEE for full day name
+                                                SimpleDateFormat dayFormat = new SimpleDateFormat("dd, EE");
                                                 String dayName = dayFormat.format(announcement.getTimeStamp());
-                                                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                                                SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy");
                                                 String time = timeFormat.format(announcement.getTimeStamp());
                                                 User announcer = myDb.getUserById(announcement.getUserId());
                                         %>

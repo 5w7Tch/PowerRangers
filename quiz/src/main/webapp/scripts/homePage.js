@@ -3,7 +3,15 @@ const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstra
 let notificationsButton = document.getElementById('notificationsButton');
 notificationsButton.addEventListener("click", onNotifications);
 let showNotifications = false;
+let showAppSummary = false;
+
 function onNotifications() {
+    showAppSummary = false;
+    let appSummaryList = document.getElementById('appSummaryList');
+    appSummaryList.style.display = 'none';
+    appSummaryButton.classList.add('btn-secondary');
+    appSummaryButton.classList.remove('btn-primary');
+
     let notificationList = document.getElementById('notificationsList');
     if(showNotifications) {
         notificationList.style.display = 'none';
@@ -15,6 +23,28 @@ function onNotifications() {
         notificationsButton.classList.add('btn-primary');
     }
     showNotifications = !showNotifications;
+}
+
+let appSummaryButton = document.getElementById('appSummaryButton');
+appSummaryButton.addEventListener("click", onAppSummary);
+function onAppSummary() {
+    showNotifications = false;
+    let notificationList = document.getElementById('notificationsList');
+    notificationList.style.display = 'none';
+    notificationsButton.classList.add('btn-secondary');
+    notificationsButton.classList.remove('btn-primary');
+
+    let appSummaryList = document.getElementById('appSummaryList');
+    if(showAppSummary) {
+        appSummaryList.style.display = 'none';
+        appSummaryButton.classList.add('btn-secondary');
+        appSummaryButton.classList.remove('btn-primary');
+    } else {
+        appSummaryList.style.display = 'block';
+        appSummaryButton.classList.remove('btn-secondary');
+        appSummaryButton.classList.add('btn-primary');
+    }
+    showAppSummary = !showAppSummary;
 }
 
 $(document).ready(function (){
