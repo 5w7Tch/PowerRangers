@@ -199,7 +199,7 @@
                     <h5>Total Written count: <%=history.size()%></h5>
                     <h5>Average Time Spent: <%= WritenQuiz.getAvgTime(history) %></h5>
                     <%ConnectionUrlParser.Pair<Integer, String> top = WritenQuiz.getTopScorer(history);%>
-                    <h5>Top Scorer: <a href="/account?id=<%=top.left%>"><%=top.right%></a></h5>
+                    <h5>Top Scorer: <a style="color: #007bff" href="/account?id=<%=top.left%>"><%=top.right%></a></h5>
                 <%}else{%>
                     <h5>Average Score: Not Available</h5>
                     <h5>Last Written: Not Available</h5>

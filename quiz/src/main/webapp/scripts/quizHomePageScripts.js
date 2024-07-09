@@ -89,15 +89,14 @@ function confirmClear(event) {
 
 document.getElementById('start').addEventListener('click', function () {
     let radios = document.getElementsByName('practise');
-    var selectedValue = null;
+    var selectedValue = 'not selected';
     for (var i = 0; i < radios.length; i++) {
         if (radios[i].checked) {
             selectedValue = radios[i].value;
             break;
         }
     }
-
-    if(selectedValue === 'off'){
+    if(selectedValue === 'off' || selectedValue === 'not selected'){
         window.location.href = '/quizMultiplePage?practise=off&quizId='+this.getAttribute('name');
     }else{
         window.location.href = '/quizSinglePage?practise=off&quizId='+this.getAttribute('name');
@@ -106,7 +105,7 @@ document.getElementById('start').addEventListener('click', function () {
 
 document.getElementById('startPractise').addEventListener('click', function () {
     let radios = document.getElementsByName('practise');
-    var selectedValue = null;
+    var selectedValue = 'not selected';
     for (var i = 0; i < radios.length; i++) {
         if (radios[i].checked) {
             selectedValue = radios[i].value;
