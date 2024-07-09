@@ -25,6 +25,11 @@ public class UserFunctionsTest extends TestCase {
 
     public void testAddUser() throws SQLException {
         User u = new User(-1,"quji","bla","bla@gmail.com",true);
+        int iD = db.getUserByName("quji");
+        if(iD!=-1){
+            db.deleteUser(iD);
+        }
+
         db.addUser(u);
 
         //test user exists
@@ -47,5 +52,49 @@ public class UserFunctionsTest extends TestCase {
 
         db.deleteUser(u.getId());
     }
+
+    public void testUserNameExists() throws SQLException {
+        User u = new User(-1,"quji","bla","bla@gmail.com",true);
+        int iD = db.getUserByName("quji");
+        if(iD!=-1){
+            db.deleteUser(iD);
+        }
+
+        assertFalse(db.userNameExists("quji"));
+
+        db.addUser(u);
+        assertTrue(db.userNameExists("quji"));
+        db.deleteUser(u.getId());
+    }
+
+    public void testAccountExists() throws SQLException {
+        User u = new User(-1,"quji","bla","bla@gmail.com",true);
+        int iD = db.getUserByName("quji");
+        if(iD!=-1){
+            db.deleteUser(iD);
+        }
+
+        assertFalse(db.accountExists(u.getUsername(),u.getPasswordHash()));
+
+        db.addUser(u);
+        assertTrue(db.accountExists(u.getUsername(),u.getPasswordHash()));
+        db.deleteUser(u.getId());
+    }
+
+    public void testGetUser() throws SQLException {
+        User u = new User(-1,"quji","bla","bla@gmail.com",true);
+        int iD = db.getUserByName("quji");
+        if(iD!=-1){
+            db.deleteUser(iD);
+        }
+
+        assertNull(db.getUser(u.getUsername(),u.getPasswordHash()));
+        db.addUser(u);
+        assertEquals(u,db.getUser(u.getUsername(),u.getPasswordHash()));
+        db.deleteUser(u.getId());
+    }
+
+
+
 
 }
