@@ -19,11 +19,12 @@ public class quizPersonalDataServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String orderBy = request.getParameter("orderBy");
 
-        ArrayList<WritenQuiz> dataList = (ArrayList<WritenQuiz>)request.getSession().getAttribute("history");;
+        ArrayList<WritenQuiz> dataList = (ArrayList<WritenQuiz>)request.getSession().getAttribute("personHistory");;
 
         if (orderBy != null) {
             if(orderBy.equals("Time")){
                 dataList.sort(new compareByTime());
+
             }else if(orderBy.equals("Date")){
                 dataList.sort(new compareByDate());
             }else{

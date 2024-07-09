@@ -319,7 +319,6 @@ public class mySqlDb implements Dao {
             if (rowsAffected == 0) {
                 throw new SQLException();
             }
-
             try (ResultSet set = stm.getGeneratedKeys()) {
                 if (set.next()) {
                     quiz.setId(set.getInt(1));
@@ -339,10 +338,7 @@ public class mySqlDb implements Dao {
             stm.setInt(5, question.getOrderNum());
             stm.setDouble(6, question.getScore());
             int rowsAffected = stm.executeUpdate();
-
-            stm.close();
             if(rowsAffected==0){
-
                 throw new SQLException();
             }
             try (ResultSet set = stm.getGeneratedKeys()) {
@@ -457,7 +453,7 @@ public class mySqlDb implements Dao {
                     Date startTime = resultSet.getDate("startTime");
                     double timeSpent = resultSet.getDouble("spentTime");
                     Integer user_Id = resultSet.getInt("userId");
-                    String writerName = getUserById(userId).getUsername();
+                    String writerName = getUserById(user_Id).getUsername();
                     if (friends.contains(user_Id)) {
                         WritenQuiz writenQuiz = new WritenQuiz(historyId, score, startTime, timeSpent, quizId, user_Id, writerName);
                         writenQuizzes.add(writenQuiz);

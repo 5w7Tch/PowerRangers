@@ -37,6 +37,8 @@
                 userHistory.add(history.get(i));
             }
         }
+        session.setAttribute("personHistory", userHistory);
+
     %>
 </head>
 <body>
@@ -65,7 +67,7 @@
                             <%
                                 for (int i = 0; i < history.size(); i++) {%>
                             <tr>
-                                <td><a href="/account?id=<%=history.get(i).getUserId()%>"><%=history.get(i).getWriterName()%></a></td>
+                                <td><a href="/account?id=<%=history.get(i).getUserId()%>" STYLE="color: #007bff"><%=history.get(i).getWriterName()%></a></td>
                                 <td><%= history.get(i).getScoreString() %></td>
                                 <td><%= history.get(i).getTimeString()%></td>
                             </tr>
@@ -96,7 +98,7 @@
                                     <%
                                         if(history.get(i).getDate().compareTo(calendar.getTime()) >0){%>
                                         <tr>
-                                            <td><a href="/account?id=<%=history.get(i).getUserId()%>"><%=history.get(i).getWriterName()%></a></td>
+                                            <td><a href="/account?id=<%=history.get(i).getUserId()%>" STYLE="color: #007bff"><%=history.get(i).getWriterName()%></a></td>
                                             <td><%= history.get(i).getScoreString() %></td>
                                             <td><%= history.get(i).getTimeString() %></td>
                                         </tr>
@@ -122,7 +124,7 @@
                                 history.sort(new compareByDate());
                                 for (int i = 0; i < history.size(); i++) {%>
                             <tr>
-                                <td><a href="/account?id=<%=history.get(i).getUserId()%>"><%=history.get(i).getWriterName()%></a></td>
+                                <td><a href="/account?id=<%=history.get(i).getUserId()%>" STYLE="color: #007bff"><%=history.get(i).getWriterName()%></a></td>
                                 <td><%= history.get(i).getScoreString() %></td>
                                 <td><%= history.get(i).getTimeString() %></td>
                             </tr>

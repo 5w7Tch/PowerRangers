@@ -73,7 +73,7 @@
 
                             for (int i = 0; i < friendHistory.size(); i++) {%>
                                 <tr>
-                                    <td><a href="/account?id=<%=friendHistory.get(i).getUserId()%>"><%=friendHistory.get(i).getWriterName()%></a></td>
+                                    <td><a href="/account?id=<%=friendHistory.get(i).getUserId()%>" STYLE="color: #007bff"><%=friendHistory.get(i).getWriterName()%></a></td>
                                     <td><%= friendHistory.get(i).getScoreString() %></td>
                                     <td><%= friendHistory.get(i).getTimeString() %></td>
                                 </tr>
