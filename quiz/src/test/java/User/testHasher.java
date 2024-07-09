@@ -1,3 +1,5 @@
+package User;
+
 import junit.framework.TestCase;
 import models.USER.Hasher;
 

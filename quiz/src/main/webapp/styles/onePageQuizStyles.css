@@ -1,0 +1,130 @@
+body {
+    font-family: Arial, sans-serif;
+
+    justify-content: center;
+
+    min-height: 100vh;
+    background-color: #c9d6ff;
+    background: linear-gradient(135deg, white, #ffab6e);
+
+    margin: 0;
+}
+
+.quiz-container {
+    width: 80%;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.question-box {
+    background-color: white;
+    border: 2px solid #ff4200;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 50px;
+}
+
+.question-text {
+    font-size: 18px;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+.answers {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+.answer_radio {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    width: 80%;
+}
+.answer_radio:hover {
+    background-color: #efefef;
+}
+
+.answer_response {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+    word-wrap: break-word; /* Ensures long words break and wrap onto the next line */
+    white-space: pre-wrap; /* Preserves white space and ensures wrapping */
+    vertical-align: middle;
+}
+
+.match_option {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 150px;
+}
+.match {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+.countDown {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    top: 100px;
+    left: 100px;
+}
+
+.info {
+    background-color: #c9d6ff;
+    background: linear-gradient(to right, white, #ff4200);
+    position: fixed;
+    border: 2px solid #ff4200;
+    border-radius: 10px;
+    padding: 20px;
+    top: 10px;
+    left: 10px;
+}
+.dropdown-container {
+    justify-content: center;
+    display: flex;
+    gap: 20px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+.dropdown {
+    padding: 5px;
+    border: 1px solid #ff4200;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+button {
+    font-weight: bold;
+    background-color: #1fe100;
+    color: #fff;
+    font-size: 12px;
+    padding: 10px 20px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+}
+
+button:hover{
+    background-color: #18af00;
+}

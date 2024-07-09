@@ -20,16 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchStringsBtn.addEventListener('click', function() {
         var username = document.getElementById('signInUsername').value;
         var password = document.getElementById('signInPassword').value;
-
         var url = '/login?username=' + encodeURIComponent(username) +
             '&password=' + encodeURIComponent(password);
         fetch(url, {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache',
-                'Pragma': 'no-cache',
-                'Expires': '0'
             }
         })
             .then(function(response) {
@@ -63,9 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache',
-                'Pragma': 'no-cache',
-                'Expires': '0'
             }
         })
             .then(function(response) {
@@ -75,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(function(data) {
+                console.log(data);
                 let resCodeUN = data.usernameRP;
                 let resCodeE = data.emailRP;
                 let resCodeP = data.passwordRP;

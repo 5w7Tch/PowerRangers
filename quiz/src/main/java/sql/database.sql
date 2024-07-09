@@ -1,3 +1,6 @@
+drop database if exists quizdb;
+create database quizdb;
+
 USE quizdb;
 
 drop table if exists friendRequests;
@@ -22,8 +25,9 @@ create table if not exists users(
 
 create table if not exists friendRequests(
       requestId int primary key auto_increment,
-      fromUserId int not null ,
-      toUserId int not null ,
+      fromUserId int not null,
+      toUserId int not null,
+      sendTime DATETIME NOT NULL,
       foreign key (fromUserId) references users(userId),
       foreign key (toUserId) references users(userId)
 );
@@ -32,6 +36,7 @@ create table if not exists friends(
       friendId int primary key auto_increment,
       user1Id int not null,
       user2Id int not null,
+      timeStamp DATE NOT NULL,
       foreign key (user1Id) references users(userId),
       foreign key (user2Id) references users(userId)
 );
@@ -44,18 +49,19 @@ CREATE TABLE IF NOT EXISTS quizzes (
       creationDate DATE NOT NULL ,
       description TEXT,
       isPracticable BOOLEAN DEFAULT TRUE,
-      quizTime INT,
+      areQuestionsRandom BOOLEAN default True,
+      immediateCorrection BOOLEAN not null,
+      quizTime DOUBLE,
       FOREIGN KEY (author) REFERENCES users(userId)
 );
-
 
 CREATE TABLE IF NOT EXISTS quizHistory (
       historyId INT PRIMARY KEY AUTO_INCREMENT,
       quizId INT NOT NULL ,
       userId INT NOT NULL ,
       startTime DATETIME NOT NULL ,
-      endTime DATETIME NOT NULL ,
-      score INT NOT NULL ,
+      spentTime DOUBLE NOT NULL ,
+      score Double NOT NULL ,
       FOREIGN KEY (quizId) REFERENCES quizzes(quizId),
       FOREIGN KEY (userId) REFERENCES users(userId)
 );
@@ -65,6 +71,7 @@ CREATE TABLE if not exists notes (
      fromId INT NOT NULL,
      toId INT NOT NULL,
      text TEXT NOT NULL,
+     sendTime DATETIME NOT NULL,
      FOREIGN KEY (fromId) REFERENCES users(userId),
      FOREIGN KEY (toId) REFERENCES users(userId)
 );
@@ -74,6 +81,7 @@ CREATE TABLE if not exists challenges (
     fromId INT NOT NULL,
     toId INT NOT NULL,
     quizId INT NOT NULL,
+    sendTime DATETIME NOT NULL,
     FOREIGN KEY (fromId) REFERENCES users(userId),
     FOREIGN KEY (toId) REFERENCES users(userId),
     FOREIGN KEY (quizId) REFERENCES quizzes(quizId)
@@ -82,10 +90,11 @@ CREATE TABLE if not exists challenges (
 CREATE TABLE if not exists questions(
     questionId INT AUTO_INCREMENT PRIMARY KEY ,
     quizId INT NOT NULL,
-    type INT NOT NULL,
-    text TEXT NOT NULL,
+    type nvarchar(30) NOT NULL,
+    questionJson TEXT NOT NULL,
+    answerJson TEXT not null,
     orderNum INT NOT NULL,
-    score INT NOT NULL,
+    score DOUBLE NOT NULL,
     FOREIGN KEY (quizId) REFERENCES  quizzes(quizId)
 );
 
@@ -99,7 +108,6 @@ CREATE TABLE if not exists announcements(
 
 CREATE TABLE if not exists achievements(
     achievementId INT AUTO_INCREMENT PRIMARY KEY,
-    name nvarchar(120) NOT NULL,
     icon TEXT NOT NULL,
     type INT NOT NUll,
     description TEXT NOT NULL
@@ -113,3 +121,92 @@ CREATE TABLE if not exists userAchievements(
     FOREIGN KEY (userId) REFERENCES users(userId),
     FOREIGN KEY (achievementId) REFERENCES achievements(achievementId)
 );
+
+insert into users values (1,'nika','nika@', '34bff7be484da58a7c244a79ef278630f334a732',  true);
+
+insert into users values (2,'lasha','lasha@', 'ee5d0f40184e345d01bf17e5a8a8dab7bcf0c4c8',  true);
+insert into users values (3,'zoro','zoro@', '2cdb8c4253053c1e0a8bcba9c9b482aec983bf55',  true);
+
+
+insert into quizzes values (1,1,'ito arabets rostevan', sysdate(), 'it was created to ftest something', true, true,false, 30);
+
+insert into quizzes values (2,2,'lashqar mravali kmiani', sysdate(), 'it was created to ftest somethingoooooooooooooooooooooooooooooooooo ooooooooooooooooooooooooooo ooooooooooooooooooooooooooooooooooooooooo oooooooooooooooooooooooooooooooooooooooooooooooooooooo ooooooooooooooooooooooooooooooooo', true, false,false, 30);
+
+
+insert into quizHistory values (1,1,1,DATE_SUB(NOW(), INTERVAL 10 MINUTE) ,3 , 30);
+
+insert into quizHistory values (2,1,1,DATE_SUB(NOW(), INTERVAL 10 MINUTE) , 5, 40);
+
+insert into quizHistory values (3,1,1,DATE_SUB(NOW(), INTERVAL 30 MINUTE) ,7 , 78);
+
+INSERT INTO notes (fromId, toId, text, sendTime)
+SELECT
+    u1.userId AS fromId,
+    u2.userId AS toId,
+    CONCAT('Random text ', FLOOR(1 + RAND() * 1000)) AS text,
+    NOW() - INTERVAL FLOOR(RAND() * 10) DAY AS sendTime
+FROM users u1
+         JOIN users u2 ON u1.userId != u2.userId
+ORDER BY RAND()
+LIMIT 10;
+
+INSERT INTO challenges (fromId, toId, quizId, sendTime)
+SELECT
+    u1.userId AS fromId,
+    u2.userId AS toId,
+    q.quizId AS quizId,
+    NOW() - INTERVAL FLOOR(RAND() * 10) DAY AS sendTime
+FROM users u1
+         JOIN users u2 ON u1.userId != u2.userId
+         JOIN quizzes q ON q.quizId = (SELECT quizId FROM quizzes ORDER BY RAND() LIMIT 1)
+ORDER BY RAND()
+LIMIT 10;
+
+DROP PROCEDURE IF EXISTS insert_random_friend_requests;
+
+DELIMITER $$
+
+CREATE PROCEDURE insert_random_friend_requests(IN num_requests INT)
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE max_user_id INT;
+
+    SELECT MAX(userId) INTO max_user_id FROM users;
+
+    WHILE i < num_requests DO
+            INSERT INTO friendRequests (fromUserId, toUserId, sendTime)
+            VALUES (
+                       FLOOR(1 + RAND() * max_user_id),
+                       FLOOR(1 + RAND() * max_user_id),
+                       NOW() - INTERVAL FLOOR(RAND() * 365) DAY
+                   );
+            SET i = i + 1;
+        END WHILE;
+END $$
+
+DELIMITER ;
+
+CALL insert_random_friend_requests(7);
+
+INSERT INTO achievements (icon, type, description) VALUES
+                                                             ('/static/icons/achievements/AmateurAuthor.png', 0, 'You have created a quiz.'),
+                                                             ('/static/icons/achievements/ProlificAuthor.png', 1, 'You have created five quizzes.'),
+                                                             ('/static/icons/achievements/ProdigiousAuthor.png', 2, 'You have created ten quizzes.'),
+                                                             ('/static/icons/achievements/QuizMachine.png', 3, 'You have took ten quizzes.'),
+                                                             ('/static/icons/achievements/IamtheGreatest.png', 4, 'You have had the highest score on a quiz.'),
+                                                             ('/static/icons/achievements/PracticeMakesPerfect.png', 5, 'You have took a quiz in practice mode.');
+
+INSERT INTO userAchievements (userId, achievementId, timeStamp) VALUES
+                                                                    (2, 1, '2024-07-01'),
+                                                                    (2, 2, '2024-07-02'),
+                                                                    (2, 3, '2024-07-03'),
+                                                                    (2, 4, '2024-07-01'),
+                                                                    (2, 5, '2024-07-04'),
+                                                                    (2, 6, '2024-07-05');
+
+INSERT INTO announcements (userId, text, timeStamp)
+VALUES
+    (1, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.', CURDATE() - INTERVAL FLOOR(RAND() * 30) DAY),
+    (2, 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.', CURDATE() - INTERVAL FLOOR(RAND() * 30) DAY),
+    (2, 'There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don''t look even slightly believable.', CURDATE() - INTERVAL FLOOR(RAND() * 30) DAY),
+    (2, 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using ''Content here, content here'', making it look like readable English.', CURDATE() - INTERVAL FLOOR(RAND() * 30) DAY);

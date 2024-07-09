@@ -1,0 +1,148 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Serif', sans-serif;
+}
+
+.container-one{
+    width: 67%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: transparent;
+    padding-top: 40px;
+    padding-left: 10px;
+    margin-left: 10px;
+}
+.name {
+    color: #ff4200;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.link a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 1.2em;
+}
+
+.container-two{
+    width: 100%;
+    display: flex;
+    background-color: transparent;
+    padding-top: 2px;
+    padding-left: 10px;
+    justify-content: center;
+    padding-right: 10px;
+}
+
+.rectangle {
+    width: 100%;
+    height: 300px;
+    background-color: #e7e7e7;
+    position: relative;
+    border-radius: 15px;
+    border: 2px solid black;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    overflow: auto;
+    padding: 5px;
+}
+
+. {
+    display: flex;
+    justify-content: space-between; /* This aligns items along the main axis with space between */
+}
+
+
+.button{
+    font-weight: bold;
+    background-color: #1fe100;
+    color: #fff;
+    font-size: 12px;
+    padding: 10px 20px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+    width: 200px;
+}
+.button:hover {
+    background-color: #18af00;
+}
+.buttons {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    padding-right: 10px;
+    align-items: center;
+}
+
+
+.container-for-table-parts {
+    text-align: center;
+    width: 20%;
+}
+.container-for-table-parts h4{
+
+}
+.container-for-table-parts h6{
+    color: #ff4200;
+}
+
+.table-container {
+    width: 100%;
+    height: 500px;
+    background-color: #e7e7e7;
+    position: relative;
+    border-radius: 15px;
+    border: 1px solid black;
+    overflow: auto; /* Enable scrolling */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+
+}
+
+.label-container {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio-buttons {
+    margin-left: 2px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: none;
+    padding: 8px;
+    text-align: left;
+    height: 25px;
+}
+th {
+    background-color: #ff4200;
+    color: white;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.container-three {
+    width: 68%;
+    display: flex;
+    background-color: transparent;
+    margin-top: 40px;
+}
+
+h5 {
+    margin-bottom: 10px;
+}

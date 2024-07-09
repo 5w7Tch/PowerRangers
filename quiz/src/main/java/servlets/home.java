@@ -18,11 +18,7 @@ public class home extends HttpServlet {
             return;
         }
 
-        if(request.getSession().getAttribute("user")!=null){
-            request.getRequestDispatcher("home.jsp").forward(request,response);
-        }else{
-            response.sendRedirect("/login");
-        }
+        request.getRequestDispatcher("/home.jsp").forward(request,response);
     }
 
     @Override

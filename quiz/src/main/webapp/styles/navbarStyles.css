@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Roboto:wght@400;700&display=swap');
+html , body{
+    all: unset;
+}
+
+* {
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+}
+
+.quizNameClass a , .quizNameClass p{
+    outline: none;
+    inline-size: 0;
+    text-decoration: none;
+}
+
+.topNavbar {
+    all: unset;
+    display: block;
+    background: #ff4200;
+    font-family: Calibri, serif;
+    width: 100%;
+    border-bottom-style: dashed;
+    height: 50px;
+}
+
+.topNavbar .navDiv {
+    all: unset;
+    display: flex;
+    padding-top: 5px;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.topNavbar .quizName {
+    all: unset;
+    font-size: 28px;
+    font-weight: bold;
+    font-family: 'Lobster', cursive;
+    color: white;
+}
+
+.topNavbar .userInfoContainer {
+    all: unset;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+}
+
+.topNavbar .userName {
+    all: unset;
+    font-size: 23px;
+    color: azure;
+    margin-right: 10px;
+}
+
+.userInfoContainer .loginBtn {
+    all: unset;
+    background-color: white;
+    margin-left: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.userInfoContainer .loginBtn a {
+    all: unset;
+    color: #ff4200;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.searchForm .searchInput{
+    all: unset;
+    background-color: white;
+    border: none;
+    outline: none;
+    margin-right: 5px;
+    border-radius: 5px;
+    padding: 5px;
+    padding-left: 9px;
+}
+
+.searchForm .userSearchButton {
+    all: unset;
+    background-color: white;
+    border-radius: 4px;
+    padding: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.searchForm{
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.userInfoContainer button{
+    all: unset;
+    outline: none;
+    inline-size: 0;
+    text-decoration: none;
+}
+
+.userInfoContainer a{
+    text-decoration: none;
+    outline: none;
+}
+
+
+.suggestions {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    right: 0;
+    border: none;
+    border-radius: 2px;
+    background-color: #fff;
+    z-index: 1000;
+    max-height: 150px;
+    overflow-y: auto;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.suggestion-item {
+    text-decoration: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+
+.topNavbar .userSearchButton:hover,
+.topNavbar .loginBtn:hover {
+    background-color: #d9d9d9;
+    outline: none;
+    text-decoration: none;
+    color: #ff4200;
+}
