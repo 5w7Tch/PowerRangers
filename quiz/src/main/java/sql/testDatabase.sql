@@ -118,3 +118,12 @@ CREATE TABLE if not exists userAchievements(
     FOREIGN KEY (userId) REFERENCES users(userId),
     FOREIGN KEY (achievementId) REFERENCES achievements(achievementId)
 );
+
+
+INSERT INTO achievements (icon, type, description) VALUES
+                                                       ('/static/icons/achievements/AmateurAuthor.png', 0, 'You have created a quiz.'),
+                                                       ('/static/icons/achievements/ProlificAuthor.png', 1, 'You have created five quizzes.'),
+                                                       ('/static/icons/achievements/ProdigiousAuthor.png', 2, 'You have created ten quizzes.'),
+                                                       ('/static/icons/achievements/QuizMachine.png', 3, 'You have took ten quizzes.'),
+                                                       ('/static/icons/achievements/IamtheGreatest.png', 4, 'You have had the highest score on a quiz.'),
+                                                       ('/static/icons/achievements/PracticeMakesPerfect.png', 5, 'You have took a quiz in practice mode.');

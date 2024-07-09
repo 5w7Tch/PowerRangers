@@ -851,7 +851,6 @@ public class mySqlDb implements Dao {
              PreparedStatement statement = connection.prepareStatement(selectQuery)) {
             statement.setInt(1, achievement.getUserId());
             statement.setInt(2, achievement.getAchievementId());
-
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) return false;
             }
@@ -863,7 +862,7 @@ public class mySqlDb implements Dao {
              PreparedStatement statement = connection.prepareStatement(insertQuery)) {
             statement.setInt(1, achievement.getUserId());
             statement.setInt(2, achievement.getAchievementId());
-            statement.setDate(3, (java.sql.Date) achievement.getTimeStamp());
+            statement.setDate(3, new java.sql.Date(achievement.getTimeStamp().getTime()));
             boolean rowInserted = statement.executeUpdate() > 0;
             statement.close();
             return rowInserted;
