@@ -1,3 +1,6 @@
+drop database if exists quiztestdb;
+create database quiztestdb;
+
 USE quiztestdb;
 
 drop table if exists friendRequests;

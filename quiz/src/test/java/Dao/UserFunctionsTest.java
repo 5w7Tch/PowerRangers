@@ -93,7 +93,4 @@ public class UserFunctionsTest extends TestCase {
         assertEquals(u,db.getUser(u.getUsername(),u.getPasswordHash()));
         db.deleteUser(u.getId());
     }
-
-
-
 }
