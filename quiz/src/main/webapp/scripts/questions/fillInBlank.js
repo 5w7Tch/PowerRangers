@@ -95,7 +95,7 @@ $(document).ready(function (){
 function addAnswerHtml(){
     let elem = `
             <div class="answer-div">
-                <button class="remove-btn" style="background-color: #ff0000"></button>
+                <button class="remove-btn" style="background-color: #ff0000; padding: 1px; width: 15px;"></button>
                 <textarea style="margin: 5px auto" class="fillInBlank-answer form-control"></textarea>
             </div>
         `

@@ -105,7 +105,8 @@ function addMatches(firstMatch , secondMatch){
         document.getElementById('addMatchButton').style.display = 'block';
     });
     deleteBtn.style.backgroundColor = "#ff0000";
-    deleteBtn.style.width = '5px';
+    deleteBtn.style.padding = "1px";
+    deleteBtn.style.width = '15px';
     textarea1.className = 'form-control';
     textarea1.style.marginBottom = '5px';
     textarea1.id = 'first_'+textareaId;

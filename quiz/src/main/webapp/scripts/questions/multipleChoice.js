@@ -114,6 +114,8 @@ $(document).ready(function(){
             answersContainer.removeChild(deleteBtn);
         });
         deleteBtn.style.backgroundColor = "#ff0000";
+        deleteBtn.style.padding = "1px";
+        deleteBtn.style.width = '15px';
         textarea.className = 'form-control';
         textarea.style.marginBottom = '5px';
         textarea.id = textareaId;
