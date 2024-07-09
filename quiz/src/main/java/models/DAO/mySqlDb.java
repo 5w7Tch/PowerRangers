@@ -319,6 +319,7 @@ public class mySqlDb implements Dao {
             if (rowsAffected == 0) {
                 throw new SQLException();
             }
+
             try (ResultSet set = stm.getGeneratedKeys()) {
                 if (set.next()) {
                     quiz.setId(set.getInt(1));
@@ -339,6 +340,7 @@ public class mySqlDb implements Dao {
             stm.setDouble(6, question.getScore());
             int rowsAffected = stm.executeUpdate();
             if(rowsAffected==0){
+
                 throw new SQLException();
             }
             try (ResultSet set = stm.getGeneratedKeys()) {

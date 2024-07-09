@@ -12,15 +12,6 @@ public class questionResponse extends Question{
         super((JsonObject) JsonParser.parseString(questionJson),(JsonObject) JsonParser.parseString(answerJson),questionId,quizId,orderNum,type,score);
     }
 
-    @Override
-    public JsonObject generateJson() {
-        JsonObject object = new JsonObject();
-        object.addProperty("type",this.type);
-        object.add("question", this.questionJson);
-        object.add("answer", this.answerJson);
-        object.addProperty("score",this.score);
-        return object;
-    }
     public Double checkAnswer(String[] answer){
 
         if (answer[0].trim().equalsIgnoreCase(answerJson.get("description").getAsString().trim())) {
