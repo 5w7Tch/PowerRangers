@@ -364,6 +364,15 @@
         <div class="col-6">
             <div class="list-group activity-list">
                 <%
+                    if(activities.isEmpty()){
+                %>
+                <div class="empty-activities bg-info bg-opacity-25">
+                    <div>
+                        <h4><%=user.getUsername()%> has no friends to see their activity</h4>
+                    </div>
+                </div>
+                <%}%>
+                <%
                     i = 0;
                     for (IActivity activity : activities) {
                         SimpleDateFormat dayFormat = new SimpleDateFormat("dd, EE"); // EEEE for full day name
@@ -409,9 +418,13 @@
                             if (activity.getType() == ActivityType.ACHIEVEMENT) {
                                 assert activity instanceof UserAchievement;
                                 IUserAchievement userAchievement = (UserAchievement) activity;
+                                IAchievement achievement = myDb.getAchievementById(userAchievement.getAchievementId());
                         %>
                         <div class="user-achievement-info shadow-sm">
-                            <p><%=fromUser.getUsername()%> gained achievement: <mark><%=myDb.getAchievementById(userAchievement.getAchievementId()).getType().getDisplayName()%></mark></p>
+                            <p><%=fromUser.getUsername()%> gained achievement: <mark><%=achievement.getType().getDisplayName()%></mark></p>
+                            <div class="achievement-activity-icon my-3 text-white d-flex align-items-center justify-content-center" >
+                                <img src="<%=request.getContextPath()%><%=achievement.getIcon()%>" class="img-thumbnail" alt="<%=achievement.getType().getDisplayName()%>>" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<%=achievement.getType().getDisplayName()%>">
+                            </div>
                         </div>
                         <%
                             }

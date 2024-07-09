@@ -445,33 +445,12 @@
                                 IUserAchievement userAchievement = (UserAchievement) activity;
                                 IAchievement achievement = myDb.getAchievementById(userAchievement.getAchievementId());
                         %>
-                        <div class="user-achievement-info shadow-sm">
-                            <p><%=fromUser.getUsername()%> gained achievement: <mark><%=achievement.getType().getDisplayName()%></mark></p>
-                            <div class="achievement-activity-icon my-3 text-white d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#achievementActivityModal">
-                                <img src="<%=request.getContextPath()%><%=achievement.getIcon()%>" class="img-thumbnail" alt="<%=achievement.getType().getDisplayName()%>>" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<%=achievement.getType().getDisplayName()%>">
-                            </div>
-                            <div class="modal" id="achievementActivityModal" tabindex="-1" aria-labelledby="Achievement Activity Description" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="achievementActivityModalLabel"><%=achievement.getType().getDisplayName()%></h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="bg-info modal-body d-grid justify-content-center">
-                                            <div class="card" style="width: 18rem;">
-                                                <img src="<%=request.getContextPath()%><%=achievement.getIcon()%>" class="img-thumbnail card-img-top" alt="<%=achievement.getType().getDisplayName()%>>">
-                                                <div class="card-body">
-                                                    <p class="card-text" style="word-wrap: break-word; white-space: pre-wrap;"><%=achievement.getDescription()%></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
+                            <div class="user-achievement-info shadow-sm">
+                                <p><%=fromUser.getUsername()%> gained achievement: <mark><%=achievement.getType().getDisplayName()%></mark></p>
+                                <div class="achievement-activity-icon my-3 text-white d-flex align-items-center justify-content-center" >
+                                    <img src="<%=request.getContextPath()%><%=achievement.getIcon()%>" class="img-thumbnail" alt="<%=achievement.getType().getDisplayName()%>>" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="<%=achievement.getType().getDisplayName()%>">
                                 </div>
                             </div>
-                        </div>
                         <%
                             }
                             if (activity.getType() == ActivityType.WROTE_QUIZ) {
