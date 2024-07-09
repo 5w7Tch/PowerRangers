@@ -48,6 +48,8 @@
         </div>
     </div>
 </div>
+
 <script type="text/javascript" src="<%=request.getContextPath()%>/static/scripts/loginAnimations.js"></script>
+
 </body>
 </html>
