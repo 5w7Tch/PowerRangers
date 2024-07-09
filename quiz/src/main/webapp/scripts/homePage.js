@@ -8,9 +8,11 @@ let showAppSummary = false;
 function onNotifications() {
     showAppSummary = false;
     let appSummaryList = document.getElementById('appSummaryList');
-    appSummaryList.style.display = 'none';
-    appSummaryButton.classList.add('btn-secondary');
-    appSummaryButton.classList.remove('btn-primary');
+    if(appSummaryList != null){
+        appSummaryList.style.display = 'none';
+        appSummaryButton.classList.add('btn-secondary');
+        appSummaryButton.classList.remove('btn-primary');
+    }
 
     let notificationList = document.getElementById('notificationsList');
     if(showNotifications) {
@@ -26,7 +28,9 @@ function onNotifications() {
 }
 
 let appSummaryButton = document.getElementById('appSummaryButton');
-appSummaryButton.addEventListener("click", onAppSummary);
+if($('#appSummaryButton').length!=0){
+    appSummaryButton.addEventListener("click", onAppSummary);
+}
 function onAppSummary() {
     showNotifications = false;
     let notificationList = document.getElementById('notificationsList');

@@ -68,6 +68,7 @@
                 },
                 success: function (result,status,xhr){
                     div.innerHTML = `<p class="mx-auto">Friend Request `+request+`ed</p>`
+                    window.location.reload();
                 },
                 error: function (xhr,status,error){
                     div.classList.add('justify-content-between');
